@@ -10,7 +10,7 @@ import {decode,encode} from 'base-64'
   
   this.DOMParser = require('xmldom').DOMParser;
 
-  let appID = "7604bf2e35d24" ,apiKey = "6ac84bbb64851268576055aa19bff83be3947c8c";
+  let appID = "xxxxxxxxx" ,apiKey = "xxxxxxxxxxxxxxxxxxxxx";
 export class LoginScreen extends Component {
     static navigationOptions = {
         header: null
