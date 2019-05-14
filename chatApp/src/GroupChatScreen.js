@@ -97,7 +97,7 @@ export class GroupChatScreen extends Component {
 
 
     _keyboardDidShow () {
-        //setTimeout(() => messagelist.scrollToEnd(), 100)
+        setTimeout(() => messagelist.scrollToEnd(), 100)
     }
     
     render(){

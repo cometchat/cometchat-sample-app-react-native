@@ -1,117 +1,163 @@
-import React, { Component } from 'react';
-import {StyleSheet,Text,View,Button,TextInput} from 'react-native';
+import React, {Component} from 'react';
+import {StyleSheet, Text, View, Button, TextInput, Image, TouchableOpacity,StatusBar} from 'react-native';
 import {CometChat} from '@cometchat-pro/chat';
+import { ActivityIndicator} from 'react-native-paper';
 
-import {decode,encode} from 'base-64'
-  
-  if (!global.btoa) {global.btoa = encode;}
-  
-  if (!global.atob) {global.atob = decode;}
-  
-  this.DOMParser = require('xmldom').DOMParser;
+import {decode, encode} from 'base-64'
 
-  let appID = "xxxxxxxxx" ,apiKey = "xxxxxxxxxxxxxxxxxxxxx";
+if (!global.btoa) {
+    global.btoa = encode;
+}
+
+if (!global.atob) {
+    global.atob = decode;
+}
+
+this.DOMParser = require('xmldom').DOMParser;
+
+let appID = "XXXXXXXXX" ,apiKey = "XXXXXXXXX";
+
+
 export class LoginScreen extends Component {
     static navigationOptions = {
         header: null
     }
 
+
     constructor() {
         super()
-        this.state = {}
+        this.state = {
+            loaderVisible : false
+        }
         this.state.entredUID = 'superhero1'
         this.buttonPressed = this.buttonPressed.bind(this)
-            CometChat.init(appID).then(() => {
-            console.log("Cometchat intialized"); 
-               window.document=new window.DOMParser().parseFromString("<?xml version='1.0'?>", 'text/xml'); 
-            },error=>{
-              console.error(error);
-            });
+        CometChat.init(appID).then(() => {
+            console.log("Cometchat intialized");
+            // window.document=new window.DOMParser().parseFromString("<?xml version='1.0'?>", 'text/xml');
+        }, error => {
+            console.error(error);
+        });
     }
 
     buttonPressed() {
-      UID = this.state.entredUID;
-      this.cometchatLogin();
-      //this.props.navigation.navigate('Home')
+        UID = this.state.entredUID;
+        this.cometchatLogin();
+        //this.props.navigation.navigate('Home')
     }
 
-    cometchatLogin (){
-      console.log('CometChat login Called')
-      CometChat.login(UID, apiKey).then(
-        user => {
-          var userName = user.name;
-          console.log("Login Successful:",{userName});
-          this.props.navigation.navigate('Home')
-        },
-  
-        error => {
-          console.log("Login failed with exception:", { error });
-        }
-      );
+    cometchatLogin() {
+        console.log('CometChat login Called')
+        this.setState({ loaderVisible: true })
+        CometChat.login(UID, apiKey).then(
+            user => {
+                this.setState({ loaderVisible: false })
+                var userName = user.name;
+                console.log("Login Successful:", {userName});
+                this.props.navigation.navigate('Home')
+            },
+
+            error => {
+                console.log("Login failed with exception:", {error});
+            }
+        );
     }
 
 
-    render(){
-        return(
+    render() {
+        return (
             <View style={styles.container}>
+                <StatusBar backgroundColor="#3f51b5" barStyle="light-content" />
+                <Image
+                    style={[{height: 150}, {width: 120}, {alignSelf: 'center'}]}
+                    source={require('./assets/images/cometchat.png')}
+                />
 
+                <View style={styles.inputsContainer}>
 
-        <Text style={styles.welcome}>Welcome to CometChat Pro</Text>
+                    <View style={styles.textlayout}>
+                        <TextInput style={styles.input}
+                                   placeholder="Enter UID"
+                                   placeholderTextColor="#9fa8da"
+                                   autoCapitalize="none"
+                                   underlineColorAndroid='transparent'
+                                   defaultValue={this.state.entredUID}
+                                   onChangeText={text => this.setState({entredUID: text})}
+                        />
 
+                    </View>
 
-        <View style={styles.textlayout}>
-          <Text style={styles.lable}>UID</Text>
-          <TextInput style={styles.input}
-            placeholder="UID"
-            placeholderTextColor="#9fa8da"
-            autoCapitalize="none"
-            defaultValue={this.state.entredUID}
-            onChangeText={text => this.setState({ entredUID: text })}
-          />
+                    <View style={styles.buttonStyle}>
 
-        </View>
+                        <TouchableOpacity
+                            style={styles.SubmitButtonStyle}
+                            activeOpacity={.5}
+                            onPress={this.buttonPressed}>
 
-        <View style={styles.buttonStyle}>
+                            <Text style={styles.TextStyle}> LOGIN </Text>
 
-          <Button
-            title="Login"
-            color="#3f51b5"
-            onPress={this.buttonPressed}
-          />
-        </View>
+                        </TouchableOpacity>
+                    </View>
 
-      </View>
-            
+                    <ActivityIndicator
+                        style = {styles.LoadingIndicator}
+                        size = {30}
+                        animating={this.state.loaderVisible} color={'#3f51b5'} />
+                </View>
+            </View>
+
         );
     }
 }
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      justifyContent: 'center'
+        flex: 1,
+        paddingTop: 70,
+        backgroundColor: '#3f51b5'
     },
     textlayout: {
-      margin: 10
+        margin: 10
     },
-    welcome: {
-      fontSize: 20,
-      textAlign: 'center',
-      margin: 50,
-    }, lable: {
-      marginStart: 40
+    lable: {
+
+    }, inputsContainer: {
+        marginTop: 100,
+        flex: 1,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        backgroundColor: '#fff'
     },
     input: {
-      borderBottomWidth: 1,
-      borderBottomColor: '#3f51b5',
-      marginLeft: 40,
-      marginRight: 40,
-      height: 40,
+        marginTop: 40,
+        marginLeft: 40,
+        marginRight: 40,
+        height: 50,
+        borderWidth: 0,
+        borderColor: '#3f51b5',
+        borderRadius: 20 ,
+        textAlign: 'center',
+        backgroundColor : "#FFFFFF",
+        elevation: 10
     },
     buttonStyle: {
-      margin: 40,
-      marginLeft: 70,
-      marginRight: 70,
-      justifyContent: 'center'
+        margin: 20,
+        marginLeft: 50,
+        marginRight: 50,
+        justifyContent: 'center'
+    },
+    SubmitButtonStyle: {
+        marginTop:10,
+        paddingTop:15,
+        paddingBottom:15,
+        backgroundColor:'#3f51b5',
+        borderRadius:20,
+    },
+
+    TextStyle:{
+        color:'#fff',
+        textAlign:'center',
+    },
+    LoadingIndicator:{
+        marginTop:40
     }
-  });
+});

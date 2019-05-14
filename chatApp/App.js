@@ -29,6 +29,7 @@ const navigator = createStackNavigator(
 const AppContainer = createAppContainer(navigator)
 export default class App extends Component {
   render() {
+      console.disableYellowBox = true;
     return (
       <AppContainer
         ref={navigatorRef => {
