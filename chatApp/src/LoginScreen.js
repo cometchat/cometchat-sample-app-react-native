@@ -15,7 +15,7 @@ if (!global.atob) {
 
 this.DOMParser = require('xmldom').DOMParser;
 
-let appID = "XXXXXXXXX" ,apiKey = "XXXXXXXXX";
+let appID = "100254e8db3d1b" ,apiKey = "ebae51bfa38bb5f2f21266bd2e9f58b64c87ab9a";
 
 
 export class LoginScreen extends Component {
@@ -29,7 +29,7 @@ export class LoginScreen extends Component {
         this.state = {
             loaderVisible : false
         }
-        this.state.entredUID = 'superhero1'
+        this.state.entredUID = 'superhero2'
         this.buttonPressed = this.buttonPressed.bind(this)
         CometChat.init(appID).then(() => {
             console.log("Cometchat intialized");
@@ -42,7 +42,6 @@ export class LoginScreen extends Component {
     buttonPressed() {
         UID = this.state.entredUID;
         this.cometchatLogin();
-        //this.props.navigation.navigate('Home')
     }
 
     cometchatLogin() {
@@ -112,7 +111,7 @@ export class LoginScreen extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingTop: 70,
+        paddingTop: 20,
         backgroundColor: '#3f51b5'
     },
     textlayout: {
@@ -121,7 +120,7 @@ const styles = StyleSheet.create({
     lable: {
 
     }, inputsContainer: {
-        marginTop: 100,
+        marginTop: 50,
         flex: 1,
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,

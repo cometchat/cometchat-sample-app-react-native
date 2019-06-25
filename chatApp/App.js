@@ -10,16 +10,22 @@ import React, {Component} from 'react';
 import { createStackNavigator,createAppContainer } from 'react-navigation'
 import {LoginScreen} from './src/LoginScreen';
 import {HomeScreen} from './src/HomeScreen';
-import { ChatScreen } from './src/ChatScreen';
+import {ChatScreen} from './src/ChatScreen';
+import {VideoPlayer} from './src/VideoPlayer';
+import {BlockedUsers} from './src/BlockedUsers';
 import { GroupChatScreen } from './src/GroupChatScreen';
-import NavigationService from './src/NavigationService'
+import NavigationService from './src/NavigationService';
+import { ImageViewer } from './src/ImageViewer';
 
 const navigator = createStackNavigator(
   {
     Login: LoginScreen,
     Home: HomeScreen,
     Chat: ChatScreen,
-    Group:GroupChatScreen,
+    Group: GroupChatScreen,
+    Video: VideoPlayer,
+    Block: BlockedUsers,
+    Image: ImageViewer,
   },
   {
     initialRouteName: 'Login'

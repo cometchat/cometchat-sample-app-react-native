@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import {View,FlatList,StyleSheet,TextInput,Image,TouchableOpacity,Keyboard} from 'react-native';
+import {View, FlatList, StyleSheet, TextInput, Image, TouchableOpacity, Keyboard, Platform } from 'react-native';
 import { Text } from 'react-native-paper';
 import {CometChat} from '@cometchat-pro/chat';
-
-
-
+import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
+import Video from 'react-native-video';
+import { Linking } from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 let guid,messagelist,myUserID;
 
 export class GroupChatScreen extends Component {
@@ -15,6 +16,7 @@ export class GroupChatScreen extends Component {
         this.state = {
             messages: [],
             txtMessage:'',
+            mediaMsg: '',
             refreshing: false,
             autoScroll : true,
         }
@@ -25,7 +27,10 @@ export class GroupChatScreen extends Component {
         this._handleRefresh = this._handleRefresh.bind(this)
         this.fetchMessages();
         this.messagelist;
-        this.sendMessage = this.sendMessage.bind(this)
+        this.sendMessage = this.sendMessage.bind(this);
+        this.sendMediaMessage = this.sendMediaMessage.bind(this);
+        this.sendMsg = this.sendMsg.bind(this);
+        this.handleChoosePhoto = this.handleChoosePhoto.bind(this);
         this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
     }
 
@@ -48,45 +53,95 @@ export class GroupChatScreen extends Component {
           });
     }
 
+    mediaView(isMyMess,item){
+        console.log("Media msg", item);
+        switch(item.type){
+            case 'image':{
+                return(
+                    <TouchableOpacity onPress={()=>this.renderFullScreenImage(item)}>
+                        <View style={{alignSelf: isMyMess ? 'flex-end' : 'flex-start'}}>
+                            <Image style={{ height: 120, width: 120 }} source={{uri: item.data.url}} />
+                        </View>
+                    </TouchableOpacity>
+                );
+            }break;
+
+            case 'video':{
+                return(
+                    <TouchableOpacity onPress={()=>this.renderFullScreenVideo(item)}>
+                        <View style={{alignSelf: isMyMess ? 'flex-end' : 'flex-start'}}>
+                            <Video style={{ height: 150, width: 150 }} source={{uri: item.data.url}} paused={true} ref={(ref) => {this.player = ref}}/> 
+                        </View>
+                    </TouchableOpacity>
+                );
+            }break;
+
+            default:{
+                var msg = item.sender.name + ' has sent you a file. Download it here: ';
+                return(
+                    <View style={[styles.balloon, {backgroundColor: isMyMess ? '#bdbdbd' : '#3f51b5'}, {alignSelf: isMyMess ? 'flex-end' : 'flex-start'}]}>
+                        <Text style={[styles.item, {color: isMyMess ? '#757575' : 'white'}, {fontWeight: '600', fontStyle: 'italic'}]}>
+                            {msg}
+                            <Text onPress={ ()=> Linking.openURL(item.data.url)} style={{color: '#0000EE'}}>
+                                {item.data.url}
+                            </Text>
+                        </Text>
+                    </View>
+                )
+            }
+        }
+    }
+
+    txtView(isMyMess,item){
+        return(
+            <View style={[styles.balloon, {backgroundColor: isMyMess ? '#bdbdbd' : '#3f51b5'}, {alignSelf: isMyMess ? 'flex-end' : 'flex-start'}]}>
+                <Text style={[styles.item, {color: isMyMess ? '#757575' : 'white'}]}>{item.data.text}</Text>
+            </View>
+        );
+    }
+
     renderItem = ({ item }) => {
-        let isMyMess;
+        console.log(item.sender);
+        let isMyMess,isDelivered,isRead;
         if(myUserID == item.sender.uid){
-            isMyMess = true
+            isMyMess = true;
+            "readAt" in item ? isRead = true : isRead = false;
+            "deliveredAt" in item ? isDelivered = true : isDelivered = false;
         }else{
             isMyMess = false
+            "readByMeAt" in item ? '' : CometChat.markMessageAsRead(item);
         }
-
+        
         if(isMyMess){
             return(
                 <View>
-                    <View style={[styles.row]}>
-                    <View style={[styles.balloon,{backgroundColor: isMyMess? '#bdbdbd':'#3f51b5'},{alignSelf: isMyMess? 'flex-end':'flex-start'}]}>
-                    <Text style={[styles.item,{color: isMyMess? '#757575':'white'} ]}>
-                        {item.data.text}
-                        </Text>
-                    
-                    </View>
-                   
+                    <View style={[{flexDirection: 'row' }]}>
+                        <View style={[styles.row]}>
+                            {
+                                item.type == 'text' ? this.txtView(isMyMess,item) : this.mediaView(isMyMess,item)
+                            }                  
+                        </View>
+                        {this.displayReceipt(isRead,isDelivered)}
                     </View>
                 </View>
             );
         }else{
+            if(item.sender.avatar == null){
+                item.sender.avatar = "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"  // default avatar
+            }
             return(
                     <View style={[{flexDirection: 'row' }]}>
                     <Image 
-                         style={[styles.image,{marginTop:10}]}
+                        style={[styles.image,{marginTop:10}]}
                         resizeMode={"cover"}
                         source={{ uri: item.sender.avatar}}
                     />
                     <View style={styles.row}>
-                    
-                    <View style={[styles.balloon,{backgroundColor: isMyMess? '#bdbdbd':'#3f51b5'},{alignSelf: isMyMess? 'flex-end':'flex-start'}]}>
-                    <Text style={[styles.item,{color: isMyMess? '#757575':'white'} ]}>
-                        {item.data.text}
-                        </Text>
-                    
-                    </View>
-                   
+                        <View style={{alignSelf: isMyMess ? 'flex-end' : 'flex-start'}}>
+                            {
+                                item.type == 'text' ? this.txtView(isMyMess,item) : this.mediaView(isMyMess,item)
+                            }
+                        </View>
                     </View>
                 </View>
             )
@@ -95,11 +150,79 @@ export class GroupChatScreen extends Component {
         
     }
 
+    displayReceipt(isRead,isDelivered){
+        if(isRead){
+            return <MaterialCommunityIcons style={[{alignSelf: 'center'}]} name='check-all' size={15} color="#2196f3"/>
+        }else if(isDelivered){
+            return <MaterialCommunityIcons style={[{alignSelf: 'center'}]} name='check-all' size={15} color="#000"/>
+        }else {
+            return <MaterialCommunityIcons style={[{alignSelf: 'center'}]} name='check' size={15} color="#000"/>
+        }
+    }
+
 
     _keyboardDidShow () {
-        setTimeout(() => messagelist.scrollToEnd(), 100)
+        if(messagelist != null){
+            setTimeout(() => messagelist.scrollToEnd(), 100)
+        }
+        
     }
     
+    getMimeType(type){
+        var MimeList = {
+            jpg: 'image/jpeg',
+            jpeg: 'image/jpeg',
+            gif: 'image/gif',
+            png: 'image/png',
+            svg: 'image/svg+xml',
+            webp: 'image/webp',
+            mpeg: 'video/mpeg',
+            ogv: 'video/ogg',
+            webm: 'video/webm',
+            mp4: 'video/mp4',
+            doc: 'application/msword',
+            docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            pdf: 'application/pdf',
+            pptx: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+            zip: 'application/zip',
+            aac: 'audio/aac',
+            wav: 'audio/wav',
+            weba: 'audio/webm',
+            mp3: 'audio/mpeg',
+            oga: 'audio/ogg'
+        };
+        return MimeList[type];
+    }
+
+    handleChoosePhoto = () => {
+        DocumentPicker.show({
+            filetype: [DocumentPickerUtil.allFiles()],
+        },(error,response) => {
+            if(Platform.OS === 'ios'){
+                var ext = response.fileName.split('.')[1].toLowerCase();               
+                var type = this.getMimeType(ext);
+            }
+            var file = {
+                name: response.fileName,
+                type: Platform.OS === "android" ? response.type : type, 
+                uri: Platform.OS === "android" ? response.uri : response.uri.replace("file://",""),
+            }
+            this.setState({ mediaMsg: file });
+        });
+    }
+
+    renderFullScreenVideo(item){
+        this.props.navigation.navigate('Video',{
+            url: item.data.url,
+        });
+    }
+
+    renderFullScreenImage(item){
+        this.props.navigation.navigate('Image',{
+            url: item.data.url,
+        });
+    }
+
     render(){
         return(
             <View style={styles.container}>
@@ -119,7 +242,13 @@ export class GroupChatScreen extends Component {
                         value = {this.state.txtMessage}
                         onChangeText={text => this.setState({ txtMessage: text })}
                     />
-                    <TouchableOpacity style={styles.roundedbackgroud} onPress={ this.sendMessage } >
+                    <TouchableOpacity style={styles.roundedbackgroud} onPress={this.handleChoosePhoto}>
+                        <Image 
+                            style={{height: 30, width: 30, alignSelf: 'center'}}
+                            source={require('./assets/images/attach_media_icon.png')}
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.roundedbackgroud} onPress={ this.sendMsg } >
                         <Image style={[{height: 30},{width: 30},{alignSelf:'center'}]}
                         source={require('./assets/images/send_icon.png')}
                         />
@@ -168,10 +297,42 @@ export class GroupChatScreen extends Component {
                 onCutomMessageReceived: customMessage => {
                  console.log("Media message received successfully",  mediaMessage);
                 
+               },
+               onMessageDelivered: (messageReceipt) => {
+                   console.log("MessageDeliverd", {messageReceipt});
+                   var messages = this.state.messages;
+                   for(var i=0;i<messages.length;i++){
+                       var message = messages[i]
+                       if(message.id == messageReceipt.messageId){
+                           message.deliveredToMeAt = messageReceipt.timestamp;
+                           this.setState({messages: messages})
+                       }
+                   }
+
+               }, onMessageRead: (messageReceipt) => {
+                   console.log("MessageRead", {messageReceipt});
+                   var messages = this.state.messages;
+                   for(var i=0;i<messages.length;i++){
+                       var message = messages[i]
+                       if(message.id == messageReceipt.messageId){
+                           message.readByMeAt = messageReceipt.timestamp;
+                           this.setState({messages: messages})
+                       }
+                   }
                }
 
             })
         );
+    }
+
+    sendMsg(){
+        if(this.state.txtMessage != ''){
+            console.log("sending text message");
+            this.sendMessage();
+        }else if(this.state.mediaMsg != ''){
+            console.log("sending media message");
+            this.sendMediaMessage();
+        }
     }
 
     sendMessage(){
@@ -192,6 +353,35 @@ export class GroupChatScreen extends Component {
           error => {
             console.log("Message sending failed with error:", error);
           }
+        );
+    }
+
+    sendMediaMessage(){
+        var messageType;
+        if(this.state.mediaMsg.type.split('/')[0] == 'image'){
+            messageType = CometChat.MESSAGE_TYPE.IMAGE;
+        }else if(this.state.mediaMsg.type.split('/')[0] == 'video'){
+            messageType = CometChat.MESSAGE_TYPE.VIDEO;
+        }else{
+            messageType = CometChat.MESSAGE_TYPE.FILE;
+        }
+        var receiverType = CometChat.RECEIVER_TYPE.GROUP;
+        var mediaMessage = new CometChat.MediaMessage(guid, this.state.mediaMsg, messageType, receiverType);
+        this.setState({
+            mediaMsg: ''
+        });
+        console.log("mediaMessage", mediaMessage); 
+        
+        CometChat.sendMessage(mediaMessage)
+        .then(message => {
+            console.log('cometchat send media message', message);
+            this.setState((state) => {
+                return state.messages.push(message)
+            })
+        },
+        error => {
+            console.log("Media message sending failed with error", error);
+        }
         );
     }
 
