@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, FlatList, StyleSheet, Image } from 'react-native';
-import { CometChat } from '@cometchat-pro/chat';
+import { CometChat } from '@cometchat-pro/react-native-chat';
 import { users} from './fake_data'
 import { TouchableRipple, Text, BottomNavigation } from 'react-native-paper';
 import NavigationService from './NavigationService';

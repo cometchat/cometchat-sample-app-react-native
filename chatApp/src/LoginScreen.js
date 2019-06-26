@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, Button, TextInput, Image, TouchableOpacity,StatusBar} from 'react-native';
-import {CometChat} from '@cometchat-pro/chat';
+import {CometChat} from '@cometchat-pro/react-native-chat';
 import { ActivityIndicator} from 'react-native-paper';
 
 import {decode, encode} from 'base-64'
@@ -15,7 +15,7 @@ if (!global.atob) {
 
 this.DOMParser = require('xmldom').DOMParser;
 
-let appID = "100254e8db3d1b" ,apiKey = "ebae51bfa38bb5f2f21266bd2e9f58b64c87ab9a";
+let appID = "YOUR_APP_ID" ,apiKey = "YOUR_API_KEY";
 
 
 export class LoginScreen extends Component {

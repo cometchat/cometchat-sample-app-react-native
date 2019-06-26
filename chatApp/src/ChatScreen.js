@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {View, FlatList, StyleSheet, TextInput, Image, TouchableOpacity, Keyboard, Platform } from 'react-native';
 import {Text} from 'react-native-paper';
-import {CometChat} from '@cometchat-pro/chat';
+import {CometChat} from '@cometchat-pro/react-native-chat';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
