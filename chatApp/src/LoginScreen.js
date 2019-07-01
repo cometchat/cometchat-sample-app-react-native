@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, Button, TextInput, Image, TouchableOpacity,StatusBar} from 'react-native';
-import {CometChat} from '@cometchat-pro/chat';
+import {CometChat} from '@cometchat-pro/react-native-chat';
 import { ActivityIndicator} from 'react-native-paper';
 
 import {decode, encode} from 'base-64'

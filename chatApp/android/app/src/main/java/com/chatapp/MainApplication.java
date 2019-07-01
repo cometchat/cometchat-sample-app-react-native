@@ -3,6 +3,7 @@ package com.chatapp;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.imagepicker.ImagePickerPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.reactnativedocumentpicker.ReactNativeDocumentPicker;
@@ -27,6 +28,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new ImagePickerPackage(),
             new RNGestureHandlerPackage(),
           new ReactVideoPackage(),
           new ReactNativeDocumentPicker(),

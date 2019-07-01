@@ -1,12 +1,14 @@
 import React, {Component} from 'react';
 import {View, FlatList, StyleSheet, TextInput, Image, TouchableOpacity, Keyboard, Platform } from 'react-native';
 import {Text} from 'react-native-paper';
-import {CometChat} from '@cometchat-pro/chat';
+import {CometChat} from '@cometchat-pro/react-native-chat';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
 import Video from 'react-native-video';
 import { Linking } from 'react-native';
+import ActionSheet from 'react-native-actionsheet';
+import ImagePicker from 'react-native-image-picker';
 let uid, messagelist, typingNotification,status;
 let typing = 'typing....';
 
@@ -33,7 +35,9 @@ export class ChatScreen extends Component {
         this.sendMessage = this.sendMessage.bind(this);
         this.sendMediaMessage = this.sendMediaMessage.bind(this);
         this.sendMsg = this.sendMsg.bind(this);
-        this.handleChoosePhoto = this.handleChoosePhoto.bind(this);
+        this.imagePicker = this.imagePicker.bind(this);
+        this.documentPicker = this.documentPicker.bind(this);
+        this.showActionSheet = this.showActionSheet.bind(this);
         this.addUserListner()
         this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
         let receiverType = CometChat.RECEIVER_TYPE.USER;
@@ -229,7 +233,24 @@ export class ChatScreen extends Component {
         return MimeList[type];
     }
 
-    handleChoosePhoto = () => {
+    // handleChoosePhoto = () => {
+    //     DocumentPicker.show({
+    //         filetype: [DocumentPickerUtil.allFiles()],
+    //     },(error,response) => {
+    //         if(Platform.OS === 'ios'){
+    //             var ext = response.fileName.split('.')[1].toLowerCase();               
+    //             var type = this.getMimeType(ext);
+    //         }
+    //         var file = {
+    //             name: response.fileName,
+    //             type: Platform.OS === "android" ? response.type : type, 
+    //             uri: Platform.OS === "android" ? response.uri : response.uri.replace("file://",""),
+    //         }
+    //         this.setState({ mediaMsg: file });
+    //     });
+    // }
+
+    documentPicker(){
         DocumentPicker.show({
             filetype: [DocumentPickerUtil.allFiles()],
         },(error,response) => {
@@ -244,6 +265,39 @@ export class ChatScreen extends Component {
             }
             this.setState({ mediaMsg: file });
         });
+    }
+
+    imagePicker(){
+        const options = {
+            quality: 1.0,
+            storageOptions: {
+              skipBackup: true,
+            },
+          };
+        ImagePicker.showImagePicker(options, (response) => {
+            if (response.didCancel) {
+                console.log('User cancelled photo picker');
+              } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+              } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+              } else {
+                if(Platform.OS === 'ios'){
+                    var ext = response.fileName.split('.')[1].toLowerCase();               
+                    var type = this.getMimeType(ext);
+                }
+                var file = {
+                    name: response.fileName,
+                    type: Platform.OS === "android" ? response.type : type, 
+                    uri: Platform.OS === "android" ? response.uri : response.uri.replace("file://",""),
+                }
+                this.setState({ mediaMsg: file });
+            }
+        });
+    }
+
+    showActionSheet() {
+        this.ActionSheet.show();
     }
 
     renderFullScreenVideo(item){
@@ -278,7 +332,7 @@ export class ChatScreen extends Component {
                                //onChangeText={text => this.setState({ txtMessage: text })}
                                onChangeText={text => this.onTextChange(text)}
                     />
-                    <TouchableOpacity style={styles.roundedbackgroud} onPress={this.handleChoosePhoto}>
+                    <TouchableOpacity style={styles.roundedbackgroud} onPress={this.showActionSheet}>
                         <Image 
                             style={{height: 30, width: 30, alignSelf: 'center'}}
                             source={require('./assets/images/attach_media_icon.png')}
@@ -292,6 +346,13 @@ export class ChatScreen extends Component {
                     </TouchableOpacity>
 
                 </View>
+                <ActionSheet
+                    title={'Choose File'}
+                    ref={o => this.ActionSheet = o}
+                    options={['Image', 'Document','Cancel']}
+                    cancelButtonIndex={2}
+                    onPress={(index) => { if(index == 0){this.imagePicker()}else if(index == 1){this.documentPicker()} }}
+                />
             </View>
         );
 

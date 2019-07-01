@@ -37,8 +37,16 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Access Media</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Access Camera Usage</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>Access location</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Access photos</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Access photo usage</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>

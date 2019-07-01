@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {View, FlatList, StyleSheet, TextInput, Image, TouchableOpacity, Keyboard, Platform } from 'react-native';
 import { Text } from 'react-native-paper';
-import {CometChat} from '@cometchat-pro/chat';
+import {CometChat} from '@cometchat-pro/react-native-chat';
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
 import Video from 'react-native-video';
 import { Linking } from 'react-native';

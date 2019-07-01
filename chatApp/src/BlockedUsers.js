@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {View, FlatList, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import ActionSheet from 'react-native-actionsheet';
-import { CometChat } from '@cometchat-pro/chat';
+import { CometChat } from '@cometchat-pro/react-native-chat';
 import { TouchableRipple, Text } from 'react-native-paper';
 
 const styles = StyleSheet.create({
