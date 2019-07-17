@@ -404,9 +404,6 @@ class Groups extends Component {
         groupsRequest.fetchNext().then(
             groupList => {
                 console.log("Groups list fetched successfully", groupList);
-                // this.setState({
-                //     groups: groupList,
-                // });
                 if(groupList.length >0){
                     CometChat.getUnreadMessageCountForAllGroups().then(array=>{
                         var unread = Object.keys(array);

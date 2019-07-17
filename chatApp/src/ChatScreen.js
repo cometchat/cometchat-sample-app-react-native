@@ -233,23 +233,6 @@ export class ChatScreen extends Component {
         return MimeList[type];
     }
 
-    // handleChoosePhoto = () => {
-    //     DocumentPicker.show({
-    //         filetype: [DocumentPickerUtil.allFiles()],
-    //     },(error,response) => {
-    //         if(Platform.OS === 'ios'){
-    //             var ext = response.fileName.split('.')[1].toLowerCase();               
-    //             var type = this.getMimeType(ext);
-    //         }
-    //         var file = {
-    //             name: response.fileName,
-    //             type: Platform.OS === "android" ? response.type : type, 
-    //             uri: Platform.OS === "android" ? response.uri : response.uri.replace("file://",""),
-    //         }
-    //         this.setState({ mediaMsg: file });
-    //     });
-    // }
-
     documentPicker(){
         DocumentPicker.show({
             filetype: [DocumentPickerUtil.allFiles()],
@@ -282,15 +265,21 @@ export class ChatScreen extends Component {
               } else if (response.customButton) {
                 console.log('User tapped custom button: ', response.customButton);
               } else {
-                if(Platform.OS === 'ios'){
+                console.log('ImagePicker Response: ',response);
+                if(Platform.OS === 'ios' && response.fileName != undefined){
                     var ext = response.fileName.split('.')[1].toLowerCase();               
                     var type = this.getMimeType(ext);
+                    var name = response.fileName;
+                }else{
+                    var type = response.type;
+                    var name = 'Camera_001.jpeg';
                 }
                 var file = {
-                    name: response.fileName,
+                    name: Platform.OS === "android" ? response.fileName : name,
                     type: Platform.OS === "android" ? response.type : type, 
                     uri: Platform.OS === "android" ? response.uri : response.uri.replace("file://",""),
                 }
+                console.log('file: ', file);
                 this.setState({ mediaMsg: file });
             }
         });
@@ -498,7 +487,7 @@ export class ChatScreen extends Component {
         this.setState({
             mediaMsg: ''
         });
-        console.log("mediaMessage", mediaMessage); 
+        console.log("mediaMessage: ", mediaMessage); 
         
         CometChat.sendMessage(mediaMessage)
         .then(message => {
