@@ -5,6 +5,8 @@ import {CometChat} from '@cometchat-pro/react-native-chat';
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
 import Video from 'react-native-video';
 import { Linking } from 'react-native';
+import ActionSheet from 'react-native-actionsheet';
+import ImagePicker from 'react-native-image-picker';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 let guid,messagelist,myUserID;
 
@@ -30,7 +32,9 @@ export class GroupChatScreen extends Component {
         this.sendMessage = this.sendMessage.bind(this);
         this.sendMediaMessage = this.sendMediaMessage.bind(this);
         this.sendMsg = this.sendMsg.bind(this);
-        this.handleChoosePhoto = this.handleChoosePhoto.bind(this);
+        this.imagePicker = this.imagePicker.bind(this);
+        this.documentPicker = this.documentPicker.bind(this);
+        this.showActionSheet = this.showActionSheet.bind(this);
         this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
     }
 
@@ -194,7 +198,7 @@ export class GroupChatScreen extends Component {
         return MimeList[type];
     }
 
-    handleChoosePhoto = () => {
+    documentPicker(){
         DocumentPicker.show({
             filetype: [DocumentPickerUtil.allFiles()],
         },(error,response) => {
@@ -209,6 +213,67 @@ export class GroupChatScreen extends Component {
             }
             this.setState({ mediaMsg: file });
         });
+    }
+
+    imagePicker(){
+        const options = {
+            quality: 1.0,
+            storageOptions: {
+              skipBackup: true,
+            },
+          };
+        ImagePicker.showImagePicker(options, (response) => {
+            if (response.didCancel) {
+                console.log('User cancelled photo picker');
+              } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+              } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+              } else {
+                console.log('ImagePicker Response: ',response);
+                if(Platform.OS === 'ios' && response.fileName != undefined){
+                    var ext = response.fileName.split('.')[1].toLowerCase();               
+                    var type = this.getMimeType(ext);
+                    var name = response.fileName;
+                }else{
+                    var type = response.type;
+                    var name = 'Camera_001.jpeg';
+                }
+                var file = {
+                    name: Platform.OS === "android" ? response.fileName : name,
+                    type: Platform.OS === "android" ? response.type : type, 
+                    uri: Platform.OS === "android" ? response.uri : response.uri.replace("file://",""),
+                }
+                console.log('file: ', file);
+                this.setState({ mediaMsg: file });
+            }
+        });
+    }
+
+    // handleChoosePhoto = () => {
+    //     DocumentPicker.show({
+    //         filetype: [DocumentPickerUtil.allFiles()],
+    //     },(error,response) => {
+    //         if(Platform.OS === 'ios' && response.fileName != undefined){
+    //             var ext = response.fileName.split('.')[1].toLowerCase();               
+    //             var type = this.getMimeType(ext);
+    //             var name = response.fileName;
+    //         }else{
+    //             var type = response.type;
+    //             var name = 'Camera_001.jpeg';
+    //         }
+    //         var file = {
+    //             name: Platform.OS === "android" ? response.fileName : name,
+    //             type: Platform.OS === "android" ? response.type : type, 
+    //             uri: Platform.OS === "android" ? response.uri : response.uri.replace("file://",""),
+    //         }
+    //         this.setState({ mediaMsg: file });
+    //     });
+    // }
+
+
+    showActionSheet() {
+        this.ActionSheet.show();
     }
 
     renderFullScreenVideo(item){
@@ -242,7 +307,7 @@ export class GroupChatScreen extends Component {
                         value = {this.state.txtMessage}
                         onChangeText={text => this.setState({ txtMessage: text })}
                     />
-                    <TouchableOpacity style={styles.roundedbackgroud} onPress={this.handleChoosePhoto}>
+                    <TouchableOpacity style={styles.roundedbackgroud} onPress={this.showActionSheet}>
                         <Image 
                             style={{height: 30, width: 30, alignSelf: 'center'}}
                             source={require('./assets/images/attach_media_icon.png')}
@@ -253,7 +318,13 @@ export class GroupChatScreen extends Component {
                         source={require('./assets/images/send_icon.png')}
                         />
                     </TouchableOpacity>
-                    
+                    <ActionSheet
+                        title={'Choose File'}
+                        ref={o => this.ActionSheet = o}
+                        options={['Image', 'Document','Cancel']}
+                        cancelButtonIndex={2}
+                        onPress={(index) => { if(index == 0){this.imagePicker()}else if(index == 1){this.documentPicker()} }}
+                    />
                 </View>
              </View>
         );
