@@ -150,7 +150,7 @@ export class GroupChatScreen extends Component {
                 </View>
             )
             
-        }
+        }   
         
     }
 
@@ -356,17 +356,28 @@ export class GroupChatScreen extends Component {
          listenerID,
          new CometChat.MessageListener({
                onTextMessageReceived: textMessage => {
-                 console.log("Text message successfully", textMessage);
-                     this.setState((state)=>{
-                      return state.messages.push(textMessage)
-                       })
+                    console.log("Text message received successfully", textMessage);
+                    if(textMessage.receiver == guid && textMessage.receiverType == 'group'){
+                        this.setState((state)=>{
+                            return state.messages.push(textMessage)
+                        });
+                    }
                },
                onMediaMessageReceived: mediaMessage => {
-                 console.log("Media message received successfully",  mediaMessage);
-
+                console.log("Media message received successfully",  mediaMessage);
+                if(mediaMessage.receiver == guid && mediaMessage.receiverType == 'group'){
+                    this.setState((state)=>{
+                        return state.messages.push(mediaMessage)
+                    });
+                }
                },
                 onCutomMessageReceived: customMessage => {
-                 console.log("Media message received successfully",  mediaMessage);
+                 console.log("Media message received successfully",  customMessage);
+                 if(customMessage.receiver == guid && customMessage.receiverType == 'group'){
+                    this.setState((state)=>{
+                        return state.messages.push(customMessage)
+                    });
+                }
                 
                },
                onMessageDelivered: (messageReceipt) => {

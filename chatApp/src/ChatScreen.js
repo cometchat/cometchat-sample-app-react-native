@@ -378,21 +378,27 @@ export class ChatScreen extends Component {
             new CometChat.MessageListener({
                 onTextMessageReceived: textMessage => {
                     console.log("Text message successfully", textMessage);
-                    this.setState((state) => {
-                        return state.messages.push(textMessage)
-                    })
+                    if(textMessage.sender.uid == uid && textMessage.receiverType == 'user'){
+                        this.setState((state)=>{
+                            return state.messages.push(textMessage)
+                        });
+                    }
                 },
                 onMediaMessageReceived: mediaMessage => {
                     console.log("Media message received successfully", mediaMessage);
-                    this.setState((state) => {
-                        return state.messages.push(mediaMessage)
-                    })
+                    if(mediaMessage.sender.uid == uid && mediaMessage.receiverType == 'user'){
+                        this.setState((state)=>{
+                            return state.messages.push(mediaMessage)
+                        });
+                    }
                 },
                 onCutomMessageReceived: customMessage => {
-                    console.log("Media message received successfully", mediaMessage);
-                    this.setState((state) => {
-                        return state.messages.push(mediaMessage)
-                    })
+                    console.log("Media message received successfully", customMessage);
+                    if(customMessage.sender.uid == uid && customMessage.receiverType == 'user'){
+                        this.setState((state)=>{
+                            return state.messages.push(customMessage)
+                        });
+                    }
                 },
                 onTypingStarted: (typingIndicator) => {
                     console.log("Typing started :", typingIndicator);
