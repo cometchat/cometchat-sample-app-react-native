@@ -126,7 +126,7 @@ export class ChatScreen extends Component {
 
         } else {
             isMyMess = false
-            "readAt" in item ? '' : CometChat.markMessageAsRead(item);
+            "readAt" in item ? '' : CometChat.markAsRead(item.id, item.receiverId, item.receiverType);
         }
 
 
@@ -458,7 +458,7 @@ export class ChatScreen extends Component {
         console.log('Send message called =', this.state.txtMessage);
         var messageType = CometChat.MESSAGE_TYPE.TEXT;
         var receiverType = CometChat.RECEIVER_TYPE.USER;
-        var textMessage = new CometChat.TextMessage(uid, this.state.txtMessage, messageType, receiverType);
+        var textMessage = new CometChat.TextMessage(uid, this.state.txtMessage, receiverType);
         this.setState({
             txtMessage: ''
         })

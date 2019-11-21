@@ -15,7 +15,7 @@ if (!global.atob) {
 
 this.DOMParser = require('xmldom').DOMParser;
 
-let appID = "XXXXXXXXXXXXX" ,apiKey = "XXXXXXXXXXXXXXXXXXXXXXXXXX";
+let appID = "9067fd8174300f" ,apiKey = "dfab8da8785428007c0be20a2c180906c3dc0ef3", appRegion = "eu"; //us/eu
 
 
 export class LoginScreen extends Component {
@@ -30,13 +30,18 @@ export class LoginScreen extends Component {
             loaderVisible : false
         }
         this.state.entredUID = 'superhero2'
-        this.buttonPressed = this.buttonPressed.bind(this)
-        CometChat.init(appID).then(() => {
-            console.log("Cometchat intialized");
-            // window.document=new window.DOMParser().parseFromString("<?xml version='1.0'?>", 'text/xml');
-        }, error => {
-            console.error(error);
-        });
+        this.buttonPressed = this.buttonPressed.bind(this);
+        var appSettings = new CometChat.AppSettingsBuilder()
+        .subscribePresenceForAllUsers()
+        .setRegion(appRegion)
+        .build();
+        CometChat.init(appID, appSettings).then(
+            () => {
+                console.log("Initialization completed successfully");
+            }, error => {
+                console.log("Initialization failed with error:", error);
+            }
+        );
     }
 
     buttonPressed() {

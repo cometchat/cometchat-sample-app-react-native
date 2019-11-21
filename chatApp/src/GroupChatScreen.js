@@ -113,7 +113,7 @@ export class GroupChatScreen extends Component {
             "deliveredAt" in item ? isDelivered = true : isDelivered = false;
         }else{
             isMyMess = false
-            "readByMeAt" in item ? '' : CometChat.markMessageAsRead(item);
+            "readByMeAt" in item ? '' : CometChat.markAsRead(item.id, item.receiverId, item.receiverType);
         }
         
         if(isMyMess){
@@ -422,7 +422,7 @@ export class GroupChatScreen extends Component {
         var messageType = CometChat.MESSAGE_TYPE.TEXT;
         var receiverType = CometChat.RECEIVER_TYPE.GROUP;
         console.log('Guid = '+guid)
-        var textMessage = new CometChat.TextMessage(guid, this.state.txtMessage, messageType, receiverType);
+        var textMessage = new CometChat.TextMessage(guid, this.state.txtMessage, receiverType);
         this.setState({
             txtMessage :''
         })
