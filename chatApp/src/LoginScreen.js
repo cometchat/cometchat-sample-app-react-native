@@ -15,7 +15,7 @@ if (!global.atob) {
 
 this.DOMParser = require('xmldom').DOMParser;
 
-let appID = "100254e8db3d1b" ,apiKey = "ebae51bfa38bb5f2f21266bd2e9f58b64c87ab9a";
+let appID = "XXXXXXXXXXXXX" ,apiKey = "XXXXXXXXXXXXXXXXXXXXXXXXXX";
 
 
 export class LoginScreen extends Component {
