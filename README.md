@@ -18,12 +18,9 @@ CometChat React Native app (built using **CometChat Pro Java Script SDK**) is a 
 
 1. [Installation ](#installtion)
 
-2. [Run the Sample App ](#run-the-sample-app)
+2. [Config and Run App](#Config-App)
 
-3. [Screenshots ](#screenshots)
-
-4. [Contribute](#contribute)
-
+3. [Contribute](#contribute)
 
 
 ## Installtion
@@ -39,12 +36,12 @@ We have injected two components from sample app to make Java script SDK compatib
 
 This is done in LoginScreen.js file in src folder. Here base-64 can be injected globally but DomParser needs to be injected only after CometChat.init().
 
+## Config-App
 
-## Run the Sample App
 
 <h2> v2.0+ </h2>
 <h4>
-	Checkout master or v2 branch.
+	Git clone and checkout master or v2 branch.
 </h4>
 <h4>Get your Application Keys</h4>
 <a href="https://app.cometchat.io/" target="_blank">Signup for CometChat</a> and then:
@@ -62,33 +59,26 @@ This is done in LoginScreen.js file in src folder. Here base-64 can be injected 
 Note : APP Region values to "us" or "eu".
 
 <h2> v1.0+ </h2>
+
 <h4>
-	Checkout v1 branch.
+        Git clone and checkout v1 branch.
 </h4>
 
-   To Run to sample App you have to do the following changes by Adding **apiKey** and **appID** 
+<h4>Get your Application Keys</h4>
 
-   - Open the Project App
+  <a href="https://app.cometchat.io/" target="_blank">Signup for CometChat</a> and then:
 
-   - Go to Under src --> LoginScreen.js
+  1. Create a new app - select version as v1
 
-   -  modify *appID* and *apiKey* with your own **ApiKey** and **AppId**
+  2. Head over to the API Keys section and click on the Create API Key button<br/>
 
-        `let appID = "XXXXXXXXX" ,apiKey = "XXXXXXXXX";`
+  3. Enter a name and select the scope as Auth Only<br/>
 
+  4. Now note the API Key and App ID<br/>
+
+  5. Replace  `appID` &nbsp; and &nbsp; `apiKey` in *src/LoginScreen.js* with your APP ID, &nbsp;and&nbsp; API KEY respectively.<br/>
        
-       
-
-## Note
-
-
-
-   For more information read [CometChat Pro JavaScript SDK](https://prodocs.cometchat.com/docs/js-quick-start) Documentation
-                               
-
-
 ## Contribute
    
-   
-   Feel free to make Pull Request. 
+   Feel free to make a suggestion by creating a pull request.
    
