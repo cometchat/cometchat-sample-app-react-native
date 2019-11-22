@@ -7,7 +7,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@cometchat-pro/react-native-chat": "2.0.1",
+    "@cometchat-pro/react-native-chat": "2.0.2",
     "base-64": "0.1.0",
     "react": "16.8.3",
     "react-native": "0.59.3",
