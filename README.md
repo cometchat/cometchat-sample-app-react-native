@@ -42,7 +42,29 @@ This is done in LoginScreen.js file in src folder. Here base-64 can be injected 
 
 ## Run the Sample App
 
+<h2> v2.0+ </h2>
+<h4>
+	Checkout master or v2 branch.
+</h4>
+<h4>Get your Application Keys</h4>
+<a href="https://app.cometchat.io/" target="_blank">Signup for CometChat</a> and then:
 
+1. Create a new app - select version as v2 and region as Europe or USA.
+
+2. Head over to the API Keys section and click on the Create API Key button
+
+3. Enter a name and select the scope as Auth Only
+
+4. Now note the API Key and App ID
+
+5. Replace  `appID`, &nbsp; `apiKey` and &nbsp; `appRegion` in *src/LoginScreen.js* with your APP ID, &nbsp; API KEY &nbsp;and&nbsp; APP Region respectively.<br/>
+
+Note : APP Region values to "us" or "eu".
+
+<h2> v1.0+ </h2>
+<h4>
+	Checkout v1 branch.
+</h4>
 
    To Run to sample App you have to do the following changes by Adding **apiKey** and **appID** 
 
@@ -60,9 +82,6 @@ This is done in LoginScreen.js file in src folder. Here base-64 can be injected 
 ## Note
 
 
-
-
-   You can Obtain your  *APP_ID* and *API_KEY* from [CometChat Pro Dashboard](https://app.cometchat.com/)
 
    For more information read [CometChat Pro JavaScript SDK](https://prodocs.cometchat.com/docs/js-quick-start) Documentation
                                
