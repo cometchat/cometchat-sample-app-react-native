@@ -24,7 +24,7 @@ export class GroupChatScreen extends Component {
         }
         this.getLoggedInUser()
         this.messagesRequest = new CometChat.MessagesRequestBuilder().setGUID(guid).setLimit(30).build();
-        this.receiveMessages()
+        this.receiveMessages();
         this.fetchMessages = this.fetchMessages.bind(this)
         this._handleRefresh = this._handleRefresh.bind(this)
         this.fetchMessages();
@@ -41,15 +41,13 @@ export class GroupChatScreen extends Component {
     static navigationOptions = ({ navigation }) => {
         guid = navigation.getParam('guid', 'NO-ID');
         username = navigation.getParam('username', 'some default value');
-
-        console.log('Guid = '+guid)
         return {
           title: navigation.getParam('username', 'ChatScreen'),
         };
     };
 
     getLoggedInUser(){
-        var user = CometChat.getLoggedinUser().then(user=>{
+        CometChat.getLoggedinUser().then(user=>{
             console.log("user details:", {user});
             myUserID = user.uid;
           },error=>{
@@ -58,7 +56,6 @@ export class GroupChatScreen extends Component {
     }
 
     mediaView(isMyMess,item){
-        console.log("Media msg", item);
         switch(item.type){
             case 'image':{
                 return(
@@ -105,7 +102,6 @@ export class GroupChatScreen extends Component {
     }
 
     renderItem = ({ item }) => {
-        console.log(item.sender);
         let isMyMess,isDelivered,isRead;
         if(myUserID == item.sender.uid){
             isMyMess = true;
@@ -113,9 +109,11 @@ export class GroupChatScreen extends Component {
             "deliveredAt" in item ? isDelivered = true : isDelivered = false;
         }else{
             isMyMess = false
-            "readByMeAt" in item ? '' : CometChat.markAsRead(item.id, item.receiverId, item.receiverType);
+            "readByMeAt" in item ? '' : CometChat.markAsRead(item.id, item.receiverId, 'group');
         }
-        
+        if(item.sender.avatar == null){
+            item.sender.avatar = "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"
+        }
         if(isMyMess){
             return(
                 <View>
@@ -125,14 +123,10 @@ export class GroupChatScreen extends Component {
                                 item.type == 'text' ? this.txtView(isMyMess,item) : this.mediaView(isMyMess,item)
                             }                  
                         </View>
-                        {this.displayReceipt(isRead,isDelivered)}
                     </View>
                 </View>
             );
         }else{
-            if(item.sender.avatar == null){
-                item.sender.avatar = "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"  // default avatar
-            }
             return(
                     <View style={[{flexDirection: 'row' }]}>
                     <Image 
@@ -153,17 +147,6 @@ export class GroupChatScreen extends Component {
         }   
         
     }
-
-    displayReceipt(isRead,isDelivered){
-        if(isRead){
-            return <MaterialCommunityIcons style={[{alignSelf: 'center'}]} name='check-all' size={15} color="#2196f3"/>
-        }else if(isDelivered){
-            return <MaterialCommunityIcons style={[{alignSelf: 'center'}]} name='check-all' size={15} color="#000"/>
-        }else {
-            return <MaterialCommunityIcons style={[{alignSelf: 'center'}]} name='check' size={15} color="#000"/>
-        }
-    }
-
 
     _keyboardDidShow () {
         if(messagelist != null){
@@ -244,33 +227,10 @@ export class GroupChatScreen extends Component {
                     type: Platform.OS === "android" ? response.type : type, 
                     uri: Platform.OS === "android" ? response.uri : response.uri.replace("file://",""),
                 }
-                console.log('file: ', file);
                 this.setState({ mediaMsg: file });
             }
         });
     }
-
-    // handleChoosePhoto = () => {
-    //     DocumentPicker.show({
-    //         filetype: [DocumentPickerUtil.allFiles()],
-    //     },(error,response) => {
-    //         if(Platform.OS === 'ios' && response.fileName != undefined){
-    //             var ext = response.fileName.split('.')[1].toLowerCase();               
-    //             var type = this.getMimeType(ext);
-    //             var name = response.fileName;
-    //         }else{
-    //             var type = response.type;
-    //             var name = 'Camera_001.jpeg';
-    //         }
-    //         var file = {
-    //             name: Platform.OS === "android" ? response.fileName : name,
-    //             type: Platform.OS === "android" ? response.type : type, 
-    //             uri: Platform.OS === "android" ? response.uri : response.uri.replace("file://",""),
-    //         }
-    //         this.setState({ mediaMsg: file });
-    //     });
-    // }
-
 
     showActionSheet() {
         this.ActionSheet.show();
@@ -340,7 +300,6 @@ export class GroupChatScreen extends Component {
     }
 
     _handleRefresh(){
-        console.log('on handle refresh');
         this.setState({
             autoScroll:false,
             refreshing:true
@@ -357,84 +316,67 @@ export class GroupChatScreen extends Component {
          new CometChat.MessageListener({
                onTextMessageReceived: textMessage => {
                     console.log("Text message received successfully", textMessage);
-                    if(textMessage.receiver == guid && textMessage.receiverType == 'group'){
-                        this.setState((state)=>{
-                            return state.messages.push(textMessage)
-                        });
+                    if(textMessage.receiverId == guid){
+                        if(textMessage.sender.uid != myUserID){
+                            CometChat.markAsRead(textMessage.id,textMessage.receiverId,'group');
+                            this.setState((state)=>{
+                                return state.messages.push(textMessage)
+                            });
+                        }
+                        
                     }
                },
                onMediaMessageReceived: mediaMessage => {
                 console.log("Media message received successfully",  mediaMessage);
-                if(mediaMessage.receiver == guid && mediaMessage.receiverType == 'group'){
-                    this.setState((state)=>{
-                        return state.messages.push(mediaMessage)
-                    });
+                if(mediaMessage.receiverId == guid){
+                    if(mediaMessage.sender.uid != myUserID){
+                        CometChat.markAsRead(mediaMessage.id,mediaMessage.receiverId,'group');
+                        this.setState((state)=>{
+                            return state.messages.push(mediaMessage)
+                        });
+                    }
+                    
                 }
                },
                 onCutomMessageReceived: customMessage => {
                  console.log("Media message received successfully",  customMessage);
-                 if(customMessage.receiver == guid && customMessage.receiverType == 'group'){
-                    this.setState((state)=>{
-                        return state.messages.push(customMessage)
-                    });
+                 if(customMessage.receiverId == guid){
+                    if(customMessage.sender.uid != myUserID){
+                        CometChat.markAsRead(customMessage.id,customMessage.receiverId,'group');
+                        this.setState((state)=>{
+                            return state.messages.push(customMessage)
+                        });
+                    }
+                    
                 }
-                
-               },
-               onMessageDelivered: (messageReceipt) => {
-                   console.log("MessageDeliverd", {messageReceipt});
-                   var messages = this.state.messages;
-                   for(var i=0;i<messages.length;i++){
-                       var message = messages[i]
-                       if(message.id == messageReceipt.messageId){
-                           message.deliveredToMeAt = messageReceipt.timestamp;
-                           this.setState({messages: messages})
-                       }
-                   }
-
-               }, onMessageRead: (messageReceipt) => {
-                   console.log("MessageRead", {messageReceipt});
-                   var messages = this.state.messages;
-                   for(var i=0;i<messages.length;i++){
-                       var message = messages[i]
-                       if(message.id == messageReceipt.messageId){
-                           message.readByMeAt = messageReceipt.timestamp;
-                           this.setState({messages: messages})
-                       }
-                   }
                }
-
             })
         );
     }
 
     sendMsg(){
         if(this.state.txtMessage != ''){
-            console.log("sending text message");
             this.sendMessage();
         }else if(this.state.mediaMsg != ''){
-            console.log("sending media message");
             this.sendMediaMessage();
         }
     }
 
     sendMessage(){
-        console.log('Send message called =',this.state.txtMessage);
-        var messageType = CometChat.MESSAGE_TYPE.TEXT;
-        var receiverType = CometChat.RECEIVER_TYPE.GROUP;
-        console.log('Guid = '+guid)
-        var textMessage = new CometChat.TextMessage(guid, this.state.txtMessage, receiverType);
+        let receiverType = CometChat.RECEIVER_TYPE.GROUP;
+        let textMessage = new CometChat.TextMessage(guid, this.state.txtMessage, receiverType);
         this.setState({
-            txtMessage :''
+            txtMessage : ''
         })
         CometChat.sendMessage(textMessage).then(
-          message => {  
-            this.setState((state)=>{
-                return state.messages.push(message)
-            })
-          },
-          error => {
-            console.log("Message sending failed with error:", error);
-          }
+            message => {
+                this.setState((state) => {
+                    return state.messages.push(message)
+                })
+            },
+            error => {
+                console.log("message sending failed with error", error);
+            }
         );
     }
 
@@ -444,6 +386,8 @@ export class GroupChatScreen extends Component {
             messageType = CometChat.MESSAGE_TYPE.IMAGE;
         }else if(this.state.mediaMsg.type.split('/')[0] == 'video'){
             messageType = CometChat.MESSAGE_TYPE.VIDEO;
+        }else if(this.state.mediaMsg.type.split('/')[0] == 'audio'){
+            messageType = CometChat.MESSAGE_TYPE.AUDIO;
         }else{
             messageType = CometChat.MESSAGE_TYPE.FILE;
         }
@@ -452,11 +396,9 @@ export class GroupChatScreen extends Component {
         this.setState({
             mediaMsg: ''
         });
-        console.log("mediaMessage", mediaMessage); 
         
         CometChat.sendMessage(mediaMessage)
         .then(message => {
-            console.log('cometchat send media message', message);
             this.setState((state) => {
                 return state.messages.push(message)
             })
@@ -468,12 +410,8 @@ export class GroupChatScreen extends Component {
     }
 
     fetchMessages(){
-        console.log('Fetch messages called.....')
         this.messagesRequest.fetchPrevious().then(
         	mess => {
-        		console.log("Message list fetched:", mess);
-                // Handle the list of messages
-                
                 this.setState({
                     messages :[...mess,...this.state.messages],
                     refreshing: false

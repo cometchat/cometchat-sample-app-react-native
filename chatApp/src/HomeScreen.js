@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { View, FlatList, StyleSheet, Image } from 'react-native';
 import { CometChat } from '@cometchat-pro/react-native-chat';
-import { users} from './fake_data'
 import { TouchableRipple, Text, BottomNavigation } from 'react-native-paper';
 import NavigationService from './NavigationService';
-import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+import { DefaultTheme } from 'react-native-paper';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Menu,MenuOptions,MenuOption,MenuTrigger } from 'react-native-popup-menu';
 
@@ -132,10 +131,6 @@ class Contacts extends Component {
     componentDidMount(){
         this.fetchUser();
         this.addUserListner();
-    }
-
-    componentWillUpdate(nextProps: Readonly<P>, nextState: Readonly<S>, nextContext: any): void {
-        console.log("Next state"+JSON.stringify(nextState))
     }
 
     blockUser(){

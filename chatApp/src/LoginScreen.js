@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, Button, TextInput, Image, TouchableOpacity,StatusBar} from 'react-native';
+import {StyleSheet, Text, View, TextInput, Image, TouchableOpacity,StatusBar} from 'react-native';
 import {CometChat} from '@cometchat-pro/react-native-chat';
 import { ActivityIndicator} from 'react-native-paper';
 
@@ -37,6 +37,14 @@ export class LoginScreen extends Component {
         .build();
         CometChat.init(appID, appSettings).then(
             () => {
+                CometChat.getLoggedinUser().then(
+                    user => {
+                        console.log("get logged in user =>", user);
+                        if(user !== null){
+                            this.props.navigation.navigate('Home');
+                        }
+                    }
+                )
                 console.log("Initialization completed successfully");
             }, error => {
                 console.log("Initialization failed with error:", error);
@@ -57,7 +65,7 @@ export class LoginScreen extends Component {
                 this.setState({ loaderVisible: false })
                 var userName = user.name;
                 console.log("Login Successful:", {userName});
-                this.props.navigation.navigate('Home')
+                this.props.navigation.navigate('Home');
             },
 
             error => {
