@@ -60,3 +60,7 @@ buck-out/
 
 # Bundle artifact
 *.jsbundle
+
+
+#PODS folder
+ios/Pods/*

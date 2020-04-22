@@ -1,3 +1,18 @@
+/* eslint-disable no-return-assign */
+/* eslint-disable no-mixed-spaces-and-tabs */
+/* eslint-disable eol-last */
+/* eslint-disable comma-dangle */
+/* eslint-disable semi */
+/* eslint-disable eqeqeq */
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable no-lone-blocks */
+/* eslint-disable keyword-spacing */
+/* eslint-disable no-trailing-spaces */
+/* eslint-disable no-unreachable */
+/* eslint-disable quotes */
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
+/* eslint-disable prettier/prettier */
 import React, { Component } from 'react';
 import {View, FlatList, StyleSheet, TextInput, Image, TouchableOpacity, Keyboard, Platform } from 'react-native';
 import { Text } from 'react-native-paper';
@@ -8,7 +23,8 @@ import { Linking } from 'react-native';
 import ActionSheet from 'react-native-actionsheet';
 import ImagePicker from 'react-native-image-picker';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-let guid,messagelist,myUserID;
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+let guid, messagelist, myUserID, username, avatar;
 
 export class GroupChatScreen extends Component {
     messagesRequest = null;
@@ -22,37 +38,154 @@ export class GroupChatScreen extends Component {
             refreshing: false,
             autoScroll : true,
         }
-        this.getLoggedInUser()
-        this.messagesRequest = new CometChat.MessagesRequestBuilder().setGUID(guid).setLimit(30).build();
-        this.receiveMessages();
-        this.fetchMessages = this.fetchMessages.bind(this)
-        this._handleRefresh = this._handleRefresh.bind(this)
-        this.fetchMessages();
-        this.messagelist;
         this.sendMessage = this.sendMessage.bind(this);
         this.sendMediaMessage = this.sendMediaMessage.bind(this);
         this.sendMsg = this.sendMsg.bind(this);
         this.imagePicker = this.imagePicker.bind(this);
         this.documentPicker = this.documentPicker.bind(this);
         this.showActionSheet = this.showActionSheet.bind(this);
+        this.fetchMessages = this.fetchMessages.bind(this);
+        this._handleRefresh = this._handleRefresh.bind(this);
+        this.getLoggedInUser();
+        this.messagesRequest = new CometChat.MessagesRequestBuilder().setGUID(guid).setLimit(30).build();
+        this.receiveMessages();
+        this.fetchMessages();
+        this.addCallListner();
+        this.messagelist;
         this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
     }
 
+    componentDidMount(){
+        this.props.navigation.setParams({initiateCall: this.initiateCall});
+        this.props.navigation.setParams({navigation: this.props.navigation});
+    }
+
+    componentWillUnmount(){
+        CometChat.removeCallListener("GROUP_CALL_LISTENER");
+        CometChat.removeMessageListener("GROUP_SCREEN_MESSAGE_LISTENER");
+    }
+
     static navigationOptions = ({ navigation }) => {
-        guid = navigation.getParam('guid', 'NO-ID');
-        username = navigation.getParam('username', 'some default value');
-        return {
-          title: navigation.getParam('username', 'ChatScreen'),
+
+        guid = navigation.getParam('guid', 'defaultGroup');
+
+        username = navigation.getParam('username', 'Default Group');
+        
+        avatar = navigation.getParam('avatar', 'group');
+
+        const {state} = navigation;
+
+         return {
+
+            headerTitle: (
+                <View style={{flex: 1 }}>
+
+                    <View style={{ flexDirection: "row", justifyContent: "space-between", marginEnd: 16 }}>
+
+                        <View style={{ flexDirection: "row", alignSelf: "center", justifyContent: "space-between" }}>
+
+                            { 
+                                avatar === 'group'
+                                ?
+                                <FontAwesome style={[{ height: 48, width: 48, borderRadius: 24, marginRight: 16 }]} name="group" size={48} color="#fff"/>
+                                :
+                                <Image style={{ height: 48, width: 48, borderRadius: 24, marginRight: 16 }} source={{uri: avatar}} />
+                            }
+
+                            <View style={{ alignSelf: "flex-start" }}>
+
+                                <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#FFF' }}>{username}</Text>
+
+                            </View>
+
+                        </View>
+
+                    </View>
+
+                </View>
+            ),
+            headerRight: (
+                <View style={{ flex: 1 }}>
+                    <View style={{ flexDirection: "row" }}>
+
+                        <TouchableOpacity onPress={()=>{state.params.initiateCall('video', state.params.navigation);}}>
+
+                            <MaterialCommunityIcons style={{ padding: 8 }} name="video" size={32} color="white"/>
+
+                        </TouchableOpacity>
+
+                        <TouchableOpacity onPress={()=>{state.params.initiateCall('audio', state.params.navigation);}}>
+
+                            <MaterialCommunityIcons style={{ padding: 8 }} name="phone" size={32} color="white"/>
+
+                        </TouchableOpacity>
+
+                    </View>
+                </View>
+            ),
+            headerStyle: {
+                backgroundColor: '#3f51b5',
+            },
+            headerTintColor: '#fff',
         };
+
     };
 
+    initiateCall(type, state){
+        var call = new CometChat.Call(this.guid, type, 'group');
+        CometChat.initiateCall(call).then(
+            Call => {
+                CometChat.getGroup(guid).then(
+                    group => {
+                        if(group){
+                            const defaultLayout = 1;
+                            const isOutgoing = 1;
+                            state.navigate('CallingScreen',{
+                                call: Call,
+                                enableDefaultLayout: defaultLayout,
+                                isOutgoingCall: isOutgoing,
+                                entity: group,
+                                entityType: 'group',
+                                acceptedFrom: 'Group'
+                            });
+                        }
+                    }
+                );
+            }
+        );
+    }
+
     getLoggedInUser(){
-        CometChat.getLoggedinUser().then(user=>{
-            console.log("user details:", {user});
-            myUserID = user.uid;
-          },error=>{
-            console.log("error getting details:", {error})
-          });
+        CometChat.getLoggedinUser().then(
+            user=>{
+                myUserID = user.uid;
+            },error=>{
+                console.log("error getting details:", {error})
+            }
+        );
+    }
+
+    addCallListner(){
+        var listnerID = "GROUP_CALL_LISTENER";
+        var that = this;
+        CometChat.addCallListener(
+            listnerID,
+            new CometChat.CallListener({
+                onIncomingCallReceived(call) {
+                    console.log("incoming call", guid);
+                    const defaultLayout = 1;
+                    const isOutgoing = 0;
+                    that.props.navigation.navigate('CallingScreen',{
+                        call: call,
+                        enableDefaultLayout: defaultLayout,
+                        isOutgoingCall: isOutgoing,
+                        entity: call.getCallReceiver(),
+                        entityType: 'group',
+                        acceptedFrom: 'Chat',
+                    });                            
+                },
+            })
+        );
     }
 
     mediaView(isMyMess,item){
@@ -65,17 +198,17 @@ export class GroupChatScreen extends Component {
                         </View>
                     </TouchableOpacity>
                 );
-            }break;
+            }
 
             case 'video':{
                 return(
                     <TouchableOpacity onPress={()=>this.renderFullScreenVideo(item)}>
                         <View style={{alignSelf: isMyMess ? 'flex-end' : 'flex-start'}}>
-                            <Video style={{ height: 150, width: 150 }} source={{uri: item.data.url}} paused={true} ref={(ref) => {this.player = ref}}/> 
+                             <Video style={{ height: 150, width: 150 }} source={{uri: item.data.url}} paused={true} ref={(ref) => {this.player = ref}}/> 
                         </View>
                     </TouchableOpacity>
                 );
-            }break;
+            }
 
             default:{
                 var msg = item.sender.name + ' has sent you a file. Download it here: ';
@@ -103,49 +236,104 @@ export class GroupChatScreen extends Component {
 
     renderItem = ({ item }) => {
         let isMyMess,isDelivered,isRead;
+        isMyMess = false;
         if(myUserID == item.sender.uid){
             isMyMess = true;
             "readAt" in item ? isRead = true : isRead = false;
             "deliveredAt" in item ? isDelivered = true : isDelivered = false;
-        }else{
-            isMyMess = false
-            "readByMeAt" in item ? '' : CometChat.markAsRead(item.id, item.receiverId, 'group');
         }
         if(item.sender.avatar == null){
             item.sender.avatar = "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"
         }
-        if(isMyMess){
-            return(
-                <View>
-                    <View style={[{flexDirection: 'row' }]}>
-                        <View style={[styles.row]}>
-                            {
-                                item.type == 'text' ? this.txtView(isMyMess,item) : this.mediaView(isMyMess,item)
-                            }                  
+        if(item.category === 'message'){
+            if(isMyMess){
+                return(
+                    <View>
+                        <View style={[{flexDirection: 'row' }]}>
+                            <View style={[styles.row]}>
+                                {
+                                    item.type == 'text' ? this.txtView(isMyMess,item) : this.mediaView(isMyMess,item)
+                                }                  
+                            </View>
                         </View>
                     </View>
-                </View>
-            );
-        }else{
-            return(
-                    <View style={[{flexDirection: 'row' }]}>
-                    <Image 
-                        style={[styles.image,{marginTop:10}]}
-                        resizeMode={"cover"}
-                        source={{ uri: item.sender.avatar}}
-                    />
+                );
+            }else{
+                return(
+                        <View style={[{flexDirection: 'row' }]}>
+                        <Image 
+                            style={[styles.image,{marginTop:10}]}
+                            resizeMode={"cover"}
+                            source={{ uri: item.sender.avatar}}
+                        />
+                        <View style={styles.row}>
+                            <View style={{alignSelf: isMyMess ? 'flex-end' : 'flex-start'}}>
+                                {
+                                    item.type == 'text' ? this.txtView(isMyMess,item) : this.mediaView(isMyMess,item)
+                                }
+                            </View>
+                        </View>
+                    </View>
+                )
+                
+            }
+        }else if(item.category === 'call'){
+            return (
+                <View>
                     <View style={styles.row}>
-                        <View style={{alignSelf: isMyMess ? 'flex-end' : 'flex-start'}}>
+                        <View style={{alignSelf: 'center'}}>
                             {
-                                item.type == 'text' ? this.txtView(isMyMess,item) : this.mediaView(isMyMess,item)
+                                this.displayCallMessages(item)
                             }
                         </View>
                     </View>
                 </View>
-            )
-            
-        }   
-        
+            );
+        }        
+    }
+
+    displayCallMessages(item){
+        var message;
+        switch (item.status){
+            case 'initiated':{
+                message = "Call Initiated";
+                break;
+            }
+            case 'ongoing':{
+                message = "Call Ongoing";
+                break;
+            }
+            case 'unanswered':{
+                message = "Call Unanswered";
+                break;
+            }
+            case 'rejected':{
+                message = "Call Rejected";
+                break;
+            }
+            case 'busy':{
+                message = "Call Busy";
+                break;
+            }
+            case 'cancelled':{
+                message = "Call Cancelled";
+                break;
+            }
+            case 'ended':{
+                message = "Call Ended";
+                break;
+            }
+            default:{
+                break;
+            }
+        }
+        return(
+            <View style={{flexDirection: 'row'}}>
+                <View style={[styles.balloon, {backgroundColor: '#c2c5ca'}, {alignSelf: 'center'}]}>
+                    <Text style={[styles.item, {color:'#fff'}]}>{message}</Text>
+                </View>
+            </View>
+        );
     }
 
     _keyboardDidShow () {
@@ -308,44 +496,49 @@ export class GroupChatScreen extends Component {
     }
 
     receiveMessages(){
-        console.log('Receive messages called');
-        var listenerID = "CHAT_SCREEN_LISTENER_ID";
+        var listenerID = "GROUP_SCREEN_MESSAGE_LISTENER";
 
         CometChat.addMessageListener(
          listenerID,
          new CometChat.MessageListener({
                onTextMessageReceived: textMessage => {
-                    console.log("Text message received successfully", textMessage);
                     if(textMessage.receiverId == guid){
                         if(textMessage.sender.uid != myUserID){
                             CometChat.markAsRead(textMessage.id,textMessage.receiverId,'group');
-                            this.setState((state)=>{
-                                return state.messages.push(textMessage)
-                            });
+                            this.setState(
+                                prevState => ({
+                                    messages: [...prevState.messages, textMessage],
+                                })
+                            );
+                            messagelist.scrollToEnd({animated: false});
                         }
                         
                     }
                },
                onMediaMessageReceived: mediaMessage => {
-                console.log("Media message received successfully",  mediaMessage);
                 if(mediaMessage.receiverId == guid){
                     if(mediaMessage.sender.uid != myUserID){
                         CometChat.markAsRead(mediaMessage.id,mediaMessage.receiverId,'group');
-                        this.setState((state)=>{
-                            return state.messages.push(mediaMessage)
-                        });
+                        this.setState(
+                            prevState => ({
+                                messages: [...prevState.messages, mediaMessage],
+                            })
+                        );
+                        messagelist.scrollToEnd({animated: false});
                     }
                     
                 }
                },
                 onCutomMessageReceived: customMessage => {
-                 console.log("Media message received successfully",  customMessage);
                  if(customMessage.receiverId == guid){
                     if(customMessage.sender.uid != myUserID){
                         CometChat.markAsRead(customMessage.id,customMessage.receiverId,'group');
-                        this.setState((state)=>{
-                            return state.messages.push(customMessage)
-                        });
+                        this.setState(
+                            prevState => ({
+                                messages: [...prevState.messages, customMessage],
+                            })
+                        );
+                        messagelist.scrollToEnd({animated: false});
                     }
                     
                 }
@@ -370,9 +563,11 @@ export class GroupChatScreen extends Component {
         })
         CometChat.sendMessage(textMessage).then(
             message => {
-                this.setState((state) => {
-                    return state.messages.push(message)
-                })
+                this.setState( 
+                    prevState => ({
+                        messages: [...prevState.messages, message],
+                    })
+                );
             },
             error => {
                 console.log("message sending failed with error", error);
@@ -399,9 +594,11 @@ export class GroupChatScreen extends Component {
         
         CometChat.sendMessage(mediaMessage)
         .then(message => {
-            this.setState((state) => {
-                return state.messages.push(message)
-            })
+            this.setState( 
+                prevState => ({
+                    messages: [...prevState.messages, message],
+                })
+            );
         },
         error => {
             console.log("Media message sending failed with error", error);
@@ -412,6 +609,10 @@ export class GroupChatScreen extends Component {
     fetchMessages(){
         this.messagesRequest.fetchPrevious().then(
         	mess => {
+                let lastMessage = mess[mess.length - 1];
+                if(lastMessage.readAt == null || lastMessage.readAt == undefined && lastMessage.receiverId == guid && lastMessage.sender.uid !== myUserID){
+                    CometChat.markAsRead(lastMessage.id, lastMessage.receiverId, lastMessage.receiverType);
+                }
                 this.setState({
                     messages :[...mess,...this.state.messages],
                     refreshing: false
@@ -476,4 +677,4 @@ const styles = StyleSheet.create({
         width: 40,
         borderRadius: 20,
       }
-  })
+})

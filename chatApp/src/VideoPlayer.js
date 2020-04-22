@@ -1,3 +1,9 @@
+/* eslint-disable eol-last */
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable no-trailing-spaces */
+/* eslint-disable semi */
+/* eslint-disable keyword-spacing */
+/* eslint-disable prettier/prettier */
 import React, {Component} from 'react';
 import {View, Text } from 'react-native';
 import Video from 'react-native-video';

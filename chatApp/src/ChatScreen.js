@@ -1,3 +1,11 @@
+/* eslint-disable quotes */
+/* eslint-disable no-return-assign */
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable keyword-spacing */
+/* eslint-disable no-undef */
+/* eslint-disable eqeqeq */
+/* eslint-disable no-trailing-spaces */
+/* eslint-disable prettier/prettier */
 import React, {Component} from 'react';
 import {View, FlatList, StyleSheet, TextInput, Image, TouchableOpacity, Keyboard, Platform } from 'react-native';
 import {Text} from 'react-native-paper';
@@ -8,55 +16,115 @@ import Video from 'react-native-video';
 import { Linking } from 'react-native';
 import ActionSheet from 'react-native-actionsheet';
 import ImagePicker from 'react-native-image-picker';
-let uid, messagelist, typingNotification,status,myUserID;
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+let uid, messagelist, typingNotification, status, myUserID, username, avatar;
 
 export class ChatScreen extends Component {
     messagesRequest = null;
 
     constructor() {
-        super()
+        super();
         this.state = {
             messages: [],
             txtMessage: '',
             mediaMsg: '',
             refreshing: false,
             autoScroll: true,
-            fullVideo: 0,
-            fullVideoStream: ''
-        }
-        this.getLoggedInUser();
-        this.messagesRequest = new CometChat.MessagesRequestBuilder().setUID(uid).setLimit(30).build();
-        this.receiveMessages();
-        this.fetchMessages = this.fetchMessages.bind(this);
-        this._handleRefresh = this._handleRefresh.bind(this);
-        this.fetchMessages();
-        this.messagelist;
+        };
         this.sendMessage = this.sendMessage.bind(this);
         this.sendMediaMessage = this.sendMediaMessage.bind(this);
         this.sendMsg = this.sendMsg.bind(this);
         this.imagePicker = this.imagePicker.bind(this);
         this.documentPicker = this.documentPicker.bind(this);
         this.showActionSheet = this.showActionSheet.bind(this);
-        this.addUserListner()
+        this.fetchMessages = this.fetchMessages.bind(this);
+        this._handleRefresh = this._handleRefresh.bind(this);
+        this.getLoggedInUser();
+        this.messagesRequest = new CometChat.MessagesRequestBuilder().setUID(uid).setLimit(30).build();
+        this.receiveMessages();
+        this.fetchMessages();
+        this.messagelist;
+        this.addUserListner();
+        this.addCallListner();
         this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
         let receiverType = CometChat.RECEIVER_TYPE.USER;
         typingNotification = new CometChat.TypingIndicator(uid, receiverType);
     }
 
-    static navigationOptions = ({navigation}) => {
-        uid = navigation.getParam('uid', 'NO-ID');
-        username = navigation.getParam('username', 'some default value');
-        status = navigation.getParam('status', 'some default value');
-        const {state} = navigation;
+    componentDidMount(){
+        this.props.navigation.setParams({initiateCall: this.initiateCall});
+        this.props.navigation.setParams({navigation: this.props.navigation});
+    }
 
+    componentWillUnmount(){
+        this.removeListeners();
+    }
+
+    removeListeners(){
+        CometChat.removeUserListener("CHAT_SCREEN_USER_LISTNER");
+        CometChat.removeCallListener("CHAT_SCREEN_CALL_LISTNER");
+        CometChat.removeMessageListener("CHAT_SCREEN_MESSAGE_LISTENER");
+    }
+
+    static navigationOptions = ({navigation}) => {
+
+        uid = navigation.getParam('uid', 'defaultUser');
+
+        username = navigation.getParam('username', 'Default User');
+
+        status = navigation.getParam('status', 'offline');
+
+        avatar = navigation.getParam('avatar', 'user');
+        
+        const {state} = navigation;
 
         return {
             headerTitle: (
-                <View>
-                    <Text
-                        style={[{fontSize: 20}, {fontWeight: 'bold'}, {color: '#FFF'}]}>{navigation.getParam('username', 'ChatScreen')}</Text>
-                    <Text
-                        style={[{fontSize: 15}, {fontStyle: 'italic'}, {color: '#FFF'}, {marginStart: 2}, {marginEnd: 2}]}>{state.params.title}</Text>
+                <View style={{ flex: 1 }}>
+
+                    <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+
+                        <View style={{ flexDirection: "row", alignSelf: "center", justifyContent: "space-between" }}>
+
+                            { 
+                                avatar === 'user'
+                                ?
+                                <FontAwesome style={[{ height: 48, width: 48, borderRadius: 24, marginRight: 16 }]} name="user" size={48} color="#fff"/>
+                                :
+                                <Image style={{ height: 48, width: 48, borderRadius: 24, marginRight: 16 }} source={{uri: avatar}} />
+                            }
+
+                            <View style={{ alignSelf: "flex-start" }}>
+
+                                <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#FFF' }}>{username}</Text>
+
+                                <Text style={{ fontSize: 15, fontStyle: 'italic', color: '#FFF' }}>{state.params.title}</Text>
+
+                            </View>
+
+                        </View>
+
+                    </View>
+
+                </View>
+            ),
+            headerRight: (
+                <View style={{ flex: 1 }}>
+                    <View style={{ flexDirection: "row" }}>
+
+                        <TouchableOpacity onPress={()=>{state.params.initiateCall('video', state.params.navigation);}}>
+
+                            <MaterialCommunityIcons style={{ padding: 8 }} name="video" size={32} color="white"/>
+
+                        </TouchableOpacity>
+
+                        <TouchableOpacity onPress={()=>{state.params.initiateCall('audio', state.params.navigation);}}>
+
+                            <MaterialCommunityIcons style={{ padding: 8 }} name="phone" size={32} color="white"/>
+
+                        </TouchableOpacity>
+
+                    </View>
                 </View>
             ),
             headerStyle: {
@@ -66,12 +134,41 @@ export class ChatScreen extends Component {
         };
     };
 
+    initiateCall(type, state){
+        var call = new CometChat.Call(this.uid, type, 'user');
+        CometChat.initiateCall(call).then(
+            Call => {
+                CometChat.getUser(uid).then(
+                    user => {
+                        if(user){
+                            const isAudio = type === 'audio' ? 1 : 0;
+                            const defaultLayout = 1;
+                            const initiator = 1;
+                            const isOutgoing = 1;
+                            state.navigate('CallingScreen',{
+                                call: Call,
+                                isInitiator: initiator,
+                                isAudioOnly: isAudio,
+                                enableDefaultLayout: defaultLayout,
+                                isOutgoingCall: isOutgoing,
+                                entity: user,
+                                entityType: 'user',
+                            });
+                        }
+                    }
+                );
+            }
+        );
+    }
+
     getLoggedInUser(){
-        CometChat.getLoggedinUser().then(user=>{
-            myUserID = user.uid;
-          },error=>{
-            console.log("error getting details:", {error})
-          });
+        CometChat.getLoggedinUser().then(
+            user=>{
+                myUserID = user.uid;
+            },error=>{
+                console.log('error getting details:', {error});
+            }
+        );
     }
 
     mediaView(isMyMess,item,isRead,isDelivered){
@@ -102,15 +199,14 @@ export class ChatScreen extends Component {
                     );
                 }
                 
-            }break;
-
+            }
             case 'video':{
                 if(isMyMess){
                     return(
                         <View style={{flexDirection: 'row'}}>
                             <TouchableOpacity onPress={()=>this.renderFullScreenVideo(item)}>
                                 <View style={{alignSelf: 'flex-end'}}>
-                                    <Video style={{ height: 150, width: 150 }} source={{uri: item.data.url}} paused={true} ref={(ref) => {this.player = ref}}/> 
+                                    <Video style={{ height: 150, width: 150 }} source={{uri: item.data.url}} paused={true} ref={(ref) => {this.player = ref;}}/> 
                                 </View>
                             </TouchableOpacity>
                             <View style={{flexDirection: 'column', justifyContent: 'flex-end'}}>
@@ -123,16 +219,15 @@ export class ChatScreen extends Component {
                         <View style={{flexDirection: 'row'}}>
                             <TouchableOpacity onPress={()=>this.renderFullScreenVideo(item)}>
                                 <View style={{alignSelf: 'flex-start'}}>
-                                    <Video style={{ height: 150, width: 150 }} source={{uri: item.data.url}} paused={true} ref={(ref) => {this.player = ref}}/> 
+                                    <Video style={{ height: 150, width: 150 }} source={{uri: item.data.url}} paused={true} ref={(ref) => {this.player = ref;}}/> 
                                 </View>
                             </TouchableOpacity>
                         </View>
                     );
                 }
                 
-            }break;
-
-            default:{
+            }
+            case 'file':{
                 if(isMyMess){
                     var msg = item.sender.name + ' has sent you a file: ';
                     return(
@@ -149,7 +244,7 @@ export class ChatScreen extends Component {
                                 <Text style={{alignSelf: 'flex-end'}}>{this.displayReceipt(isRead,isDelivered)} </Text>
                             </View>
                         </View>
-                    )
+                    );
                 }else{
                     var msg = item.sender.name + ' has sent you a file: ';
                     return(
@@ -163,9 +258,11 @@ export class ChatScreen extends Component {
                                 </Text>
                             </View>
                         </View>
-                    )
+                    );
                 }
-                
+            }
+            default:{
+                return null;
             }
         }
     }
@@ -175,7 +272,7 @@ export class ChatScreen extends Component {
             return(
                 <View style={{flexDirection: 'row'}}>
                     <View style={[styles.balloon, {backgroundColor: '#3f51b5'}, {alignSelf: 'flex-end'}]}>
-                        <Text style={[styles.item, {color:'white'}]}>{item.data.text}</Text>
+                        <Text style={[styles.item, {color:'#ffffff'}]}>{item.data.text}</Text>
                     </View>
                     <View style={{flexDirection: 'column', justifyContent: 'flex-end'}}>
                         <Text style={{alignSelf: 'flex-end'}}>{this.displayReceipt(isRead,isDelivered)} </Text>
@@ -185,8 +282,8 @@ export class ChatScreen extends Component {
         }else{
             return(
                 <View style={{flexDirection: 'row'}}>
-                    <View style={[styles.balloon, {backgroundColor: '#bdbdbd'}, {alignSelf: 'flex-start'}]}>
-                        <Text style={[styles.item, {color:'#757575'}]}>{item.data.text}</Text>
+                    <View style={[styles.balloon, {backgroundColor: '#e6e9ed'}, {alignSelf: 'flex-start'}]}>
+                        <Text style={[styles.item, {color:'#797777'}]}>{item.data.text}</Text>
                     </View>
                 </View>
             );
@@ -196,34 +293,45 @@ export class ChatScreen extends Component {
 
     renderItem = ({item}) => {
         let isMyMess,isRead,isDelivered;
+        isMyMess = false;
         if (item.receiverId == uid) {
             isMyMess = true;
-            "readAt" in item ? isRead = true : isRead = false;
-            "deliveredAt" in item ? isDelivered = true : isDelivered = false;
-        } else {
-            isMyMess = false;
-            "readAt" in item ? '' : CometChat.markAsRead(item.id, item.sender.uid, item.receiverType);
+            'readAt' in item ? isRead = true : isRead = false;
+            'deliveredAt' in item ? isDelivered = true : isDelivered = false;
         }
-        if(isMyMess){
+        if(item.category === 'message'){
+            if(isMyMess){
+                return (
+                    <View>
+                        <View style={styles.row}>
+                            <View style={{alignSelf: 'flex-end'}}>
+                                {
+                                    item.type == 'text' ? this.txtView(isMyMess,item,isRead,isDelivered) : this.mediaView(isMyMess,item,isRead,isDelivered)
+                                }
+                            </View>
+                        </View>
+                    </View>
+                );
+            }else{
+                return (
+                    <View style={{ marginRight: 10}}>
+                        <View style={styles.row}>
+                            <View style={{alignSelf: 'flex-start'}}>
+                                {
+                                    item.type == 'text' ? this.txtView(isMyMess,item) : this.mediaView(isMyMess,item)
+                                }
+                            </View>
+                        </View>
+                    </View>
+                );
+            }
+        }else if(item.category === 'call'){
             return (
                 <View>
                     <View style={styles.row}>
-                        <View style={{alignSelf: 'flex-end'}}>
+                        <View style={{alignSelf: 'center'}}>
                             {
-                                item.type == 'text' ? this.txtView(isMyMess,item,isRead,isDelivered) : this.mediaView(isMyMess,item,isRead,isDelivered)
-                            }
-                        </View>
-                    </View>
-                </View>
-            );
-        }else{
-            return (
-                <View style={{ marginRight: 10}}>
-                    <View style={styles.row}>
-                        <View
-                            style={{alignSelf: 'flex-start'}}>
-                            {
-                                item.type == 'text' ? this.txtView(isMyMess,item) : this.mediaView(isMyMess,item)
+                                this.displayCallMessages(item)
                             }
                         </View>
                     </View>
@@ -232,43 +340,109 @@ export class ChatScreen extends Component {
         }
     }
 
+    displayCallMessages(item){
+        var message;
+        switch (item.status){
+            case 'initiated':{
+                message = "Call Initiated";
+                break;
+            }
+            case 'ongoing':{
+                message = "Call Ongoing";
+                break;
+            }
+            case 'unanswered':{
+                message = "Call Unanswered";
+                break;
+            }
+            case 'rejected':{
+                message = "Call Rejected";
+                break;
+            }
+            case 'busy':{
+                message = "Call Busy";
+                break;
+            }
+            case 'cancelled':{
+                message = "Call Cancelled";
+                break;
+            }
+            case 'ended':{
+                message = "Call Ended";
+                break;
+            }
+            default:{
+                break;
+            }
+        }
+        return(
+            <View style={{flexDirection: 'row'}}>
+                <View style={[styles.balloon, {backgroundColor: '#c2c5ca'}, {alignSelf: 'center'}]}>
+                    <Text style={[styles.item, {color:'#fff'}]}>{message}</Text>
+                </View>
+            </View>
+        );
+    }
 
     displayReceipt(isRead,isDelivered){
         if(isRead){
-            return <MaterialCommunityIcons style={[{alignSelf: 'flex-end'}]} name='check-all' size={15} color="#2196f3"/>
+            return <MaterialCommunityIcons style={[{alignSelf: 'flex-end'}]} name="check-all" size={15} color="#2196f3"/>;
         }else if(isDelivered){
-            return <MaterialCommunityIcons style={[{alignSelf: 'flex-end'}]} name='check-all' size={15} color="#000"/>
+            return <MaterialCommunityIcons style={[{alignSelf: 'flex-end'}]} name="check-all" size={15} color="#000"/>;
         } else {
-            return <MaterialCommunityIcons style={[{alignSelf: 'flex-end'}]} name='check' size={15} color="#000"/>
+            return <MaterialCommunityIcons style={[{alignSelf: 'flex-end'}]} name="check" size={15} color="#000"/>;
         }
+    }
+    
+    addCallListner(){
+        var listnerID = "CHAT_SCREEN_CALL_LISTNER";
+        var that = this;
+        CometChat.addCallListener(
+            listnerID,
+            new CometChat.CallListener({
+                onIncomingCallReceived(call) {
+                    const defaultLayout = 1;
+                    const isOutgoing = 0;
+                    that.props.navigation.navigate('CallingScreen',{
+                        call: call,
+                        enableDefaultLayout: defaultLayout,
+                        isOutgoingCall: isOutgoing,
+                        entity: call.getCallInitiator(),
+                        entityType: 'user',
+                        acceptedFrom: 'Chat',
+                    });
+                },
+            })
+        );
     }
 
     addUserListner(){
-        var listenerID = "CHAT_SCREEN_USER_LISTNER";
+        var listenerID = 'CHAT_SCREEN_USER_LISTNER';
 
         CometChat.addUserListener(
             listenerID,
             new CometChat.UserListener({
                 onUserOnline: onlineUser => {
+                    console.log("user online");
                     if(onlineUser.uid == uid){
-                        status = "Online"
-                        this.changeTypingText(status)
+                        status = 'Online';
+                        this.changeTypingText(status);
                     }
                 },
                 onUserOffline: offlineUser => {
+                    console.log("user offline");
                     if(offlineUser.uid == uid){
-                        status = "Offline"
-                        this.changeTypingText(status)
+                        status = 'Offline';
+                        this.changeTypingText(status);
                     }
-                }
+                },
             })
         );
     }
 
-
     _keyboardDidShow() {
         if(messagelist != null){
-            setTimeout(() => messagelist.scrollToEnd(), 100)
+            setTimeout(() => messagelist.scrollToEnd(), 100);
         }
     }
 
@@ -294,7 +468,7 @@ export class ChatScreen extends Component {
             wav: 'audio/wav',
             weba: 'audio/webm',
             mp3: 'audio/mpeg',
-            oga: 'audio/ogg'
+            oga: 'audio/ogg',
         };
         return MimeList[type];
     }
@@ -309,9 +483,9 @@ export class ChatScreen extends Component {
             }
             var file = {
                 name: response.fileName,
-                type: Platform.OS === "android" ? response.type : type, 
-                uri: Platform.OS === "android" ? response.uri : response.uri.replace("file://",""),
-            }
+                type: Platform.OS === 'android' ? response.type : type, 
+                uri: Platform.OS === 'android' ? response.uri : response.uri.replace('file://',''),
+            };
             this.setState({ mediaMsg: file });
         });
     }
@@ -341,10 +515,10 @@ export class ChatScreen extends Component {
                     var name = 'Camera_001.jpeg';
                 }
                 var file = {
-                    name: Platform.OS === "android" ? response.fileName : name,
-                    type: Platform.OS === "android" ? response.type : type, 
-                    uri: Platform.OS === "android" ? response.uri : response.uri.replace("file://",""),
-                }
+                    name: Platform.OS === 'android' ? response.fileName : name,
+                    type: Platform.OS === 'android' ? response.type : type, 
+                    uri: Platform.OS === 'android' ? response.uri : response.uri.replace('file://',''),
+                };
                 this.setState({ mediaMsg: file });
             }
         });
@@ -369,6 +543,7 @@ export class ChatScreen extends Component {
     render() {
         return (
             <View style={styles.container}>
+
                 <FlatList
                     data={this.state.messages}
                     renderItem={this.renderItem}
@@ -379,124 +554,133 @@ export class ChatScreen extends Component {
                     onRefresh={this._handleRefresh}
                     refreshing={this.state.refreshing}
                 />
+
                 <View style={styles.messageinputcontainer}>
+
                     <TextInput style={styles.messageinput}
-                               placeholder="Enter Message"
-                               value={this.state.txtMessage}
-                               //onChangeText={text => this.setState({ txtMessage: text })}
-                               onChangeText={text => this.onTextChange(text)}
+                            placeholder="Enter Message"
+                            value={this.state.txtMessage}
+                            onChangeText={text => this.onTextChange(text)}
                     />
+
                     <TouchableOpacity style={styles.roundedbackgroud} onPress={this.showActionSheet}>
+
                         <Image 
                             style={{height: 30, width: 30, alignSelf: 'center'}}
                             source={require('./assets/images/attach_media_icon.png')}
                         />
+
                     </TouchableOpacity>
+
                     <TouchableOpacity style={styles.roundedbackgroud} onPress={this.sendMsg}>
+
                         <Image 
                             style={{height: 30,width: 30, alignSelf: 'center'}}
                             source={require('./assets/images/send_icon.png')}
                         />
+
                     </TouchableOpacity>
+
                 </View>
+
                 <ActionSheet
                     title={'Choose File'}
                     ref={o => this.ActionSheet = o}
                     options={['Image', 'Document','Cancel']}
                     cancelButtonIndex={2}
-                    onPress={(index) => { if(index == 0){this.imagePicker()}else if(index == 1){this.documentPicker()} }}
+                    onPress={(index) => { if(index == 0){this.imagePicker();}else if(index == 1){this.documentPicker();} }}
                 />
+
             </View>
         );
-
     }
 
     onTextChange(text) {
-        this.setState({txtMessage: text})
-        this.sendTypingIndicator()
+        this.setState({txtMessage: text});
+        this.sendTypingIndicator();
     }
 
-    _onContentSizeChange() {
+    _onContentSizeChange = () => {
         if (this.state.autoScroll) {
-            messagelist.scrollToEnd({animated: false})
+            messagelist.scrollToEnd({animated: false});
         } else {
-            setTimeout(() => this.setState({autoScroll: true}), 500)
+            setTimeout(() => this.setState({autoScroll: true}), 500);
         }
     }
 
     _handleRefresh() {
         this.setState({
             autoScroll: false,
-            refreshing: true
-        })
+            refreshing: true,
+        });
         this.fetchMessages();
     }
 
     receiveMessages() {
-        var listenerID = 'CHAT_SCREEN_LISTENER_ID';
+        var listenerID = 'CHAT_SCREEN_MESSAGE_LISTENER';
 
         CometChat.addMessageListener(
             listenerID,
             new CometChat.MessageListener({
                 onTextMessageReceived: textMessage => {
-                    if(textMessage.sender.uid == uid && textMessage.receiverType == 'user'){
-                        if(textMessage.sender.uid != myUserID){
-                            CometChat.markAsRead(textMessage.id,textMessage.sender.uid,'user');
-                            this.setState((state)=>{
-                                return state.messages.push(textMessage)
-                            });
-                        }
-                        
+                    if(textMessage.sender.uid === uid && textMessage.receiverType === 'user'){
+                        CometChat.markAsRead(textMessage.id,textMessage.sender.uid,'user');
+                        this.setState(
+                            prevState => ({
+                                messages: [...prevState.messages, textMessage],
+                            })
+                        );
+                        messagelist.scrollToEnd({animated: false});
                     }
                 },
                 onMediaMessageReceived: mediaMessage => {
                     if(mediaMessage.sender.uid == uid && mediaMessage.receiverType == 'user'){
-                        if(mediaMessage.sender.uid != myUserID){
-                            CometChat.markAsRead(mediaMessage.id,mediaMessage.receiverId,'user');
-                            this.setState((state)=>{
-                                return state.messages.push(mediaMessage)
-                            });
-                        }
-                        
+                        CometChat.markAsRead(mediaMessage.id,mediaMessage.sender.uid,'user');
+                        this.setState( 
+                            prevState => ({
+                                messages: [...prevState.messages, mediaMessage],
+                            })
+                        );
+                        messagelist.scrollToEnd({animated: false});
                     }
                 },
                 onCutomMessageReceived: customMessage => {
                     if(customMessage.sender.uid == uid && customMessage.receiverType == 'user'){
-                        if(customMessage.sender.uid != myUserID){
-                            CometChat.markAsRead(customMessage.id,customMessage.receiverId,'user');
-                            this.setState((state)=>{
-                                return state.messages.push(customMessage)
-                            });
-                        }
-                        
+                        CometChat.markAsRead(customMessage.id,customMessage.sender.uid,'user');
+                        this.setState( 
+                            prevState => ({
+                                messages: [...prevState.messages, customMessage],
+                            })
+                        );
+                        messagelist.scrollToEnd({animated: false});
                     }
                 },
                 onTypingStarted: (typingIndicator) => {
-                    this.changeTypingText("Typing....")
+                    this.changeTypingText(typingIndicator.sender.uid+" is typing....")
                 },
                 onTypingEnded: (typingIndicator) => {
-                    this.changeTypingText(status)
+                    this.changeTypingText(status);
                 },
                 onMessagesDelivered: (messageReceipt) => {
                     var messages = this.state.messages;
-                    for(var i=0;i<messages.length;i++){
-                        var message = messages[i]
-                        if(message.id == messageReceipt.messageId){
+                    for(var i = 0; i < messages.length; i++){
+                        var message = messages[i];
+                        if(message.deliveredAt == null || message.deliveredAt == undefined){
                             message.deliveredAt = messageReceipt.timestamp;
-                            this.setState({messages: messages})
+                            this.setState({messages: messages});
                         }
                     }
 
                 }, onMessagesRead: (messageReceipt) => {
                     var messages = this.state.messages;
-                    for(var i=0;i<messages.length;i++){
-                        var message = messages[i]
-                        if(message.id == messageReceipt.messageId){
+                    for(var i = 0; i < messages.length; i++){
+                        var message = messages[i];
+                        if(message.readAt == null || message.readAt == undefined){
                             message.readAt = messageReceipt.timestamp;
-                            this.setState({messages: messages})
+                            this.setState({messages: messages});
                         }
                     }
-                }
+                },
 
             })
         );
@@ -504,7 +688,7 @@ export class ChatScreen extends Component {
 
     changeTypingText = (titleText) => {
         const {setParams} = this.props.navigation;
-        setParams({title: titleText})
+        setParams({title: titleText});
     }
 
     sendTypingIndicator() {
@@ -513,6 +697,7 @@ export class ChatScreen extends Component {
     
     sendMsg(){
         if(this.state.txtMessage != ''){
+            CometChat.endTyping(typingNotification);
             this.sendMessage();
         }else if(this.state.mediaMsg != ''){
             this.sendMediaMessage();
@@ -523,17 +708,19 @@ export class ChatScreen extends Component {
         var receiverType = CometChat.RECEIVER_TYPE.USER;
         var textMessage = new CometChat.TextMessage(uid, this.state.txtMessage, receiverType);
         this.setState({
-            txtMessage: ''
-        })
-        CometChat.endTyping(typingNotification);
+            txtMessage: '',
+        });
         CometChat.sendMessage(textMessage).then(
             message => {
-                this.setState((state) => {
-                    return state.messages.push(message)
-                })
+                console.log('message', message);
+                this.setState( 
+                    prevState => ({
+                        messages: [...prevState.messages, message],
+                    })
+                );
             },
             error => {
-                console.log("Message sending failed with error:", error);
+                console.log('Message sending failed with error:', error);
             }
         );
     }
@@ -551,16 +738,18 @@ export class ChatScreen extends Component {
         var receiverType = CometChat.RECEIVER_TYPE.USER;
         var mediaMessage = new CometChat.MediaMessage(uid, this.state.mediaMsg, messageType, receiverType);
         this.setState({
-            mediaMsg: ''
+            mediaMsg: '',
         });
         
         CometChat.sendMediaMessage(mediaMessage).then(
             message => {
-                this.setState((state) => {
-                    return state.messages.push(message)
-                })
+                this.setState( 
+                    prevState => ({
+                        messages: [...prevState.messages, message],
+                    })
+                );
             },error => {
-                console.log("Media message sending failed with error", error);
+                console.log('Media message sending failed with error', error);
             }
         );
     }
@@ -568,14 +757,18 @@ export class ChatScreen extends Component {
     fetchMessages() {
         this.messagesRequest.fetchPrevious().then(
             mess => {
+                let lastMessage = mess[mess.length - 1];
+                if(lastMessage.readAt == null || lastMessage.readAt == undefined && lastMessage.receiverId == myUserID){
+                    CometChat.markAsRead(lastMessage.id, lastMessage.sender.uid, lastMessage.receiverType);
+                }
                 this.setState({
                     messages: [...mess, ...this.state.messages],
-                    refreshing: false
+                    refreshing: false,
                 });
-                this.changeTypingText(status)
+                this.changeTypingText(status);
             },
             error => {
-                console.log("Message fetching failed with error:", error);
+                console.log('Message fetching failed with error:', error);
             }
         );
     }
@@ -583,17 +776,17 @@ export class ChatScreen extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
     },
     item: {
         padding: 10,
-        fontSize: 15
+        fontSize: 15,
     },
     itemRight: {
         padding: 10,
         fontSize: 18,
         height: 44,
-        alignSelf: 'flex-end'
+        alignSelf: 'flex-end',
     },
     balloon: {
         alignSelf: 'baseline',
@@ -614,12 +807,12 @@ const styles = StyleSheet.create({
         borderColor: '#e0e0e0',
         borderRadius: 20,
         padding: 10,
-        backgroundColor: "#FFFFFF"
+        backgroundColor: '#FFFFFF',
     },
     messageinputcontainer: {
         flexDirection: 'row',
-        backgroundColor: "transparent",
-        margin: 5
+        backgroundColor: 'transparent',
+        margin: 5,
     },
     roundedbackgroud: {
         height: 40,
@@ -627,6 +820,6 @@ const styles = StyleSheet.create({
         margin: 5,
         justifyContent: 'center',
         borderRadius: 30,
-        backgroundColor: "#3f51b5"
-    }
-})
+        backgroundColor: '#3f51b5',
+    },
+});

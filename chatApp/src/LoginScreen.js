@@ -1,8 +1,16 @@
+/* eslint-disable no-floating-decimal */
+/* eslint-disable jsx-quotes */
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable keyword-spacing */
+/* eslint-disable comma-dangle */
+/* eslint-disable semi */
+/* eslint-disable no-undef */
+/* eslint-disable quotes */
+/* eslint-disable prettier/prettier */
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, TextInput, Image, TouchableOpacity,StatusBar} from 'react-native';
 import {CometChat} from '@cometchat-pro/react-native-chat';
 import { ActivityIndicator} from 'react-native-paper';
-
 import {decode, encode} from 'base-64'
 
 if (!global.btoa) {
@@ -15,7 +23,7 @@ if (!global.atob) {
 
 this.DOMParser = require('xmldom').DOMParser;
 
-let appID = "XXXXXXXXXXXXXX" ,apiKey = "XXXXXXXXXXXXXXXXXXXXXXXXXXXX", appRegion = "XX"; //us/eu
+let appID = "XXXXXXXXXXXX", apiKey = "XXXXXXXXXXXXXXXXXXXXXX", appRegion = "XX";
 
 
 export class LoginScreen extends Component {
@@ -25,27 +33,36 @@ export class LoginScreen extends Component {
 
 
     constructor() {
-        super()
+        super();
         this.state = {
-            loaderVisible : false
-        }
-        this.state.entredUID = 'superhero2'
+            loaderVisible : false,
+        };
+        this.state.entredUID = 'superhero3';
         this.buttonPressed = this.buttonPressed.bind(this);
-        var appSettings = new CometChat.AppSettingsBuilder()
-        .subscribePresenceForAllUsers()
-        .setRegion(appRegion)
-        .build();
+        var appSettings = new CometChat.AppSettingsBuilder().subscribePresenceForAllUsers().setRegion(appRegion).build();
         CometChat.init(appID, appSettings).then(
             () => {
+                CometChat.addConnectionListener(
+                    "XMPPConnectionListener",
+                    new CometChat.ConnectionListener({
+                        onConnected: () => {
+                            console.log("ConnectionListener => On Connected");
+                        },
+                        inConnecting: () => {
+                            console.log("ConnectionListener => In connecting");
+                        },
+                        onDisconnected: () => {
+                            console.log("ConnectionListener => On Disconnected");
+                        }
+                    })
+                );
                 CometChat.getLoggedinUser().then(
                     user => {
-                        console.log("get logged in user =>", user);
                         if(user !== null){
                             this.props.navigation.navigate('Home');
                         }
                     }
                 )
-                console.log("Initialization completed successfully");
             }, error => {
                 console.log("Initialization failed with error:", error);
             }
@@ -58,17 +75,12 @@ export class LoginScreen extends Component {
     }
 
     cometchatLogin() {
-        console.log('CometChat login Called')
-        this.setState({ loaderVisible: true })
+        this.setState({ loaderVisible: true });
         CometChat.login(UID, apiKey).then(
             user => {
-                this.setState({ loaderVisible: false })
-                var userName = user.name;
-                console.log("Login Successful:", {userName});
+                this.setState({ loaderVisible: false });
                 this.props.navigation.navigate('Home');
-            },
-
-            error => {
+            }, error => {
                 console.log("Login failed with exception:", {error});
             }
         );

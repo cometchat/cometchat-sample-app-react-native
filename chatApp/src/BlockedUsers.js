@@ -1,3 +1,7 @@
+/* eslint-disable no-return-assign */
+/* eslint-disable eqeqeq */
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable prettier/prettier */
 import React, {Component} from 'react';
 import {View, FlatList, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import ActionSheet from 'react-native-actionsheet';
@@ -25,12 +29,21 @@ const styles = StyleSheet.create({
         flex: 1,
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
-        backgroundColor: '#FFF'
+        backgroundColor: '#FFF',
+    },
+    nameView: {
+        flex: 1, 
+        flexDirection: 'row', 
+        width: '100%'
+    },
+    containerView: {
+        flex: 1, 
+        backgroundColor: '#3f51b5'
     }
-})
+});
 
 export class BlockedUsers extends Component {
-    
+
     static navigationOptions = ({navigation}) => {
         return {
             headerTitle: (
@@ -42,7 +55,7 @@ export class BlockedUsers extends Component {
                 backgroundColor: '#3f51b5',
             },
             headerTintColor: '#fff',
-            headerLeft: <TouchableOpacity onPress={()=>{navigation.push('Home')}}><Image style={{marginLeft: 10, width:24, height: 24}} source={require('./assets/images/back_icon.png')}/></TouchableOpacity>
+            headerLeft: <TouchableOpacity onPress={()=>{navigation.push('Home');}}><Image style={{marginLeft: 10, width:24, height: 24}} source={require('./assets/images/back_icon.png')}/></TouchableOpacity>,
         };
     };
 
@@ -56,7 +69,7 @@ export class BlockedUsers extends Component {
         this.state = {
             blockedUsers: [],
             unblock: [],
-        }
+        };
         this.unBlockUser = this.unBlockUser.bind(this);
     }
 
@@ -65,15 +78,13 @@ export class BlockedUsers extends Component {
     }
 
     unBlockUser(){
-        console.log("Block User", this.state.unblock.uid);
-        if(this.state.unblock != ''){
+        if (this.state.unblock != ''){
             let usersList = [this.state.unblock.uid];
             CometChat.unblockUsers(usersList).then(list => {
-                console.log("users list unblocked", { list });
                 this.setState({unblock: ''});
-                this.getBlockedUsers(); 
+                this.getBlockedUsers();
             }, error => {
-                console.log("Blocking user fails with error", error);
+                console.log('Blocking user fails with error', error);
             });
         }
     }
@@ -82,20 +93,19 @@ export class BlockedUsers extends Component {
         var limit = 30;
         var blockedUsersRequest = new CometChat.BlockedUsersRequestBuilder().setLimit(limit).build();
         blockedUsersRequest.fetchNext().then(
-            userList => {        
-                console.log("Blocked user list received:", userList);   
-                this.setState({blockedUsers: userList});     
+            userList => {
+                this.setState({blockedUsers: userList});
             },
             error => {
-                console.log("Blocked user list fetching failed with error:", error);
+                console.log('Blocked user list fetching failed with error:', error);
             }
         );
     }
-    
+
 
     render(){
-        return(
-            <View style={{flex: 1, backgroundColor: '#3f51b5'}}>
+        return (
+            <View style={styles.containerView}>
                 <View style={styles.inputsContainer}>
                     <FlatList
                         data={this.state.blockedUsers}
@@ -107,41 +117,35 @@ export class BlockedUsers extends Component {
                     ref={o => this.ActionSheet = o}
                     options={['Unblock', 'Cancel']}
                     cancelButtonIndex={1}
-                    onPress={(index) => { if(index == 0){this.unBlockUser();} }}
+                    onPress={(index) => { if (index == 0){this.unBlockUser();} }}
                 />
             </View>
-        )
+        );
     }
 
     renderItem = ({item}) => {
-        console.log("Render item called "+JSON.stringify(item))
-
         if (item.avatar == null) {
-            item.avatar = "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"  // default avatar
+            item.avatar = 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y';  // default avatar
         }
-
         return (
-
             <TouchableRipple
                 onPress={() => {
-                    console.log("on long press");
                     this.showActionSheet(item);
                 }}
                 rippleColor="rgba(0, 0, 0, .20)">
                 <View style={styles.item} >
                     <Image
                         style={styles.image}
-                        resizeMode={"cover"}
+                        resizeMode={'cover'}
                         source={{uri: item.avatar}}
                     />
                     <View>
-                        <View style={[{ flex: 1, flexDirection: 'row', width: '100%' }]}>
-                            <Text>{item.name}</Text>          
+                        <View style={styles.nameView}>
+                            <Text>{item.name}</Text>
                         </View>
                     </View>
                 </View>
             </TouchableRipple>
         );
     };
-
 }

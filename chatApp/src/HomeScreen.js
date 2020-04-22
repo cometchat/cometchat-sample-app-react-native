@@ -1,3 +1,14 @@
+/* eslint-disable space-infix-ops */
+/* eslint-disable no-undef */
+/* eslint-disable no-return-assign */
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable jsx-quotes */
+/* eslint-disable keyword-spacing */
+/* eslint-disable eqeqeq */
+/* eslint-disable no-trailing-spaces */
+/* eslint-disable quotes */
+/* eslint-disable comma-dangle */
+/* eslint-disable prettier/prettier */
 import React, { Component } from 'react';
 import { View, FlatList, StyleSheet, Image } from 'react-native';
 import { CometChat } from '@cometchat-pro/react-native-chat';
@@ -24,7 +35,6 @@ export class HomeScreen extends Component {
     }
 
     constructor(props) {
-        console.log("IN HOME SCREEN.");
         super(props);
         this.state = {
             dataItem: '?',
@@ -33,8 +43,42 @@ export class HomeScreen extends Component {
                 {key: 'single', title: 'Contacts', icon: 'contacts', color: '#3F51B5'},
                 {key: 'groups', title: 'Group', icon: 'group', color: '#009688'},
             ],
-        }
+        };
+        var listnerID = "USER_CALL_LISTENER";
+        var that = this;
+        CometChat.addCallListener(
+            listnerID,
+            new CometChat.CallListener({
+                onIncomingCallReceived(call) {
+                    const defaultLayout = 1;
+                    const isOutgoing = 0;
+                    if(call.getReceiverType() === 'user'){
+                        that.props.navigation.navigate('CallingScreen',{
+                            call: call,
+                            enableDefaultLayout: defaultLayout,
+                            isOutgoingCall: isOutgoing,
+                            entity: call.getCallInitiator(),
+                            entityType: 'user',
+                            acceptedFrom: 'Home',
+                        });
+                    }else{
+                        that.props.navigation.navigate('CallingScreen',{
+                            call: call,
+                            enableDefaultLayout: defaultLayout,
+                            isOutgoingCall: isOutgoing,
+                            entity: call.getCallReceiver(),
+                            entityType: 'group',
+                            acceptedFrom: 'Home',
+                        });
+                    }
+                },
+            })
+        );
         this._renderScene = this._renderScene.bind(this);
+    }
+
+    componentWillUnmount(){
+        CometChat.removeCallListener("USER_CALL_LISTENER");
     }
 
     render() {
@@ -76,7 +120,7 @@ const styles = StyleSheet.create({
         borderRadius: 30,
     },
     userName: {
-        marginStart: 15,
+        marginStart: 16,
     },
     roundedbackgroud: {
         height: 40,
@@ -85,7 +129,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderRadius: 30,
         backgroundColor: "#3f51b5"
-    }, inputsContainer: {
+    }, 
+    inputsContainer: {
         marginTop: 10,
         marginStart: 10,
         marginEnd: 10,
@@ -93,22 +138,56 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
         backgroundColor: '#FFF'
-    }, activityBackground: {
+    }, 
+    activityBackground: {
         flex: 1,
         backgroundColor: '#3f51b5'
-    }, activityTitle: {
+    }, 
+    activityTitle: {
         padding: 10,
         color: "#FFF",
         fontSize: 20,
         fontWeight: 'bold'
-    },circle: {
+    },
+    circle: {
         width: 10,
         height: 10,
         borderRadius: 10/2,
         marginTop:5,
         marginStart: 15,
+    },
+    unreadCountView: {
+        marginLeft: '50%', 
+        width: 25, 
+        height: 25, 
+        backgroundColor: 'red', 
+        alignSelf: 'flex-end', 
+        borderRadius: 25/2, 
+        padding: 3, 
+        justifyContent: 'flex-end',
+    },
+    unreadCountText: {
+        color: 'white', 
+        fontSize: 12, 
+        textAlign: 'center'
+    },
+    activityView: {
+        flexDirection: 'row', 
+        flexWrap: 'nowrap', 
+        justifyContent:'space-between', 
+        alignItems: 'center'
+    }, 
+    itemView: {
+        flex: 1, 
+        flexDirection: 'row', 
+        width: '100%'
+    },
+    blockedUserText: {
+        color: 'red', 
+        fontSize: 12, 
+        fontWeight: 'bold'
     }
-})
+});
 
 class Contacts extends Component {
     
@@ -118,12 +197,12 @@ class Contacts extends Component {
     }
 
     constructor() {
-        super()
+        super();
         this.state = {
             dataItem: '?',
             users: [],
             block: [],
-        }
+        };
         this.blockUser = this.blockUser.bind(this);
         this.onPress = this.onPress.bind(this);
     }
@@ -133,42 +212,41 @@ class Contacts extends Component {
         this.addUserListner();
     }
 
+    componentWillUnmount(){
+        CometChat.removeUserListener("CONTACT_USER_LISTNER");
+    }
+
     blockUser(){
-        console.log("Block User", this.state.block.uid);
         if(this.state.block != ''){
             let usersList = [this.state.block.uid];
-            CometChat.blockUsers(usersList).then(list => {
-                console.log("users list blocked", { list });
-                this.setState({block: ''});
-                this.fetchUser();
-            }, error => {
-                console.log("Blocking user fails with error", error);
-            });
+            CometChat.blockUsers(usersList).then(
+                list => {
+                    this.setState({block: ''});
+                    this.fetchUser();
+                }, error => {
+                    console.log("Blocking user fails with error", error);
+                }
+            );
         }
         
     }
 
-     logout(){
-        CometChat.logout().then(() =>{
-            console.log("Logout completed successfully");
-            NavigationService.navigate('Login');
-        },error=>{
-          console.log("Logout failed with exception:",{error});
-        })
-     }
+    async logout(){
+        CometChat.removeConnectionListener("XMPPConnectionListener");
+        await CometChat.logout();
+        NavigationService.navigate('Login');
+    }
 
-     blockedUser(){
-        console.log("Blocked Users");
+    blockedUser(){
         NavigationService.navigate('Block');
     }
 
     render() {
-        console.log("helloworld!", this.state.users);
         return (
 
             <View style={styles.activityBackground}>
-                <View style={{ flexDirection: 'row', flexWrap: 'nowrap', justifyContent:'space-between', alignItems: 'center' }}>
-                    <Text style={[styles.activityTitle]}> Contacts </Text>
+                <View style={styles.activityView}>
+                    <Text style={styles.activityTitle}> Contacts </Text>
                     <Menu>
                         <MenuTrigger style={{ marginEnd: 20}} >
                             <Image source={require('./assets/images/menu_icon.png')} />
@@ -197,16 +275,15 @@ class Contacts extends Component {
                 />
             </View>
 
-        )
+        );
     }
 
     fetchUser() {
-        console.log('Fetch user called.....')
-        var limit = 30;
-        var usersRequest = new CometChat.UsersRequestBuilder().setLimit(limit).build();
+        let limit = 30;
+        let usersRequest = new CometChat.UsersRequestBuilder().setLimit(limit).build();
         usersRequest.fetchNext().then(
             userList => {
-                if(userList.length >0){
+                if(userList.length > 0){
                     CometChat.getUnreadMessageCountForAllUsers().then(array=>{
                         var unread = Object.keys(array);
                         if(unread.length > 0){
@@ -220,7 +297,7 @@ class Contacts extends Component {
                         this.setState({
                             users: userList,
                         });  
-                    })
+                    });
                 }
             },
             error => {
@@ -231,42 +308,36 @@ class Contacts extends Component {
     
     addUserListner(){
         let  listenerID = "CONTACT_USER_LISTNER";
-        let that=this;
+        let that = this;
         CometChat.addUserListener(
             listenerID,
             new CometChat.UserListener({
                 onUserOnline: onlineUser => {
-                    /* when someuser/friend comes online, user will be received here */
-                    console.log("On User Online:", { onlineUser });
+                    console.log("useronline");
                     that.state.users.map(user=>{
                         if (user.uid == onlineUser.uid){
-                            user.status="online"
-                            that.setState({users:[...that.state.users]})
+                            user.status = "online";
+                            that.setState({users:[...that.state.users]});
                         }
-                    })
+                    });
                 },
                 onUserOffline: offlineUser => {
-                    /* when someuser/friend went offline, user will be received here */
-                    console.log("On User Offline:", { offlineUser });
+                    console.log("useroffline");
                     that.state.users.map(user=>{
                         if (user.uid == offlineUser.uid){
-                            user.status="offline"
-                            that.setState({users:[...that.state.users]})
+                            user.status = "offline";
+                            that.setState({users:[...that.state.users]});
                         }
-                    })
+                    });
                 }
             })
         );
     }
 
     renderItem = ({item}) => {
-        console.log("Render item called "+JSON.stringify(item))
+        var isOnline,showUnreadCount,showBlockedLabel;
 
-        let isOnline,showUnreadCount,showBlockedLabel;
-
-        if (item.avatar == null) {
-            item.avatar = "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"  // default avatar
-        }
+        item.avatar = item.avatar ? item.avatar : "user";
 
         if(item.status === 'online'){
             isOnline = true;
@@ -287,34 +358,26 @@ class Contacts extends Component {
         }
 
         return (
-
             <TouchableRipple
                 delayLongPress={10}
                 onPress={() => {
-                    this.onPress(item)
+                    this.onPress(item);
                 }}
                 onLongPress={() => {
-                    console.log("on long press");
                     this.showActionSheet(item);
                 }}
                 rippleColor="rgba(0, 0, 0, .20)">
-                <View style={styles.item} >
-                    <Image
-                        style={styles.image}
-                        resizeMode={"cover"}
-                        source={{uri: item.avatar}}
-                    />
+                <View style={styles.item}>
+                    { item.avatar === 'user' ? <FontAwesome style={[{alignSelf: 'center', height: 50, width: 50, borderRadius: 30}]} name='user' size={50} color="#3f51b5"/> : <Image style={styles.image} resizeMode={"cover"} source={{uri: item.avatar}} />}
                     <View>
-                        <View style={[{ flex: 1, flexDirection: 'row', width: '100%' }]}>
-                            <Text>{item.name}</Text>  
-                            { showBlockedLabel ? <Text style={{ color: 'red', fontSize: 12, fontWeight: 'bold' }}> blocked </Text>: null}          
-                            { showUnreadCount ? <View style={{ width: 25, height: 25, backgroundColor: 'red', alignContent: 'flex-end', marginLeft: '65%', borderRadius: 25/2, padding: 3, justifyContent: 'center' }}><Text style={{ color: 'white', fontSize: 12, textAlign: 'center' }}>{item.unreadCount}</Text></View> : null }
+                        <View style={styles.itemView}>
+                            <Text>{item.name}</Text>
+                            { showBlockedLabel ? <Text style={styles.blockedUserText}> blocked </Text>: null}          
+                            { showUnreadCount ? <View style={styles.unreadCountView}><Text style={styles.unreadCountText}>{item.unreadCount}</Text></View> : null }
                         </View>
-                        
-
-                        <View style={[{flexDirection: 'row' }]}>
+                        <View style={{flexDirection: 'row' }}>
                             <View style={[styles.circle,{ backgroundColor: isOnline?'#76ff03': '#9e9e9e'}]} />
-                            <Text style={[{marginStart:5}]}>
+                            <Text style={{marginStart:5}}>
                                 {item.status}
                             </Text>
                         </View>
@@ -335,6 +398,7 @@ class Contacts extends Component {
             uid: item.uid,
             username: item.name,
             status: item.status,
+            avatar: item.avatar ? item.avatar : 'user',
         });
     }
 }
@@ -342,26 +406,22 @@ class Contacts extends Component {
 class Groups extends Component {
 
     constructor() {
-        super()
+        super();
         this.state = {
             dataItem: '?',
             groups: [],
-        }
-        this.onPress = this.onPress.bind(this)
-        this.fetchGroups()
+        };
+        this.onPress = this.onPress.bind(this);
+        this.fetchGroups();
     }
 
-    logout(){
-        CometChat.logout().then(() =>{
-            console.log("Logout completed successfully");
-            NavigationService.navigate('Login');
-        },error=>{
-          console.log("Logout failed with exception:",{error});
-        })
-     }
+    async logout(){
+        CometChat.removeConnectionListener("XMPPConnectionListener");
+        await CometChat.logout();
+        NavigationService.navigate('Login');
+    }
 
-     blockedUser(){
-        console.log("Blocked Users");
+    blockedUser(){
         NavigationService.navigate('Block');
     }
 
@@ -369,7 +429,7 @@ class Groups extends Component {
         return (
 
             <View style={styles.activityBackground}>
-                <View style={{ flexDirection: 'row', flexWrap: 'nowrap', justifyContent:'space-between', alignItems: 'center' }}>
+                <View style={styles.activityView}>
                 <Text style={styles.activityTitle}> Groups </Text>
                     <Menu>
                         <MenuTrigger style={{ marginEnd: 20}} >
@@ -388,17 +448,16 @@ class Groups extends Component {
                         renderItem={this.renderItem}/>
                 </View>
             </View>
-        )
+        );
     }
 
     fetchGroups() {
-        var limit = 30;
+        let limit = 30;
 
-        var groupsRequest = new CometChat.GroupsRequestBuilder().setLimit(limit).build();
+        let groupsRequest = new CometChat.GroupsRequestBuilder().setLimit(limit).build();
 
         groupsRequest.fetchNext().then(
             groupList => {
-                console.log("Groups list fetched successfully", groupList);
                 if(groupList.length >0){
                     CometChat.getUnreadMessageCountForAllGroups().then(array=>{
                         var unread = Object.keys(array);
@@ -413,11 +472,10 @@ class Groups extends Component {
                         this.setState({
                             groups: groupList,
                         });
-                    })
+                    });
                 }
                 this.state.groups.map(group=>{
                     CometChat.getUnreadMessageCountForGroup(group.guid).then( array => {
-                        console.log('array',array);
                         if(array[group.guid] == undefined || array[group.guid] == 'undefined'){
                             array[group.guid] = 0;
                         }
@@ -428,7 +486,6 @@ class Groups extends Component {
                     });
                     
                 });
-                console.log("Groups list 1", this.state.groups);
             },
             error => {
                 console.log("Groups list fetching failed with error", error);
@@ -437,35 +494,22 @@ class Groups extends Component {
     }
 
     renderItem = ({item}) => {
-        if (item.avatar == null) {
-            item.avatar = "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"  // default avatar
-        }
-
+        item.avatar = item.avatar ? item.avatar : 'group';
+        showUnreadCount = false;
         if(item.unreadCount > 0){
             showUnreadCount = true;
-        }else{
-            showUnreadCount = false;
         }
 
         return (
-
             <TouchableRipple
-                onPress={() => {
-                    this.onPress(item)
-                }}
-                rippleColor="rgba(0, 0, 0, .20)">
+            onPress={() => {
+                this.onPress(item);
+            }}
+            rippleColor="rgba(0, 0, 0, .20)">
                 <View style={styles.item}>
-
-                    <View style={styles.roundedbackgroud}>
-                        <FontAwesome style={[{alignSelf: 'center'}]} name='group' size={20} color="#FFF"/>
-                    </View>
-
-                    <Text style={styles.userName}>
-                        {item.name}
-                    </Text>
-
-                    { showUnreadCount ? <View style={{ width: 25, height: 25, backgroundColor: 'red', alignContent: 'flex-end', marginLeft: '15%', borderRadius: 25/2, justifyContent: 'center', padding: 3 }}><Text style={{ color: 'white', fontSize: 12, textAlign: 'center' }}>{item.unreadCount}</Text></View> : null }
-
+                    { item.avatar === 'group' ? <FontAwesome style={[{alignSelf: 'center'}]} name='group' size={50} color="#3f51b5"/> : <Image style={styles.image} resizeMode={"cover"} source={{uri: item.avatar}} />}
+                    <Text style={styles.userName}>{item.name}</Text>
+                    { showUnreadCount ? <View style={styles.unreadCountView}><Text style={styles.unreadCountText}>{item.unreadCount}</Text></View> : null }
                 </View>
             </TouchableRipple>
         );
@@ -478,12 +522,10 @@ class Groups extends Component {
                 this.setState({groups:[...this.state.groups]});
             }
         });
-        console.log(this.state.groups);
-        console.log('Group id = ' + item.guid);
-        console.log('Group name = ' + item.name);
         NavigationService.navigate('Group', {
             guid: item.guid,
             username: item.name,
+            avatar: item.avatar ? item.avatar : 'group'
         });
     }
 }

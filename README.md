@@ -10,7 +10,7 @@
 </br>
 </div>
 
-CometChat React Native app (built using **CometChat Pro Java Script SDK**) is a text messaging app capable of **one-on-one** (private) and **group** messaging. 
+CometChat React Native app (built using **CometChat Pro React Native SDK**) is a text messaging app capable of **one-on-one** (private) and **group** messaging. 
 
 [![Platform](https://img.shields.io/badge/Platform-React--Native-green.svg)](#)      [![Platform](https://img.shields.io/badge/Language-JavaScript-yellowgreen.svg)](#)
 
@@ -28,7 +28,7 @@ CometChat React Native app (built using **CometChat Pro Java Script SDK**) is a 
    Simply Clone the project from cometchat-pro-react-native-sampe-app repository and open in Text Editor of choice. To run the React Native App you need to have react native setup on your system. To setup react native you can follow the Installation guide at the follwing link [React Native Setup](https://facebook.github.io/react-native/docs/getting-started).
 
 
-## Make CometChat Pro JavaScript SDK Compatilbe with React Native
+## Make CometChat Pro React NAtive SDK Compatilbe with React Native
 
 We have injected two components from sample app to make Java script SDK compatible with React Native the components are as follows:
 1] DOMParser
