@@ -10,13 +10,13 @@ export class MainCallScreen extends Component {
         super(props);
         let callListener = new CometChat.OngoingCallListener({
             onUserJoined: user => {
-                console.log('TEST => OngoingCallListener: User joined call:', user.getUid());
+                console.log('OngoingCallListener: User joined call:', user.getUid());
             },
             onUserLeft: user => {
-                console.log('TEST => OngoingCallListener: User left call:', user.getUid(), new Date().getTime());
+                console.log('OngoingCallListener: User left call:', user.getUid());
             },
             onCallEnded: call => {
-                console.log('TEST => OngoingCallListener: Call ended listener', call.getSessionId(), call.status);
+                console.log('OngoingCallListener: Call ended listener', call.getSessionId());
                 this.gotoChat();
             },
         });
@@ -24,8 +24,8 @@ export class MainCallScreen extends Component {
         this.sessionId = this.props.navigation.getParam('sessionId','sessionid');
         this.defaultLayout = this.props.navigation.getParam('enableDefaultLayout', 1);
         this.entity = this.props.navigation.getParam('entity', {});
-        this.entityType = this.props.navigation.getParam('entityType', 'default');
-        this.acceptedFrom = this.props.navigation.getParam('acceptedFrom', '');
+        this.entityType = this.props.navigation.getParam('entityType', 'user');
+        this.acceptedFrom = this.props.navigation.getParam('acceptedFrom', 'Home');
         this.callSettings = new CometChat.CallSettingsBuilder().setSessionID(this.sessionId).enableDefaultLayout(true).setCallEventListener(callListener).build();
     }
 
@@ -73,7 +73,7 @@ export class MainCallScreen extends Component {
                 });
             }else{
                 this.props.navigation.navigate('Group', {
-                    uid: this.entity.uid,
+                    uid: this.entity.guid,
                     username: this.entity.name,
                     avatar: this.entity.avatar ? this.entity.avatar : 'group',
                 });
@@ -83,8 +83,8 @@ export class MainCallScreen extends Component {
 
     render(){
         return(
-            <View style={{height: '100%', width: '100%', position: 'relative'}}>
-                <CometChat.CallingComponent callsettings= {this.callSettings} />
+            <View style={{flex: 1, background: '#000'}}>
+                <CometChat.CallingComponent callsettings= {this.callSettings} onFailure = {(e)=>{console.log('error', e);}} />
             </View>
         );
     }
