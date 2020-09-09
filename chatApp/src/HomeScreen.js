@@ -17,7 +17,8 @@ import NavigationService from './NavigationService';
 import { DefaultTheme } from 'react-native-paper';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Menu,MenuOptions,MenuOption,MenuTrigger } from 'react-native-popup-menu';
-
+import {requestMultiple,checkMultiple,PERMISSIONS,RESULTS} from 'react-native-permissions';
+import {Platform} from 'react-native';
 import ActionSheet from 'react-native-actionsheet';
 
 const theme = {
@@ -75,6 +76,30 @@ export class HomeScreen extends Component {
             })
         );
         this._renderScene = this._renderScene.bind(this);
+        if(Platform.OS === 'android'){
+            checkMultiple([PERMISSIONS.ANDROID.CAMERA,PERMISSIONS.ANDROID.RECORD_AUDIO,PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE])
+            .then((statuses) => {
+                for (var key in statuses) {
+                    if (statuses.hasOwnProperty(key)) {
+                        switch (statuses[key]) {
+                            case RESULTS.UNAVAILABLE:
+                                break;
+                            case RESULTS.DENIED:
+                                requestMultiple([PERMISSIONS.ANDROID.CAMERA,PERMISSIONS.ANDROID.RECORD_AUDIO,PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE]).then((result) => {
+                                });
+                                break;
+                            case RESULTS.GRANTED:
+                                break;
+                            case RESULTS.BLOCKED:
+                                break;
+                        }
+                    }
+                }
+            })
+            .catch((error) => {
+                console.log('The permission error',error);
+            });
+        }
     }
 
     componentWillUnmount(){
