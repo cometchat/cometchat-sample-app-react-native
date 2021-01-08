@@ -10,8 +10,8 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@cometchat-pro/react-native-calls": "^1.0.0",
-    "@cometchat-pro/react-native-chat": "2.1.0",
+    "@cometchat-pro/react-native-calls": "^1.0.3",
+    "@cometchat-pro/react-native-chat": "2.1.6",
     "@react-native-community/async-storage": "^1.12.0",
     "@react-native-community/masked-view": "^0.1.5",
     "base-64": "0.1.0",
