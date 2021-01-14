@@ -1,84 +1,95 @@
 <div style="width:100%">
+    <div style="width:50%;">
+        <div align="center">
+       <a> <img align="center" width="180" height="180" alt="CometChat" src="./images/logo.png"> </a>  
+        </div>    
+    </div>    
+</div>
+
+
+
+</br></br>
+
+# CometChat Kitchen Sink Sample App (React Native)
+[![Platform](https://img.shields.io/badge/Platform-ReactNative-brightgreen)](#)
+![GitHub repo size](https://img.shields.io/github/repo-size/cometchat-pro/react-native-chat-app)
+![GitHub contributors](https://img.shields.io/github/contributors/cometchat-pro/react-native-chat-app)
+![GitHub stars](https://img.shields.io/github/stars/cometchat-pro/react-native-chat-app?style=social)
+![Twitter Follow](https://img.shields.io/twitter/follow/cometchat?style=social)
+</br></br>
+
 <div style="width:100%">
-	<div style="width:50%; display:inline-block">
-		<p align="center">
-		<img align="center" width="180" height="180" alt="" src="https://github.com/cometchat-pro/ios-swift-chat-app/blob/master/Screenshots/CometChat%20Logo.png">	
-		</p>	
-	</div>	
-</div>
-</br>
-</br>
+    <div style="width:50%; display:inline-block">
+        <div align="center">
+          <img align="left" alt="Main" src="./images/main.png">    
+        </div>    
+    </div>    
 </div>
 
-CometChat React Native app (built using **CometChat Pro React Native SDK**) is a text messaging app capable of **one-on-one** (private) and **group** messaging. 
+</br></br>
 
-[![Platform](https://img.shields.io/badge/Platform-React--Native-green.svg)](#)      [![Platform](https://img.shields.io/badge/Language-JavaScript-yellowgreen.svg)](#)
+CometChat Kitchen Sink Sample App (built using **CometChat UIKit**) is a fully functional real-time messaging app capable of private (one-on-one), group messaging, voice & video calling.
 
-## Table of Contents
+## Features
 
-1. [Installation ](#installtion)
+- Login
+- Private(1-1) & Group conversations
+- Voice & video calling & conferencing
+- Rich Media Attachments
+- Typing Indicators
+- Text, Media and Custom messages
+- Read receipts
+- Online Presence Indicators
+- Message History
+- Users & Friends List
+- Groups List
+- Search by users and groups
+- Conversations List
+- Threaded Conversations
 
-2. [Config and Run App](#Config-App)
+ ## Extensions
 
-3. [Contribute](#contribute)
+ [Thumbnail Generation](https://prodocs.cometchat.com/docs/extensions-thumbnail-generation) | [Link Preview](https://prodocs.cometchat.com/docs/extensions-link-preview) | [Rich Media Preview](https://prodocs.cometchat.com/docs/extensions-rich-media-preview) | [Smart Reply](https://prodocs.cometchat.com/docs/extensions-smart-reply)| [Emojis](https://prodocs.cometchat.com/docs/extensions-emojis) | [Polls](https://prodocs.cometchat.com/docs/extensions-polls) | [Reactions](https://prodocs.cometchat.com/docs/extensions-reactions) | [Stickers](https://prodocs.cometchat.com/docs/extensions-stickers)
+
+<hr/> 
+
+# Installation
+
+1. Simply clone the project from this project. After cloning the repository:
+
+# Setting up the sample app
+
+- Obtain your `APP_ID`, `AUTH_KEY` and `REGION` from [CometChat-Pro Dashboard](https://app.cometchat.io/)
+
+- Open the project.
+
+- Run `cd CometChatWorkspace/cometchat-app`.
+
+- Modify `APP_ID` and `AUTH_KEY` and `REGION` with your own (update the `CONSTS.ts` file).
+
+- Hit `npm i` to install the packages.
+
+- Run `cd ios` then run `pod install` to install the pods. Once pods are installed run `cd ..` to go back to the root folder. 
+
+- Run the app on iOS using `npx react-native run-ios` & on Android using `npx react-native run-android`.
+
+- Select demo users or enter the **UID** at the time of login once the app is launched.
+
+Build and run the Sample App.
+
+# Learn more about UI-Kit
+
+Learn more about how to integrate [UI Kit](https://github.com/cometchat-pro/react-native-chat-ui-kit) inside your app.
 
 
-## Installtion
+# Troubleshooting
 
-   Simply Clone the project from cometchat-pro-react-native-sampe-app repository and open in Text Editor of choice. To run the React Native App you need to have react native setup on your system. To setup react native you can follow the Installation guide at the follwing link [React Native Setup](https://facebook.github.io/react-native/docs/getting-started).
+- To read the full dcoumentation on UI Kit integration visit our [Documentation](https://prodocs.cometchat.com/docs/react-native-ui-kit) .
 
-
-## Make CometChat Pro React NAtive SDK Compatilbe with React Native
-
-We have injected two components from sample app to make Java script SDK compatible with React Native the components are as follows:
-1] DOMParser
-2] base-64 encode and decode
-
-This is done in LoginScreen.js file in src folder. Here base-64 can be injected globally but DomParser needs to be injected only after CometChat.init().
-
-## Config-App
+- Facing any issues while integrating or installing the UI Kit please <a href="https://app.cometchat.io/"> connect with us via real time support present in CometChat Dashboard.</a>.
 
 
-<h2> v2.0+ </h2>
-<h4>
-	Git clone and checkout master or v2 branch.
-</h4>
-<h4>Get your Application Keys</h4>
-<a href="https://app.cometchat.io/" target="_blank">Signup for CometChat</a> and then:
 
-1. Create a new app - select version as v2 and region as Europe or USA.
+# Contact 📪
 
-2. Head over to the API Keys section and click on the Create API Key button
-
-3. Enter a name and select the scope as Auth Only
-
-4. Now note the API Key and App ID
-
-5. Replace  `appID`, &nbsp; `apiKey` and &nbsp; `appRegion` in *src/LoginScreen.js* with your APP ID, &nbsp; API KEY &nbsp;and&nbsp; APP Region respectively.<br/>
-
-Note : APP Region values to "us" or "eu".
-
-<h2> v1.0+ </h2>
-
-<h4>
-        Git clone and checkout v1 branch.
-</h4>
-
-<h4>Get your Application Keys</h4>
-
-  <a href="https://app.cometchat.io/" target="_blank">Signup for CometChat</a> and then:
-
-  1. Create a new app - select version as v1
-
-  2. Head over to the API Keys section and click on the Create API Key button<br/>
-
-  3. Enter a name and select the scope as Auth Only<br/>
-
-  4. Now note the API Key and App ID<br/>
-
-  5. Replace  `appID` &nbsp; and &nbsp; `apiKey` in *src/LoginScreen.js* with your APP ID, &nbsp;and&nbsp; API KEY respectively.<br/>
-       
-## Contribute
-   
-   Feel free to make a suggestion by creating a pull request.
-   
+Contact us via real time support present in [CometChat Dashboard](https://app.cometchat.com/).
