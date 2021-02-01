@@ -5,8 +5,42 @@ import {Provider} from 'react-redux';
 import {store, persistor} from './store/store';
 import StackNavigator from './StackNavigator';
 import {COMETCHAT_CONSTANTS} from './CONSTS';
-import {LogBox} from 'react-native';
+import {
+  LogBox,
+  PermissionsAndroid,
+  StyleSheet,
+  Text,
+  Platform,
+} from 'react-native';
 import {PersistGate} from 'redux-persist/integration/react';
+import theme from './react-native-chat-ui-kit/src/resources/theme';
+ 
+ const styles = StyleSheet.create({
+   defaultFontFamily: {
+     fontFamily: theme.fontFamily,
+   },
+ });
+
+const customProps = {style: styles.defaultFontFamily};
+
+// To set default font family, avoiding issues with specific android fonts like OnePlus Slate
+function setDefaultFontFamily() {
+   const TextRender = Text.render;
+   const initialDefaultProps = Text.defaultProps;
+   Text.defaultProps = {
+     ...initialDefaultProps,
+     ...customProps,
+   };
+   Text.render = function render(props) {
+     let oldProps = props;
+     props = {...props, style: [customProps.style, props.style]};
+     try {
+       return TextRender.apply(this, arguments);
+     } finally {
+       props = oldProps;
+     }
+   };
+ }
 
 const App = () => {
   LogBox.ignoreAllLogs();
@@ -15,9 +49,36 @@ const App = () => {
     .setRegion(COMETCHAT_CONSTANTS.REGION)
     .build();
 
-  CometChat.init(COMETCHAT_CONSTANTS.APP_ID, appSetting).catch(() => {
-    return null;
-  });
+  useEffect(() => {
+    console.log("init***")
+    CometChat.init(COMETCHAT_CONSTANTS.APP_ID, appSetting).catch(() => {
+      return null;
+    });
+
+    if (Platform.OS === 'android') {
+      setDefaultFontFamily();
+    }
+
+    const getPermissions = async () => {
+      if (Platform.OS === 'android') {
+        let granted = await PermissionsAndroid.requestMultiple([
+          PermissionsAndroid.PERMISSIONS.CAMERA,
+          PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+          PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+        ]);
+        if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+          granted = await PermissionsAndroid.requestMultiple([
+            PermissionsAndroid.PERMISSIONS.CAMERA,
+            PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+            PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+            PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+          ]);
+        }
+      }
+    };
+    getPermissions();
+  }, []);
 
   return (
     <Provider store={store}>
