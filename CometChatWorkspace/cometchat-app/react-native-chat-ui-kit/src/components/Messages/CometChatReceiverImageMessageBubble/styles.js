@@ -11,6 +11,9 @@ export default StyleSheet.create({
     maxWidth: '81%',
     borderRadius: 12,
   },
+  container: { marginBottom: 16 },
+  mainContainer: { flexDirection: 'row', alignItems: 'flex-start' },
+  senderNameContainer: { marginBottom: 5 },
   containerStyle: {
     alignItems: 'center',
     flexDirection: 'row',
@@ -19,7 +22,6 @@ export default StyleSheet.create({
     fontSize: 11,
     fontWeight: '500',
     textTransform: 'uppercase',
-    // display: 'inline-block',
   },
   avatarStyle: {
     flexWrap: 'wrap',

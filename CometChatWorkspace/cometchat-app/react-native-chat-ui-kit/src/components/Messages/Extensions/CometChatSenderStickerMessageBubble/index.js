@@ -1,14 +1,20 @@
 import React, { useState } from 'react';
 import { View, TouchableWithoutFeedback } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import { CometChatReadReceipt, CometChatThreadedMessageReplyCount } from '../../';
+import {
+  CometChatReadReceipt,
+  CometChatThreadedMessageReplyCount,
+} from '../../';
 import { CometChatMessageReactions } from '../index';
 import style from './styles';
 
-export default (props) => {
+import * as enums from '../../../../utils/enums';
+import * as actions from '../../../../utils/actions';
+
+const CometChatSenderStickerMessageBubble = (props) => {
   const [message] = useState({
     ...props.message,
-    messageFrom: 'sender',
+    messageFrom: enums.MESSAGE_FROM_SENDER,
   });
   let stickerData = null;
   let stickerImg = null;
@@ -19,11 +25,11 @@ export default (props) => {
     stickerData = message.data.customData;
 
     if (Object.prototype.hasOwnProperty.call(stickerData, 'sticker_url')) {
-      // const stickerName = Object.prototype.hasOwnProperty.call(stickerData, 'sticker_name')
-      //   ? stickerData.sticker_name
-      //   : 'Sticker';
       stickerImg = (
-        <FastImage source={{ uri: stickerData.sticker_url }} style={style.messageImgWrapper} />
+        <FastImage
+          source={{ uri: stickerData.sticker_url }}
+          style={style.messageImgWrapper}
+        />
       );
     }
   }
@@ -31,7 +37,7 @@ export default (props) => {
     <View style={style.messageContainerStyle}>
       <TouchableWithoutFeedback
         onLongPress={() =>
-          props.actionGenerated('openMessageActions', message)
+          props.actionGenerated(actions.OPEN_MESSAGE_ACTIONS, message)
         }>
         <View style={style.messageWrapperStyle}>{stickerImg}</View>
       </TouchableWithoutFeedback>
@@ -46,3 +52,4 @@ export default (props) => {
     </View>
   );
 };
+export default CometChatSenderStickerMessageBubble;

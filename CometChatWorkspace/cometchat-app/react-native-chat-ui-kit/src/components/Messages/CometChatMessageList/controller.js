@@ -21,7 +21,6 @@ export class MessageListManager {
     enums.CATEGORY_CALL,
   ];
 
-  // categories = [enums.CATEGORY_CUSTOM];
   types = [
     enums.MESSAGE_TYPE_TEXT,
     enums.MESSAGE_TYPE_IMAGE,
@@ -34,7 +33,6 @@ export class MessageListManager {
     enums.CALL_TYPE_AUDIO,
     enums.CALL_TYPE_VIDEO,
   ];
-  // types = [];
 
   msgListenerId = `message_${new Date().getTime()}`;
 
@@ -42,17 +40,16 @@ export class MessageListManager {
 
   callListenerId = `call_${new Date().getTime()}`;
 
-  constructor(widgetSettings, item, type, parentMessageId) {
+  constructor(item, type, parentMessageId) {
     this.item = item;
     this.type = type;
     this.parentMessageId = parentMessageId;
 
     const messageFilterManager = new MessageFilter();
-    const categories = messageFilterManager.getCategories(widgetSettings);
-    const types = messageFilterManager.getTypes(widgetSettings);
+    const categories = messageFilterManager.getCategories();
+    const types = messageFilterManager.getTypes();
 
-    if (type === 'user') {
-      //   console.log('in manager', type);
+    if (type === enums.TYPE_USER) {
       if (this.parentMessageId) {
         this.messageRequest = new CometChat.MessagesRequestBuilder()
           .setUID(item.uid)
@@ -70,7 +67,7 @@ export class MessageListManager {
           .setLimit(this.limit)
           .build();
       }
-    } else if (type === 'group') {
+    } else if (type === enums.TYPE_GROUP) {
       if (this.parentMessageId) {
         this.messageRequest = new CometChat.MessagesRequestBuilder()
           .setGUID(item.guid)

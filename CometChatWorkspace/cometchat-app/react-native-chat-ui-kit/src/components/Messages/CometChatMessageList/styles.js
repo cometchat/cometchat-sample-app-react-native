@@ -44,8 +44,6 @@ export default StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 12,
     borderRadius: 100,
-
-    //   borderRadius: 10
   },
   decoratorMessageStyle: {
     overflow: 'hidden',

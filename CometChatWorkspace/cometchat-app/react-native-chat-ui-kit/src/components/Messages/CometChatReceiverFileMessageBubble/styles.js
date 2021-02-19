@@ -70,4 +70,10 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  mainContainerStyle: { marginBottom: 16 },
+  messageContainer: { flexDirection: 'row', alignItems: 'flex-start' },
+  messageContainerStyle: { minWidth: '65%' },
+  attachmentNameStyle:{ flex: 1, marginRight: 4 },
+  senderNameContainer: { marginBottom: 5 },
 });
+

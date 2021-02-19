@@ -51,12 +51,36 @@ export const CATEGORY_CALL = 'call';
 export const CALL_TYPE_AUDIO = 'audio';
 export const CALL_TYPE_VIDEO = 'video';
 
+export const STATUS_TYPE_ONLINE = 'online';
+export const STATUS_TYPE_AVAILABLE = 'available';
+export const STATUS_TYPE_OFFLINE = 'offline';
+
+export const TYPE_USER = 'user';
+export const TYPE_GROUP = 'group';
+
+export const MESSAGE_FROM_RECEIVER = 'receiver';
+export const MESSAGE_FROM_SENDER = 'sender';
+export const MESSAGE_OF_SENDER = 'sender';
+export const MESSAGE_OF_RECEIVER = 'receiver';
+
 export const LIVE_REACTION_KEY = 'live_reaction';
+
+export const GROUP_TYPE_PUBLIC = 'public'
+export const GROUP_TYPE_PRIVATE = 'private';
+export const GROUP_TYPE_PROTECTED = 'protected';
+
+export const MEMBER_SCOPE_ADMIN = 'admin';
+export const MEMBER_SCOPE_MODERATOR = 'moderator';
+
 export const LIVE_REACTIONS = {
   heart: './resources/heart.png',
   thumbsup: '👍',
   clap: '👏',
   wink: '😉',
+};
+
+export const NAVIGATION_CONSTANTS = {
+  COMET_CHAT_MESSAGES: 'CometChatMessages',
 };
 
 export const LOCALE_KEY = 'cometchat:locale';

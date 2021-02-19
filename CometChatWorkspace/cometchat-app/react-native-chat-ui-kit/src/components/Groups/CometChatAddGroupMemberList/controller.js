@@ -3,7 +3,7 @@ import { CometChat } from '@cometchat-pro/react-native-chat';
 export class AddMembersManager {
   membersRequest = null;
 
-  userListenerId = new Date().getTime();
+  userListenerId = `add_member_user_${new Date().getTime()}`;
 
   constructor(friendsOnly, searchKey) {
     if (searchKey) {

@@ -16,7 +16,6 @@ import BottomSheet from 'reanimated-bottom-sheet';
 import style from './styles';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import DocumentPicker from 'react-native-document-picker';
-import { validateWidgetSettings } from '../../../utils/common';
 import { CometChat } from '@cometchat-pro/react-native-chat';
 import { heightRatio } from '../../../utils/consts';
 
@@ -31,9 +30,9 @@ export default class ComposerActions extends Component {
 
   takePhoto = async () => {
     try {
-      let granted=null
-      if (Platform.OS === "android"){
-         granted = await PermissionsAndroid.request(
+      let granted = null;
+      if (Platform.OS === 'android') {
+        granted = await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.CAMERA,
           {
             title: 'CometChat Camera Permission',
@@ -44,14 +43,14 @@ export default class ComposerActions extends Component {
         );
       }
       this.sheetRef.current.snapTo(1);
-      this.props.close()
-      if (Platform.OS==="ios"||granted === PermissionsAndroid.RESULTS.GRANTED) {
+      this.props.close();
+      if (
+        Platform.OS === 'ios' ||
+        granted === PermissionsAndroid.RESULTS.GRANTED
+      ) {
         launchCamera(
           {
-            // mediaType: 'photo',
             includeBase64: false,
-            // maxHeight: 200,
-            // maxWidth: 200,
           },
           (response) => {
             if (response.didCancel) {
@@ -60,8 +59,6 @@ export default class ComposerActions extends Component {
             let type = null;
             let name = null;
             if (Platform.OS === 'ios' && response.fileName !== undefined) {
-              // const ext = response.fileName.split('.')[1].toLowerCase();
-              // type = this.getMimeType(ext);
               name = response.fileName;
             } else {
               type = response.type;
@@ -78,7 +75,6 @@ export default class ComposerActions extends Component {
             this.props.sendMediaMessage(file, CometChat.MESSAGE_TYPE.IMAGE);
           },
         );
-      
       }
     } catch (err) {
       this.sheetRef.current.snapTo(1);
@@ -218,43 +214,6 @@ export default class ComposerActions extends Component {
       </TouchableOpacity>
     );
 
-    // if photos, videos upload are disabled for chat wigdet in dashboard
-    if (
-      validateWidgetSettings(
-        this.props.widgetsettings,
-        'send_photos_videos',
-      ) === false
-    ) {
-      avp = null;
-      vp = null;
-      takePhotoBtn = null;
-    }
-
-    // if files upload are disabled for chat wigdet in dashboard
-    if (
-      validateWidgetSettings(this.props.widgetsettings, 'send_files') === false
-    ) {
-      docs = null;
-    }
-
-    // if stickers is disabled for chat wigdet in dashboard
-    if (
-      validateWidgetSettings(this.props.widgetsettings, 'show_stickers') ===
-      false
-    ) {
-      stickerBtn = null;
-    }
-
-    // if polls are disabled for chat wigdet in dashboard
-    if (
-      validateWidgetSettings(
-        this.props.widgetsettings,
-        'allow_creating_polls',
-      ) === false
-    ) {
-      createPollBtn = null;
-    }
-
     return (
       <View style={style.reactionDetailsContainer}>
         {takePhotoBtn}
@@ -273,13 +232,13 @@ export default class ComposerActions extends Component {
     const { visible, close } = this.props;
     return (
       <Modal transparent animated animationType="fade" visible={visible}>
-        <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.7)' }}>
+        <View style={style.bottomSheetContainer}>
           <TouchableWithoutFeedback
             onPress={() => {
               this.sheetRef.current.snapTo(1);
               this.props.close();
             }}>
-            <View style={{ flex: 1 }}>
+            <View style={style.fullFlex}>
               <BottomSheet
                 ref={this.sheetRef}
                 snapPoints={[356 * heightRatio, 0]}

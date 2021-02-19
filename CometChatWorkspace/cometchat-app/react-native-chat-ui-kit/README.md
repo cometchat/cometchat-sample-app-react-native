@@ -7,8 +7,7 @@
 </div>
 
 <br/><br/>
-
-# CometChat React Native Chat UI Kit
+# CometChat React Native UI Kit
 
 </br></br>
 
@@ -22,7 +21,7 @@
 
 </br></br>
 
-CometChat React Native Chat UI Kit is a collection of custom **UI Components** designed to build chat application with fully customizable UI. It is designed to avoid boilerplate code for building UI.
+CometChat React Native UI Kit is a collection of custom **UI Components** designed to build chat application with fully customizable UI. It is designed to avoid boilerplate code for building UI.
 ---
 
 ## Prerequisites
@@ -39,7 +38,7 @@ Before you begin, ensure you have met the following requirements:
 
 ---
 
-## Installing CometChat React Native Chat UI Kit
+## Installing CometChat React Native UI Kit
 
 ## 1. Setup 🛠
 
@@ -53,10 +52,10 @@ To install React-Native UI Kit, you need to first register on CometChat Dashboar
 ### ii. Add the CometChat Dependency
 
 ```javascript
-  npm install @cometchat-pro/react-native-chat@2.1.6 --save
+  npm install @cometchat-pro/react-native-chat@2.1.7 --save
 ```
 
-### iii. Other Required DEPENDENCIES
+### iii. Other required DEPENDENCIES
 
 These packages help make the ui-kit smooth and functioning
 
@@ -76,6 +75,7 @@ These packages help make the ui-kit smooth and functioning
 [@react-navigation/stack](https://reactnavigation.org/docs/stack-navigator/)</br>
 [@react-native-picker/picker](https://github.com/react-native-picker/picker)</br>
 [@react-native-community/async-storage](https://github.com/react-native-async-storage/async-storage)</br>
+[@cometchat-pro/react-native-calls](https://www.npmjs.com/package/@cometchat-pro/react-native-calls)</br>
 <br/>
 
 ## 2. Configure CometChat inside your app
@@ -86,6 +86,8 @@ The `init()` method initializes the settings required for CometChat.
 We suggest calling the `init()` method on app startup, preferably in the `created()` method of the Application class.
 
 ```javascript
+import {CometChat} from '@cometchat-pro/react-native-chat';
+
 const appID = 'APP_ID';
 const region = 'REGION';
 const appSetting = new CometChat.AppSettingsBuilder()
@@ -113,6 +115,8 @@ CometChat.init(appID, appSetting).then(
 This method takes `UID` and `Auth Key` as input parameters and returns the User object containing all the information of the logged-in user..
 
 ```javascript
+import {CometChat} from '@cometchat-pro/react-native-chat';
+
 const authKey = 'AUTH_KEY';
 const uid = 'SUPERHERO1';
 
@@ -137,8 +141,8 @@ CometChat.login(uid, authKey).then(
 ## 3. Add UI Kit to your project
 
 - Clone this repository.
-- Copy the `react-native-chat-ui-kit` folder to your source folder.
-- Copy all the peer dependencies from package.json into your project's package.json and install them using `npm i`.
+- Copy the `react-native-ui-kit` folder to your source folder.
+- Copy all the peer dependencies from package.json into your project's package.json and install them using `npm install`.
 
 <br/>
 

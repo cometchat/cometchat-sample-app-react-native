@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  Linking,
-  TouchableOpacity,
-  FlatList,
-  Dimensions,
-} from 'react-native';
+import { View, Text, Linking, TouchableOpacity, FlatList } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { CometChatManager } from '../../../utils/controller';
 import { SharedMediaManager } from './controller';
@@ -19,14 +12,15 @@ import VideoPlayer from 'react-native-video-controls';
 
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-import { heightRatio } from '../../../utils/consts';
+import { deviceHeight, heightRatio } from '../../../utils/consts';
+import { logger } from '../../../utils/common';
 
 export default class CometChatSharedMedia extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      messagetype: 'image',
+      messageType: enums.MESSAGE_TYPE_IMAGE,
       messageList: [],
       imageView: false,
       activeMessage: {},
@@ -39,19 +33,19 @@ export default class CometChatSharedMedia extends React.Component {
     this.SharedMediaManager = new SharedMediaManager(
       this.props.item,
       this.props.type,
-      this.state.messagetype,
+      this.state.messageType,
     );
     this.getMessages();
     this.SharedMediaManager.attachListeners(this.messageUpdated);
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.messagetype !== this.state.messagetype) {
+    if (prevState.messageType !== this.state.messageType) {
       this.SharedMediaManager = null;
       this.SharedMediaManager = new SharedMediaManager(
         this.props.item,
         this.props.type,
-        this.state.messagetype,
+        this.state.messageType,
       );
       this.getMessages();
       this.SharedMediaManager.attachListeners(this.messageUpdated);
@@ -63,6 +57,11 @@ export default class CometChatSharedMedia extends React.Component {
     this.SharedMediaManager = null;
   }
 
+  /**
+   * Handle listener actions on new message or message deletion
+   * @param key: action name
+   * @param message: message object
+   */
   messageUpdated = (key, message) => {
     switch (key) {
       case enums.MESSAGE_DELETED:
@@ -76,13 +75,17 @@ export default class CometChatSharedMedia extends React.Component {
     }
   };
 
+  /**
+   * Update shared media view on message deleted
+   * @param deletedMessage: message object
+   */
   messageDeleted = (deletedMessage) => {
     const messageType = deletedMessage.data.type;
     if (
-      this.props.type === 'group' &&
-      deletedMessage.getReceiverType() === 'group' &&
+      this.props.type === enums.TYPE_GROUP &&
+      deletedMessage.getReceiverType() === enums.TYPE_GROUP &&
       deletedMessage.getReceiver().guid === this.props.item.guid &&
-      messageType === this.state.messagetype
+      messageType === this.state.messageType
     ) {
       const messageList = [...this.state.messageList];
       const filteredMessages = messageList.filter(
@@ -92,13 +95,17 @@ export default class CometChatSharedMedia extends React.Component {
     }
   };
 
+  /**
+   * Update shared media view on message received
+   * @param message: message object
+   */
   messageReceived = (message) => {
     const messageType = message.data.type;
     if (
-      this.props.type === 'group' &&
-      message.getReceiverType() === 'group' &&
+      this.props.type === enums.TYPE_GROUP &&
+      message.getReceiverType() === enums.TYPE_GROUP &&
       message.getReceiver().guid === this.props.item.guid &&
-      messageType === this.state.messagetype
+      messageType === this.state.messageType
     ) {
       let messages = [...this.state.messageList];
       messages = messages.concat(message);
@@ -106,6 +113,10 @@ export default class CometChatSharedMedia extends React.Component {
     }
   };
 
+  /**
+   * Retrieve message list according to logged in user
+   * @param
+   */
   getMessages = () => {
     new CometChatManager()
       .getLoggedInUser()
@@ -118,27 +129,36 @@ export default class CometChatSharedMedia extends React.Component {
             messageList = _.uniqBy(messageList, 'id');
 
             this.setState({ messageList });
-
-            // if (scrollToBottom) {
-            //   this.scrollToBottom();
-            // }
           })
-          .catch(() => {
-            // TODO: Handle the erros in contact list.
-            // console.error('[CometChatSharedMedia] getMessages fetchPrevious error', error);
+          .catch((error) => {
+            logger(
+              '[CometChatSharedMedia] getMessages fetchPrevious error',
+              error,
+            );
           });
       })
-      .catch(() => {
-        // console.log('[CometChatSharedMedia] getMessages getLoggedInUser error', error);
+      .catch((error) => {
+        logger(
+          '[CometChatSharedMedia] getMessages getLoggedInUser error',
+          error,
+        );
       });
   };
 
+  /**
+   * Scroll to bottom
+   * @param
+   */
   scrollToBottom = () => {
     if (this.messageContainer) {
       this.messageContainer.scrollTop = this.messageContainer.scrollHeight;
     }
   };
 
+  /**
+   * Handle on end reached of shared media list
+   * @param e: scroll event
+   */
   handleScroll = (e) => {
     const top = Math.round(e.currentTarget.scrollTop) === 0;
     if (top && this.state.messageList.length) {
@@ -146,28 +166,48 @@ export default class CometChatSharedMedia extends React.Component {
     }
   };
 
+  /**
+   * Handle media message clicked from the list
+   * @param type:media message clicked type
+   */
   mediaClickHandler = (type) => {
-    this.setState({ messagetype: type, messageList: [] });
+    this.setState({ messageType: type, messageList: [] });
   };
 
+  /**
+   * Get active message type - Images or Videos or Files
+   * @returns activeHeaderName for shared media
+   */
   getActiveType = () => {
-    if (this.state.messagetype === 'image') {
+    if (this.state.messageType === enums.MESSAGE_TYPE_IMAGE) {
       return 'Photos';
     }
-    if (this.state.messagetype === 'file') {
+    if (this.state.messageType === enums.MESSAGE_TYPE_FILE) {
       return 'Docs';
     }
     return 'Videos';
   };
 
+  /**
+   * Handle opening image view on  click on particular image from message list
+   * @param message: message object
+   */
   showImageView = (message) => {
     this.setState({ imageView: true, activeMessage: message });
   };
 
+  /**
+   * Handle closing image view
+   * @param
+   */
   hideImageView = () => {
     this.setState({ imageView: false });
   };
 
+  /**
+   * Return empty list component
+   * @param 
+  */
   emptyListComponent = () => {
     return (
       <View style={styles.emptyComponentContainerStyle}>
@@ -181,12 +221,12 @@ export default class CometChatSharedMedia extends React.Component {
 
   render() {
     const currentTheme = { ...theme, ...this.props.theme };
-    const { messagetype, messageList, imageView, activeMessage } = this.state;
+    const { messageType, messageList, imageView, activeMessage } = this.state;
 
     const bgColor = currentTheme.backgroundColor.lightGrey;
 
     const template = (message) => {
-      if (messagetype === 'image' && message.data.url) {
+      if (messageType === enums.MESSAGE_TYPE_IMAGE && message.data.url) {
         return (
           <TouchableOpacity
             style={[
@@ -206,7 +246,7 @@ export default class CometChatSharedMedia extends React.Component {
           </TouchableOpacity>
         );
       }
-      if (messagetype === 'video' && message.data.url) {
+      if (messageType === enums.MESSAGE_TYPE_VIDEO && message.data.url) {
         return (
           <View style={[styles.videoStyle]}>
             <VideoPlayer
@@ -216,20 +256,14 @@ export default class CometChatSharedMedia extends React.Component {
               disableSeekbar
               disableFullscreen
               disableVolume
-              style={[
-                {
-                  height: '100%',
-                  width: '100%',
-                  borderRadius: 12,
-                },
-              ]}
+              style={[styles.videoPlayerStyle]}
               paused
               resizeMode="contain"
             />
           </View>
         );
       }
-      if (messagetype === 'file' && message.data.attachments) {
+      if (messageType === enums.MESSAGE_TYPE_FILE && message.data.attachments) {
         return (
           <TouchableOpacity
             style={[styles.fileItemStyle, { backgroundColor: bgColor }]}
@@ -266,29 +300,33 @@ export default class CometChatSharedMedia extends React.Component {
         <View style={[styles.sectionContentStyle]}>
           <View style={styles.mediaBtnStyle}>
             <TouchableOpacity
-              onPress={() => this.mediaClickHandler('image')}
+              onPress={() => this.mediaClickHandler(enums.MESSAGE_TYPE_IMAGE)}
               style={[
-                messagetype === 'image'
+                messageType === enums.MESSAGE_TYPE_IMAGE
                   ? styles.activeButtonStyle
                   : styles.buttonStyle,
               ]}>
               <Text style={styles.buttonTextStyle}>Photos</Text>
             </TouchableOpacity>
-            {messagetype === 'file' ? <View style={styles.seperator} /> : null}
+            {messageType === enums.MESSAGE_TYPE_FILE ? (
+              <View style={styles.separator} />
+            ) : null}
             <TouchableOpacity
-              onPress={() => this.mediaClickHandler('video')}
+              onPress={() => this.mediaClickHandler(enums.MESSAGE_TYPE_VIDEO)}
               style={
-                messagetype === 'video'
+                messageType === enums.MESSAGE_TYPE_VIDEO
                   ? styles.activeButtonStyle
                   : styles.buttonStyle
               }>
               <Text style={styles.buttonTextStyle}>Videos</Text>
             </TouchableOpacity>
-            {messagetype === 'image' ? <View style={styles.seperator} /> : null}
+            {messageType === enums.MESSAGE_TYPE_IMAGE ? (
+              <View style={styles.separator} />
+            ) : null}
             <TouchableOpacity
-              onPress={() => this.mediaClickHandler('file')}
+              onPress={() => this.mediaClickHandler(enums.MESSAGE_TYPE_FILE)}
               style={[
-                messagetype === 'file'
+                messageType === enums.MESSAGE_TYPE_FILE
                   ? styles.activeButtonStyle
                   : styles.buttonStyle,
               ]}>
@@ -297,12 +335,12 @@ export default class CometChatSharedMedia extends React.Component {
           </View>
           <FlatList
             data={messages}
-            extraData={messagetype}
+            extraData={messageType}
             renderItem={({ item }) => {
               return template(item);
             }}
             style={{
-              height: Dimensions.get('window').height - 280 * heightRatio,
+              height: deviceHeight - 280 * heightRatio,
             }}
             columnWrapperStyle={styles.mediaItemColumnStyle}
             contentContainerStyle={styles.mediaItemStyle}

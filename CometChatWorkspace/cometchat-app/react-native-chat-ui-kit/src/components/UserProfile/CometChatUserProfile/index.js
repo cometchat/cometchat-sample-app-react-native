@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { CometChatManager } from '../../../utils/controller';
-// import { SvgAvatar } from '../../utils/svgavatar';
 import { CometChatAvatar } from '../../Shared';
 import styles from './styles';
 import { View, Text, SafeAreaView } from 'react-native';
 import theme from '../../../resources/theme';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { logger } from '../../../utils/common';
 
 const notificationIcon = <Icon name="notifications" size={28} />;
 const privacyIcon = <Icon name="security" size={28} />;
@@ -14,18 +14,25 @@ const chatIcon = <Icon name="chat" size={28} />;
 const helpIcon = <Icon name="help" size={28} />;
 const problemIcon = <Icon name="report-problem" size={28} />;
 
-export default (props) => {
+const CometChatUserProfile = (props) => {
   const [user, setUser] = useState({ name: '', avatar: null });
-  const ViewTheme = { ...theme, ...props.theme };
+  const viewTheme = { ...theme, ...props.theme };
 
+  /**
+   * Retrieve logged in user details 
+   * @param 
+  */
   const getProfile = () => {
     new CometChatManager()
       .getLoggedInUser()
       .then((loggedInUser) => {
         setUser(loggedInUser);
       })
-      .catch(() => {
-        // console.log('[CometChatUserProfile] getProfile getLoggedInUser error', error);
+      .catch((error) => {
+        logger(
+          '[CometChatUserProfile] getProfile getLoggedInUser error',
+          error,
+        );
       });
   };
 
@@ -37,10 +44,10 @@ export default (props) => {
     <View style={styles.avatarStyle}>
       <CometChatAvatar
         cornerRadius={18}
-        borderColor={ViewTheme.color.secondary}
+        borderColor={viewTheme.color.secondary}
         borderWidth={1}
-        image={{ uri: user.avatar }} // for the time being dummy.
-        name={user.name} // for the time being dummy.
+        image={{ uri: user.avatar }}
+        name={user.name}
       />
     </View>
   );
@@ -94,3 +101,4 @@ export default (props) => {
     </SafeAreaView>
   );
 };
+export default CometChatUserProfile;

@@ -1,8 +1,9 @@
 import React from 'react';
 import { View } from 'react-native';
 import styles from './styles';
+import * as enums from '../../../utils/enums';
 
-export default (props) => {
+const CometChatUserPresence = (props) => {
   let presenceStatus = {
     backgroundColor: 'rgb(85, 85, 85)',
   };
@@ -10,21 +11,14 @@ export default (props) => {
   const borderColor = props.borderColor || '#AAA';
   const cornerRadius = props.cornerRadius || 4.5;
 
-  if (props.status === 'online' || props.status === 'available') {
+  if (
+    props.status === enums.STATUS_TYPE_ONLINE ||
+    props.status === enums.STATUS_TYPE_AVAILABLE
+  ) {
     presenceStatus = {
       backgroundColor: 'rgb(0, 255, 0)',
     };
     borderWidth = 0;
-  }
-
-  if (
-    Object.prototype.hasOwnProperty.call(props, 'widgetsettings') &&
-    props.widgetsettings &&
-    Object.prototype.hasOwnProperty.call(props.widgetsettings, 'main') &&
-    Object.prototype.hasOwnProperty.call(props.widgetsettings.main, 'show_user_presence') &&
-    props.widgetsettings.main.show_user_presence === false
-  ) {
-    return null;
   }
 
   const borderStyle = {
@@ -33,5 +27,8 @@ export default (props) => {
     borderColor,
     borderRadius: cornerRadius,
   };
-  return <View style={[styles.statueIndicatorStyle, borderStyle, presenceStatus]} />;
+  return (
+    <View style={[styles.statueIndicatorStyle, borderStyle, presenceStatus]} />
+  );
 };
+export default CometChatUserPresence;
