@@ -1,9 +1,14 @@
 import React, { useCallback } from 'react';
 import { View, Text } from 'react-native';
 import { CometChat } from '@cometchat-pro/react-native-chat';
+import * as enums from '../../../utils/enums';
 import style from './styles';
 
-export default (props) => {
+const CometChatActionMessageBubble = (props) => {
+  /**
+   * Retrieve message text from message object according to message types
+   * @param 
+  */
   const getMessage = useCallback(() => {
     const call = props.message;
     const { loggedInUser } = props;
@@ -12,13 +17,13 @@ export default (props) => {
     switch (call.status) {
       case CometChat.CALL_STATUS.INITIATED: {
         message = 'Call initiated';
-        if (call.type === 'audio') {
-          if (call.receiverType === 'user') {
+        if (call.type === enums.CALL_TYPE_AUDIO) {
+          if (call.receiverType === enums.TYPE_USER) {
             message =
               call.callInitiator.uid === loggedInUser.uid
                 ? 'Outgoing audio call'
                 : 'Incoming audio call';
-          } else if (call.receiverType === 'group') {
+          } else if (call.receiverType === enums.TYPE_GROUP) {
             if (call.action === CometChat.CALL_STATUS.INITIATED) {
               message =
                 call.callInitiator.uid === loggedInUser.uid
@@ -31,13 +36,13 @@ export default (props) => {
                   : `${call.sender.name} rejected call`;
             }
           }
-        } else if (call.type === 'video') {
-          if (call.receiverType === 'user') {
+        } else if (call.type === enums.CALL_TYPE_VIDEO) {
+          if (call.receiverType === enums.TYPE_USER) {
             message =
               call.callInitiator.uid === loggedInUser.uid
                 ? 'Outgoing video call'
                 : 'Incoming video call';
-          } else if (call.receiverType === 'group') {
+          } else if (call.receiverType === enums.TYPE_GROUP) {
             if (call.action === CometChat.CALL_STATUS.INITIATED) {
               message =
                 call.callInitiator.uid === loggedInUser.uid
@@ -54,9 +59,9 @@ export default (props) => {
         break;
       }
       case CometChat.CALL_STATUS.ONGOING: {
-        if (call.receiverType === 'user') {
+        if (call.receiverType === enums.TYPE_USER) {
           message = 'Call accepted';
-        } else if (call.receiverType === 'group') {
+        } else if (call.receiverType === enums.TYPE_GROUP) {
           if (call.action === CometChat.CALL_STATUS.ONGOING) {
             message =
               call.sender.uid === loggedInUser.uid ? 'Call accepted' : `${call.sender.name} joined`;
@@ -78,16 +83,17 @@ export default (props) => {
       case CometChat.CALL_STATUS.UNANSWERED: {
         message = 'Call unanswered';
         if (
-          call.type === 'audio' &&
-          (call.receiverType === 'user' || call.receiverType === 'group')
+          call.type === enums.CALL_TYPE_AUDIO &&
+          (call.receiverType === enums.TYPE_USER || call.receiverType === enums.TYPE_GROUP)
         ) {
           message =
             call.callInitiator.uid === loggedInUser.uid
               ? 'Unanswered audio call'
               : 'Missed audio call';
         } else if (
-          call.type === 'video' &&
-          (call.receiverType === 'user' || call.receiverType === 'group')
+          call.type === enums.CALL_TYPE_VIDEO &&
+          (call.receiverType === enums.TYPE_USER ||
+            call.receiverType === enums.TYPE_GROUP)
         ) {
           message =
             call.callInitiator.uid === loggedInUser.uid
@@ -118,3 +124,5 @@ export default (props) => {
 
   return <View style={style.callMessageStyle}>{getMessage()}</View>;
 };
+
+export default CometChatActionMessageBubble;

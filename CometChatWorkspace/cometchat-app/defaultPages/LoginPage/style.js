@@ -1,15 +1,15 @@
 import {StyleSheet, Dimensions} from 'react-native';
 
-const dheight = Dimensions.get('window').height;
-const dwidth = Dimensions.get('window').width;
+const dHeight = Dimensions.get('window').height;
+const dWidth = Dimensions.get('window').width;
 
-export const heightRatio = dheight / 667;
-export const widthRatio = dwidth / 375;
+export const heightRatio = dHeight / 667;
+export const widthRatio = dWidth / 375;
 export const calc = () => {
-  return dheight - 100 * heightRatio;
+  return dHeight - 100 * heightRatio;
 };
 export const calcWidth = (width) => {
-  return dwidth - width * widthRatio;
+  return dWidth - width * widthRatio;
 };
 
 export default StyleSheet.create({

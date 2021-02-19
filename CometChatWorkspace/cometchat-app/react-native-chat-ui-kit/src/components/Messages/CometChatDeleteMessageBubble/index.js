@@ -2,9 +2,10 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import theme from '../../../resources/theme';
 import style from './style';
+import * as enums from '../../../utils/enums'
 import { CometChatAvatar } from '../../Shared';
 
-export default (props) => {
+const CometChatDeleteMessageBubble =  (props) => {
   const message = { ...props.message, messageFrom: props.messageOf };
   let messageContainer = null;
   const timestamp = new Date(props.message.sentAt * 1000).toLocaleTimeString('en-US', {
@@ -12,11 +13,11 @@ export default (props) => {
     minute: 'numeric',
     hour12: true,
   });
-  const ViewTheme = { ...theme, ...props.theme };
+  const viewTheme = { ...theme, ...props.theme };
 
-  if (props.messageOf === 'sender') {
+  if (props.messageOf === enums.MESSAGE_OF_SENDER) {
     messageContainer = (
-      <View style={{ marginBottom: 16 }}>
+      <View style={style.messageContainerStyle}>
         <View style={style.messageWrapperStyleSender}>
           <View style={style.messageTxtWrapperStyle}>
             <Text style={style.messageTxtStyle}>You deleted this message.</Text>
@@ -29,23 +30,23 @@ export default (props) => {
         </View>
       </View>
     );
-  } else if (message.messageFrom === 'receiver') {
+  } else if (message.messageFrom === enums.MESSAGE_FROM_RECEIVER) {
     let senderAvatar = null;
 
-    if (message.receiverType === 'group') {
+    if (message.receiverType === enums.TYPE_GROUP) {
       if (message.sender.avatar) {
         senderAvatar = { uri: message.sender.CometChatAvatar };
       }
     }
 
     messageContainer = (
-      <View style={{ marginBottom: 16 }}>
+      <View style={style.messageContainerStyle}>
         <View style={style.messageContainerForReceiver}>
-          {message.receiverType === 'group' ? (
+          {message.receiverType === enums.TYPE_GROUP ? (
             <View style={style.avatarStyle}>
               <CometChatAvatar
                 cornerRadius={18}
-                borderColor={ViewTheme.color.secondary}
+                borderColor={viewTheme.color.secondary}
                 borderWidth={0}
                 image={senderAvatar}
                 name={message.sender.name}
@@ -53,15 +54,17 @@ export default (props) => {
             </View>
           ) : null}
           <View>
-            {message.receiverType === 'group' ? (
-              <View style={{ marginBottom: 5 }}>
+            {message.receiverType === enums.TYPE_GROUP ? (
+              <View style={style.messageSenderNameContainerStyle}>
                 <Text>{message.sender.name}</Text>
               </View>
             ) : null}
 
             <View style={style.messageWrapperStyleReceiver}>
               <View style={style.messageTxtWrapperStyle}>
-                <Text style={style.messageTxtStyle}>This message was deleted.</Text>
+                <Text style={style.messageTxtStyle}>
+                  This message was deleted.
+                </Text>
               </View>
             </View>
             <View style={style.messageInfoWrapperStyle}>
@@ -74,3 +77,4 @@ export default (props) => {
   }
   return <View>{messageContainer}</View>;
 };
+export default CometChatDeleteMessageBubble;

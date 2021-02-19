@@ -12,6 +12,7 @@ import Sound from 'react-native-sound';
 
 import { CometChatManager } from '../../../utils/controller';
 import * as enums from '../../../utils/enums';
+import * as actions from '../../../utils/actions';
 import theme from '../../../resources/theme';
 import { CometChatAvatar } from '../../Shared';
 
@@ -22,140 +23,180 @@ import style from './styles';
 import audioCallIcon from './resources/incomingaudiocall.png';
 import videoCallIcon from './resources/incomingvideocall.png';
 import { incomingCallAlert } from '../../../resources/audio';
-
+import { logger } from '../../../utils/common';
 export default (props) => {
   let callAlertManager = null;
-  const ViewTheme = { ...theme, ...props.theme };
+  const viewTheme = { ...theme, ...props.theme };
   const incomingAlert = new Sound(incomingCallAlert);
 
   const [incomingCall, setIncomingCall] = useState(null);
 
+  /**
+   * Play call alerts
+   * @param
+   */
   const playIncomingAlert = () => {
-    if (
-      Object.prototype.hasOwnProperty.call(props, 'widgetsettings') &&
-      props.widgetsettings &&
-      Object.prototype.hasOwnProperty.call(props.widgetsettings, 'main') &&
-      (Object.prototype.hasOwnProperty.call(
-        props.widgetsettings.main,
-        'enable_sound_for_calls',
-      ) === false ||
-        (Object.prototype.hasOwnProperty.call(
-          props.widgetsettings.main,
-          'enable_sound_for_calls',
-        ) &&
-          props.widgetsettings.main.enable_sound_for_calls === false))
-    ) {
-      return false;
+    try {
+      incomingAlert.setCurrentTime(0);
+      incomingAlert.setNumberOfLoops(-1);
+      incomingAlert.play();
+    } catch (error) {
+      logger(error);
     }
-
-    incomingAlert.setCurrentTime(0);
-    incomingAlert.setNumberOfLoops(-1);
-    incomingAlert.play();
   };
 
+  /**
+   * Pause incoming alerts
+   * @param
+   */
   const pauseIncomingAlert = () => {
-    if (
-      Object.prototype.hasOwnProperty.call(props, 'widgetsettings') &&
-      props.widgetsettings &&
-      Object.prototype.hasOwnProperty.call(props.widgetsettings, 'main') &&
-      (Object.prototype.hasOwnProperty.call(
-        props.widgetsettings.main,
-        'enable_sound_for_calls',
-      ) === false ||
-        (Object.prototype.hasOwnProperty.call(
-          props.widgetsettings.main,
-          'enable_sound_for_calls',
-        ) &&
-          props.widgetsettings.main.enable_sound_for_calls === false))
-    ) {
-      return false;
+    try {
+      incomingAlert.pause();
+    } catch (error) {
+      logger(error);
     }
-
-    incomingAlert.pause();
   };
 
+  /**
+   * Mark message as read
+   * @param message
+   */
   const markMessageAsRead = (message) => {
-    const { receiverType } = message;
-    const receiverId =
-      receiverType === 'user' ? message.sender.uid : message.receiverId;
+    try {
+      const { receiverType } = message;
+      const receiverId =
+        receiverType === 'user' ? message.sender.uid : message.receiverId;
 
-    if (Object.prototype.hasOwnProperty.call(message, 'readAt') === false) {
-      CometChat.markAsRead(message.id, receiverId, receiverType);
+      if (Object.prototype.hasOwnProperty.call(message, 'readAt') === false) {
+        CometChat.markAsRead(message.id, receiverId, receiverType);
+      }
+    } catch (error) {
+      logger(error);
     }
   };
 
+  /**
+   * Handle incoming calls
+   * if already an active call -> reject call
+   * else play incoming call alert
+   * @param call - call object
+   */
   const incomingCallReceived = (call) => {
-    if (
-      props.loggedInUser &&
-      call.callInitiator.uid === props.loggedInUser.uid
-    ) {
-      return;
-    }
+    try {
+      if (
+        props.loggedInUser &&
+        call.callInitiator.uid === props.loggedInUser.uid
+      ) {
+        return;
+      }
 
-    const activeCall = CometChat.getActiveCall();
-    // if there is another call in progress
-    if (activeCall) {
-      CometChat.rejectCall(call.sessionId, CometChat.CALL_STATUS.BUSY)
+      const activeCall = CometChat.getActiveCall();
+      // if there is another call in progress
+      if (activeCall) {
+        CometChat.rejectCall(call.sessionId, CometChat.CALL_STATUS.BUSY)
+          .then((rejectedCall) => {
+            // mark as read incoming call message
+            markMessageAsRead(call);
+            props.actionGenerated(
+              actions.REJECTED_INCOMING_CALL,
+              call,
+              rejectedCall,
+            );
+          })
+          .catch((error) => {
+            props.actionGenerated(actions.CALL_ERROR, error);
+          });
+      } else if (incomingCall === null) {
+        playIncomingAlert();
+        setIncomingCall(call);
+      }
+    } catch (error) {
+      logger(error);
+    }
+  };
+
+  /**
+   * Handles if incoming call cancelled
+   * @param
+   */
+  const incomingCallCancelled = () => {
+    try {
+      pauseIncomingAlert();
+      setIncomingCall(null); 
+    } catch (error) {
+      logger(error);
+    }
+  };
+
+  /**
+   * Updates the call screen and opens/closes outgoing callAlert , depending on action taken by user
+   * @param key - actionType, @param call - callObject
+   */
+  const callScreenUpdated = (key, call) => {
+    try {
+      switch (key) {
+        case enums.INCOMING_CALL_RECEIVED: // occurs at the callee end
+          incomingCallReceived(call);
+          break;
+        case enums.INCOMING_CALL_CANCELLED: // occurs(call dismissed) at the callee end, caller cancels the call
+          incomingCallCancelled(call);
+          break;
+        default:
+          break;
+      }
+    } catch (error) {
+      logger(error);
+    }
+  };
+
+  /**
+   * Reject calls
+   * @param
+   */
+  const rejectCall = () => {
+    try {
+      pauseIncomingAlert();
+
+      CometChatManager.rejectCall(
+        incomingCall.sessionId,
+        CometChat.CALL_STATUS.REJECTED,
+      )
         .then((rejectedCall) => {
-          // mark as read incoming call message
-          markMessageAsRead(call);
-          props.actionGenerated('rejectedIncomingCall', call, rejectedCall);
+          props.actionGenerated(
+            actions.REJECTED_INCOMING_CALL,
+            incomingCall,
+            rejectedCall,
+          );
+          setIncomingCall(null);
         })
         .catch((error) => {
-          props.actionGenerated('callError', error);
+          props.actionGenerated(actions.CALL_ERROR, error);
+          setIncomingCall(null);
         });
-    } else if (incomingCall === null) {
-      playIncomingAlert();
-      setIncomingCall(call);
+    } catch (error) {
+      logger(error);
     }
   };
 
-  const incomingCallCancelled = () => {
-    pauseIncomingAlert();
-    setIncomingCall(null);
-  };
-
-  const callScreenUpdated = (key, call) => {
-    switch (key) {
-      case enums.INCOMING_CALL_RECEIVED: // occurs at the callee end
-        incomingCallReceived(call);
-        break;
-      case enums.INCOMING_CALL_CANCELLED: // occurs(call dismissed) at the callee end, caller cancels the call
-        incomingCallCancelled(call);
-        break;
-      default:
-        break;
-    }
-  };
-
-  const rejectCall = () => {
-    pauseIncomingAlert();
-
-    CometChatManager.rejectCall(
-      incomingCall.sessionId,
-      CometChat.CALL_STATUS.REJECTED,
-    )
-      .then((rejectedCall) => {
-        props.actionGenerated(
-          'rejectedIncomingCall',
-          incomingCall,
-          rejectedCall,
-        );
-        setIncomingCall(null);
-      })
-      .catch((error) => {
-        props.actionGenerated('callError', error);
-        setIncomingCall(null);
-      });
-  };
-
+  /**
+   * Accept calls
+   * @param
+   */
   const acceptCall = () => {
-    pauseIncomingAlert();
+    try {
+      pauseIncomingAlert();
 
-    props.actionGenerated('acceptIncomingCall', incomingCall);
-    setIncomingCall(null);
+      props.actionGenerated(actions.ACCEPT_INCOMING_CALL, incomingCall);
+      setIncomingCall(null);
+    } catch (error) {
+      logger(error);
+    }
   };
 
+  /**
+   * Add call listeners on mount and remove listeners on unmount
+   * @param
+   */
   useEffect(() => {
     callAlertManager = new CallAlertManager();
     callAlertManager.attachListeners(callScreenUpdated);
@@ -166,14 +207,11 @@ export default (props) => {
     };
   });
 
-  // console.log("incomingCall",incomingCall)
-
   if (incomingCall) {
     return (
       <Modal transparent animated animationType="fade">
         <SafeAreaView>
-          <View
-            style={[style.callContainerStyle, { backgroundColor: '#444444' }]}>
+          <View style={[style.callContainerStyle]}>
             <View style={style.senderDetailsContainer}>
               <View>
                 <Text numberOfLines={1} style={style.nameStyle}>
@@ -182,8 +220,10 @@ export default (props) => {
                 {incomingCall.type === 'video' ? (
                   <View style={style.callTypeStyle}>
                     <Image source={videoCallIcon} alt="Incoming video call" />
-                    <View style={{ marginLeft: 5 }}>
-                      <Text numberOfLines={1} style={{ color: '#8A8A8A' }}>
+                    <View style={style.callMessageContainerStyle}>
+                      <Text
+                        numberOfLines={1}
+                        style={style.callMessageTextStyle}>
                         Incoming video call
                       </Text>
                     </View>
@@ -191,8 +231,10 @@ export default (props) => {
                 ) : (
                   <View style={style.callTypeStyle}>
                     <Image source={audioCallIcon} alt="Incoming video call" />
-                    <View style={{ marginLeft: 5 }}>
-                      <Text numberOfLines={1} style={{ color: '#8A8A8A' }}>
+                    <View style={style.callMessageContainerStyle}>
+                      <Text
+                        numberOfLines={1}
+                        style={style.callMessageTextStyle}>
                         Incoming audio call
                       </Text>
                     </View>
@@ -213,22 +255,18 @@ export default (props) => {
               <TouchableOpacity
                 style={[
                   style.buttonStyle,
-                  { backgroundColor: ViewTheme.backgroundColor.red },
+                  { backgroundColor: viewTheme.backgroundColor.red },
                 ]}
                 onPress={rejectCall}>
-                <Text style={{ color: 'white', textAlign: 'center' }}>
-                  Decline
-                </Text>
+                <Text style={style.btnTextStyle}>Decline</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[
                   style.buttonStyle,
-                  { backgroundColor: ViewTheme.backgroundColor.blue },
+                  { backgroundColor: viewTheme.backgroundColor.blue },
                 ]}
                 onPress={acceptCall}>
-                <Text style={{ color: 'white', textAlign: 'center' }}>
-                  Accept
-                </Text>
+                <Text style={style.btnTextStyle}>Accept</Text>
               </TouchableOpacity>
             </View>
           </View>

@@ -522,13 +522,13 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-example/Pods-example-frameworks.sh",
-				"${PODS_ROOT}/CometChatCallsReactNative/Vendor/CometChatProCalls.framework",
-				"${PODS_ROOT}/CometChatCallsReactNative/Vendor/WebRTC.framework",
+				"${PODS_ROOT}/CometChatCalls/Vendors/WebRTC.framework",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/CometChatProCalls/CometChatProCalls.framework/CometChatProCalls",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CometChatProCalls.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WebRTC.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CometChatProCalls.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -592,13 +592,13 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-example-exampleTests/Pods-example-exampleTests-frameworks.sh",
-				"${PODS_ROOT}/CometChatCallsReactNative/Vendor/CometChatProCalls.framework",
-				"${PODS_ROOT}/CometChatCallsReactNative/Vendor/WebRTC.framework",
+				"${PODS_ROOT}/CometChatCalls/Vendors/WebRTC.framework",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/CometChatProCalls/CometChatProCalls.framework/CometChatProCalls",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CometChatProCalls.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WebRTC.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CometChatProCalls.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

@@ -12,9 +12,11 @@ import { CallScreenManager } from './controller';
 import { CometChatAvatar } from '../../Shared';
 
 import * as enums from '../../../utils/enums';
+import * as actions from '../../../utils/actions';
 import theme from '../../../resources/theme';
 
 import style from './styles';
+import { logger } from '../../../utils/common';
 
 class CometChatOutgoingCall extends React.PureComponent {
   constructor(props) {
@@ -39,31 +41,41 @@ class CometChatOutgoingCall extends React.PureComponent {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.outgoingCall !== this.props.outgoingCall && this.props.outgoingCall) {
-      this.playOutgoingAlert();
+    try {
+      if (
+        prevProps.outgoingCall !== this.props.outgoingCall &&
+        this.props.outgoingCall
+      ) {
+        this.playOutgoingAlert();
 
-      const call = this.props.outgoingCall;
+        const call = this.props.outgoingCall;
 
-      this.setState({
-        outgoingCallScreen: true,
-        callInProgress: call,
-        errorScreen: false,
-        errorMessage: null,
-      });
-    }
+        this.setState({
+          outgoingCallScreen: true,
+          callInProgress: call,
+          errorScreen: false,
+          errorMessage: null,
+        });
+      }
 
-    if (prevProps.incomingCall !== this.props.incomingCall && this.props.incomingCall) {
-      this.acceptCall();
-    }
+      if (
+        prevProps.incomingCall !== this.props.incomingCall &&
+        this.props.incomingCall
+      ) {
+        this.acceptCall();
+      }
 
-    if (!this.props.outgoingCall && !this.props.incomingCall) {
-      this.setState({
-        outgoingCallScreen: false,
-        callInProgress: null,
-        errorScreen: false,
-        errorMessage: null,
-        callSettings: null,
-      });
+      if (!this.props.outgoingCall && !this.props.incomingCall) {
+        this.setState({
+          outgoingCallScreen: false,
+          callInProgress: null,
+          errorScreen: false,
+          errorMessage: null,
+          callSettings: null,
+        });
+      }
+    } catch (error) {
+      logger(error);
     }
   }
 
@@ -72,22 +84,35 @@ class CometChatOutgoingCall extends React.PureComponent {
     this.callScreenManager = null;
   }
 
+  /**
+   * Updates the call screen and opens/closes outgoing callScreen , depending on action taken by user
+   * @param key - actionType, @param call - callObject
+   */
   callScreenUpdated = (key, call) => {
-    switch (key) {
-      case enums.INCOMING_CALL_CANCELLED:
-        this.incomingCallCancelled(call);
-        break;
-      case enums.OUTGOING_CALL_ACCEPTED: // occurs at the caller end
-        this.outgoingCallAccepted(call);
-        break;
-      case enums.OUTGOING_CALL_REJECTED: // occurs at the caller end, callee rejects the call
-        this.outgoingCallRejected(call);
-        break;
-      default:
-        break;
+    try {
+      switch (key) {
+        case enums.INCOMING_CALL_CANCELLED:
+          this.incomingCallCancelled(call);
+          break;
+        case enums.OUTGOING_CALL_ACCEPTED: // occurs at the caller end
+          this.outgoingCallAccepted(call);
+          break;
+        case enums.OUTGOING_CALL_REJECTED: // occurs at the caller end, callee rejects the call
+          this.outgoingCallRejected(call);
+          break;
+        default:
+          break;
+      }
+    } catch (error) {
+      logger(error);
     }
   };
 
+  /**
+   * Handle if incoming call cancelled
+   * - close outgoing call screen
+   * @param
+   */
   incomingCallCancelled = () => {
     this.setState({
       outgoingCallScreen: false,
@@ -96,41 +121,63 @@ class CometChatOutgoingCall extends React.PureComponent {
     });
   };
 
+  /**
+   * Handle if outgoing call accepted
+   * - close outgoing call screen and open call native component
+   * @param call - call object
+   */
   outgoingCallAccepted = (call) => {
-    if (this.state.outgoingCallScreen === true) {
+    try {
+      if (this.state.outgoingCallScreen === true) {
+        this.pauseOutgoingAlert();
+
+        this.setState({ outgoingCallScreen: false, callInProgress: call });
+        this.startCall(call);
+      }
+    } catch (error) {
+      logger(error);
+    }
+  };
+
+  /**
+   * Handle if outgoing call rejected
+   * - close outgoing call screen and set error message
+   * @param call - call object
+   */
+  outgoingCallRejected = (call) => {
+    try {
       this.pauseOutgoingAlert();
 
-      this.setState({ outgoingCallScreen: false, callInProgress: call });
-      this.startCall(call);
+      if (
+        Object.prototype.hasOwnProperty.call(call, 'status') &&
+        call.status === CometChat.CALL_STATUS.BUSY
+      ) {
+        // show busy message.
+        const errorMessage = `${call.sender.name} is on another call.`;
+        this.setState({ errorScreen: true, errorMessage });
+      } else {
+        this.props.actionGenerated(actions.OUTGOING_CALL_REJECTED, call);
+      }
+      this.setState({
+        outgoingCallScreen: false,
+        callInProgress: null,
+        callSettings: null,
+      });
+    } catch (error) {
+      logger(error);
     }
   };
 
-  outgoingCallRejected = (call) => {
-    this.pauseOutgoingAlert();
-
-    if (
-      Object.prototype.hasOwnProperty.call(call, 'status') &&
-      call.status === CometChat.CALL_STATUS.BUSY
-    ) {
-      // show busy message.
-      const errorMessage = `${call.sender.name} is on another call.`;
-      this.setState({ errorScreen: true, errorMessage });
-    } else {
-      this.props.actionGenerated('outgoingCallRejected', call);
-    }
-    this.setState({
-      outgoingCallScreen: false,
-      callInProgress: null,
-      callSettings: null,
-    });
-  };
-
+  /**
+   * Accept incoming call
+   * @param
+   */
   acceptCall = () => {
     CometChatManager.acceptCall(this.props.incomingCall.sessionId)
       .then((response) => {
         const call = { ...response };
 
-        this.props.actionGenerated('acceptedIncomingCall', call);
+        this.props.actionGenerated(actions.ACCEPT_INCOMING_CALL, call);
         this.setState({
           outgoingCallScreen: false,
           callInProgress: call,
@@ -141,164 +188,172 @@ class CometChatOutgoingCall extends React.PureComponent {
         this.startCall(call);
       })
       .catch((error) => {
-        // console.log('[CallScreen] acceptCall -- error', error);
-        this.props.actionGenerated('callError', error);
+        logger('[CallScreen] acceptCall -- error', error);
+        this.props.actionGenerated(actions.CALL_ERROR, error);
       });
   };
 
+  /**
+   * Handle starting the call
+   * - Add call listeners
+   * - Create call settings
+   * @param call - call object
+   */
   startCall = (call) => {
-    const { sessionId } = call;
-    const callType = call.type;
-    const audioOnly = callType === 'audio';
+    try {
+      const { sessionId } = call;
+      const callType = call.type;
+      const audioOnly = callType === 'audio';
 
-    const callListener = new CometChat.OngoingCallListener({
-      onUserJoined: (user) => {
-        if (
-          call.callInitiator.uid !== this.props.loggedInUser.uid &&
-          call.callInitiator.uid !== user.uid
-        ) {
-          this.markMessageAsRead(call);
+      const callListener = new CometChat.OngoingCallListener({
+        onUserJoined: (user) => {
+          if (
+            call.callInitiator.uid !== this.props.loggedInUser.uid &&
+            call.callInitiator.uid !== user.uid
+          ) {
+            this.markMessageAsRead(call);
 
-          const callMessage = {
-            category: call.category,
-            type: call.type,
-            action: call.action,
-            status: call.status,
-            callInitiator: call.callInitiator,
-            callReceiver: call.callReceiver,
-            receiverId: call.receiverId,
-            receiverType: call.receiverType,
-            sentAt: call.sentAt,
-            sender: { ...user },
-          };
-          this.props.actionGenerated('userJoinedCall', callMessage);
-        }
-      },
-      onUserLeft: (user) => {
-        if (
-          call.callInitiator.uid !== this.props.loggedInUser.uid &&
-          call.callInitiator.uid !== user.uid
-        ) {
-          this.markMessageAsRead(call);
+            const callMessage = {
+              category: call.category,
+              type: call.type,
+              action: call.action,
+              status: call.status,
+              callInitiator: call.callInitiator,
+              callReceiver: call.callReceiver,
+              receiverId: call.receiverId,
+              receiverType: call.receiverType,
+              sentAt: call.sentAt,
+              sender: { ...user },
+            };
+            this.props.actionGenerated(actions.USER_JOINED_CALL, callMessage);
+          }
+        },
+        onUserLeft: (user) => {
+          if (
+            call.callInitiator.uid !== this.props.loggedInUser.uid &&
+            call.callInitiator.uid !== user.uid
+          ) {
+            this.markMessageAsRead(call);
 
-          const callMessage = {
-            category: call.category,
-            type: call.type,
-            action: 'left',
-            status: call.status,
-            callInitiator: call.callInitiator,
-            callReceiver: call.callReceiver,
-            receiverId: call.receiverId,
-            receiverType: call.receiverType,
-            sentAt: call.sentAt,
-            sender: { ...user },
-          };
+            const callMessage = {
+              category: call.category,
+              type: call.type,
+              action: 'left',
+              status: call.status,
+              callInitiator: call.callInitiator,
+              callReceiver: call.callReceiver,
+              receiverId: call.receiverId,
+              receiverType: call.receiverType,
+              sentAt: call.sentAt,
+              sender: { ...user },
+            };
 
-          this.props.actionGenerated('userLeftCall', callMessage);
-        }
-      },
-      onCallEnded: (endedCall) => {
-        this.setState({
-          outgoingCallScreen: false,
-          callInProgress: null,
-          callSettings: null,
-        });
+            this.props.actionGenerated(actions.USER_LEFT_CALL, callMessage);
+          }
+        },
+        onCallEnded: (endedCall) => {
+          this.setState({
+            outgoingCallScreen: false,
+            callInProgress: null,
+            callSettings: null,
+          });
 
-        this.markMessageAsRead(endedCall);
-        this.props.actionGenerated('callEnded', endedCall);
-      },
-      onError: (error) => {
-        // console.log('[OngoingCallListener] Call Error: ', error);
-        this.props.actionGenerated('callError', error);
-      },
-    });
-
-    const callSettings = new CometChat.CallSettingsBuilder()
-      .setSessionID(sessionId)
-      .enableDefaultLayout(true)
-      .setIsAudioOnlyCall(audioOnly)
-      .setCallEventListener(callListener)
-      .build();
-
-    this.setState({ callSettings });
-  };
-
-  markMessageAsRead = (message) => {
-    const type = message.receiverType;
-    const id = type === 'user' ? message.sender.uid : message.receiverId;
-
-    if (Object.prototype.hasOwnProperty.call(message, 'readAt') === false) {
-      CometChat.markAsRead(message.id, id, type);
-    }
-  };
-
-  playOutgoingAlert = () => {
-    if (
-      Object.prototype.hasOwnProperty.call(this.props, 'widgetsettings') &&
-      this.props.widgetsettings &&
-      Object.prototype.hasOwnProperty.call(this.props.widgetsettings, 'main') &&
-      (Object.prototype.hasOwnProperty.call(
-        this.props.widgetsettings.main,
-        'enable_sound_for_calls'
-      ) === false ||
-        (Object.prototype.hasOwnProperty.call(
-          this.props.widgetsettings.main,
-          'enable_sound_for_calls'
-        ) &&
-          this.props.widgetsettings.main.enable_sound_for_calls === false))
-    ) {
-      return false;
-    }
-
-    this.outgoingAlert.setCurrentTime(0);
-    this.outgoingAlert.setNumberOfLoops(-1);
-    this.outgoingAlert.play();
-  };
-
-  pauseOutgoingAlert = () => {
-    if (
-      Object.prototype.hasOwnProperty.call(this.props, 'widgetsettings') &&
-      this.props.widgetsettings &&
-      Object.prototype.hasOwnProperty.call(this.props.widgetsettings, 'main') &&
-      (Object.prototype.hasOwnProperty.call(
-        this.props.widgetsettings.main,
-        'enable_sound_for_calls'
-      ) === false ||
-        (Object.prototype.hasOwnProperty.call(
-          this.props.widgetsettings.main,
-          'enable_sound_for_calls'
-        ) &&
-          this.props.widgetsettings.main.enable_sound_for_calls === false))
-    ) {
-      return false;
-    }
-
-    this.outgoingAlert.pause();
-  };
-
-  cancelCall = () => {
-    this.pauseOutgoingAlert();
-
-    CometChatManager.rejectCall(
-      this.state.callInProgress.sessionId,
-      CometChat.CALL_STATUS.CANCELLED
-    )
-      .then((call) => {
-        this.props.actionGenerated('outgoingCallCancelled', call);
-        this.setState({
-          outgoingCallScreen: false,
-          callInProgress: null,
-          callSettings: null,
-        });
-      })
-      .catch((error) => {
-        this.props.actionGenerated('callError', error);
-        this.setState({
-          outgoingCallScreen: false,
-          callInProgress: null,
-          callSettings: null,
-        });
+          this.markMessageAsRead(endedCall);
+          this.props.actionGenerated(actions.CALL_ENDED, endedCall);
+        },
+        onError: (error) => {
+          // logger('[OngoingCallListener] Call Error: ', error);
+          this.props.actionGenerated(actions.CALL_ERROR, error);
+        },
       });
+
+      const callSettings = new CometChat.CallSettingsBuilder()
+        .setSessionID(sessionId)
+        .enableDefaultLayout(true)
+        .setIsAudioOnlyCall(audioOnly)
+        .setCallEventListener(callListener)
+        .build();
+
+      this.setState({ callSettings });
+    } catch (error) {
+      logger(error);
+    }
+  };
+
+  /**
+   * Mark message as read
+   * @param message - message object
+   */
+  markMessageAsRead = (message) => {
+    try {
+      const type = message.receiverType;
+      const id = type === 'user' ? message.sender.uid : message.receiverId;
+
+      if (Object.prototype.hasOwnProperty.call(message, 'readAt') === false) {
+        CometChat.markAsRead(message.id, id, type);
+      }
+    } catch (error) {
+      logger(error);
+    }
+  };
+
+  /**
+   * Handle playing call sound alert for outgoing call
+   * @param
+   */
+  playOutgoingAlert = () => {
+    try {
+      this.outgoingAlert.setCurrentTime(0);
+      this.outgoingAlert.setNumberOfLoops(-1);
+      this.outgoingAlert.play();
+    } catch (error) {
+      logger(error);
+    }
+  };
+
+  /**
+   * Pause outgoing call sound alert
+   * @param
+   */
+  pauseOutgoingAlert = () => {
+    try {
+      this.outgoingAlert.pause();
+    } catch (error) {
+      logger(error);
+    }
+  };
+
+  /**
+   * Handle rejecting call from outgoing call screen
+   * @param
+   */
+  cancelCall = () => {
+    try {
+      this.pauseOutgoingAlert();
+
+      CometChatManager.rejectCall(
+        this.state.callInProgress.sessionId,
+        CometChat.CALL_STATUS.CANCELLED,
+      )
+        .then((call) => {
+          this.props.actionGenerated(actions.OUTGOING_CALL_CANCELLED, call);
+          this.setState({
+            outgoingCallScreen: false,
+            callInProgress: null,
+            callSettings: null,
+          });
+        })
+        .catch((error) => {
+          this.props.actionGenerated(actions.CALL_ERROR, error);
+          this.setState({
+            outgoingCallScreen: false,
+            callInProgress: null,
+            callSettings: null,
+          });
+        });
+    } catch (error) {
+      logger(error);
+    }
   };
 
   render() {
@@ -306,7 +361,9 @@ class CometChatOutgoingCall extends React.PureComponent {
       return (
         <Modal animated animationType="fade">
           <View style={{ height: '100%', width: '100%', position: 'relative' }}>
-            <CometChat.CallingComponent callsettings={this.state.callSettings} />
+            <CometChat.CallingComponent
+              callsettings={this.state.callSettings}
+            />
           </View>
         </Modal>
       );
@@ -330,7 +387,9 @@ class CometChatOutgoingCall extends React.PureComponent {
             <View style={style.container}>
               <View style={style.header}>
                 <Text style={style.headerLabel}>Calling...</Text>
-                <Text style={style.headerName}>{this.state.callInProgress.receiver.name}</Text>
+                <Text style={style.headerName}>
+                  {this.state.callInProgress.receiver.name}
+                </Text>
               </View>
               <View style={style.thumbnail}>
                 <CometChatAvatar

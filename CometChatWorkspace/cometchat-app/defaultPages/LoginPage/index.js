@@ -1,15 +1,8 @@
 import React from 'react';
-//import { Global } from "@emotion/core";
-
-//import { Redirect } from 'react-router-dom';
 import {connect} from 'react-redux';
 import {CometChatAvatar} from '../../react-native-chat-ui-kit';
 import {COMETCHAT_CONSTANTS} from '../../CONSTS';
-
 import style from './style';
-
-//import { loaderStyle } from "./loader";
-
 import * as actions from '../../store/action';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {
@@ -26,14 +19,12 @@ class LoginPage extends React.PureComponent {
     this.state = {
       uid: '',
     };
-    // this.myRef = React.createRef(null);
   }
 
   login = (uid) => {
     if (!uid) {
       uid = this.state.uid;
     }
-    // this.props.navigation.navigate('HomePage');
     this.uid = uid;
     this.props.dispatch(actions.auth(this.uid, COMETCHAT_CONSTANTS.AUTH_KEY)); //dispatch( actions.auth( uid, authKey ) )
   };
@@ -61,8 +52,6 @@ class LoginPage extends React.PureComponent {
         <Text style={style.errorStyle}>{this.props.error.message}</Text>
       );
     }
-
-    //let authRedirect = null;
 
     return (
       <SafeAreaView>
@@ -173,11 +162,5 @@ const mapStateToProps = ({reducer}) => {
     isLoggedIn: reducer.isLoggedIn,
   };
 };
-
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     onLogin: ( uid, authKey ) => dispatch( actions.auth( uid, authKey ) )
-//   };
-// };
 
 export default connect(mapStateToProps)(LoginPage);

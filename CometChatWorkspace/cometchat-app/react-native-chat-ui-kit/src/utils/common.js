@@ -4,7 +4,8 @@ const urlPattern = new RegExp(
     "((https?://|www\\.|pic\\.)[-\\w;/?:@&=+$\\|\\_.!~*\\|'()\\[\\]%#,☺]+[\\w/#](\\(\\))?)" +
     "(?=$|[\\s',\\|\\(\\).:;?\\-\\[\\]>\\)])",
   'gi'
-); /// (\b(https?|ftp|file):\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])/gi;
+);
+
 const phoneNumPattern = new RegExp(
   '\\s*(?:\\+?(\\d{1,3}))?([-. (]*(\\d{3})[-. )]*)?((\\d{3})[-. ]*(\\d{2,4})(?:[-.x ]*(\\d+))?)\\s*',
   'g'
@@ -27,18 +28,6 @@ export const linkify = (message) => {
   return outputStr;
 };
 
-export const validateWidgetSettings = (wSettings, checkAgainst) => {
-  let output = null;
-
-  if (wSettings && Object.prototype.hasOwnProperty.call(wSettings, 'main')) {
-    if (Object.prototype.hasOwnProperty.call(wSettings, checkAgainst)) {
-      output = wSettings.main[checkAgainst];
-    }
-  }
-
-  return output;
-};
-
 export const checkMessageForExtensionsData = (message, extensionKey) => {
   let output = null;
   if (Object.prototype.hasOwnProperty.call(message, 'metadata')) {
@@ -56,4 +45,12 @@ export const checkMessageForExtensionsData = (message, extensionKey) => {
   }
 
   return output;
+};
+
+export const logger = (...data) => {
+  try {
+    console.log(...data);
+  } catch (error) {
+    logger(error);
+  }
 };

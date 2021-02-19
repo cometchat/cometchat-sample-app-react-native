@@ -1,6 +1,6 @@
 {
   "name": "example",
-  "version": "0.0.1",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -11,8 +11,8 @@
   },
   "dependencies": {
     "@cometchat-pro/react-native-calls": "1.0.7",
-    "@cometchat-pro/react-native-chat": "2.1.7",
-    "@react-native-community/async-storage": "^1.12.1",
+    "@cometchat-pro/react-native-chat": "2.2.0",
+    "@react-native-async-storage/async-storage": "^1.13.4",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-picker/picker": "^1.9.4",
     "@react-navigation/bottom-tabs": "^5.11.2",

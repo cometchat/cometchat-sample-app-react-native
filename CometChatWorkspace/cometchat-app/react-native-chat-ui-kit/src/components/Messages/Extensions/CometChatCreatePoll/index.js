@@ -8,23 +8,21 @@ import {
   Image,
   TextInput,
   Modal,
-  Dimensions,
 } from 'react-native';
 import { CometChatCreatePollOptions } from '../index';
 import styles from './styles';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { heightRatio } from '../../../../utils/consts';
 
-import BottomSheet from 'reanimated-bottom-sheet';
+import * as enums from '../../../../utils/enums';
+import * as actions from '../../../../utils/actions';
 
 const close = <Icon name="close" style={styles.closeIcon} />;
 
-export default (props) => {
-  const [showscroll, setScroll] = useState(false);
+const CometChatCreatePoll = (props) => {
+  const [showScroll, setScroll] = useState(false);
   const [optionArray, setOptions] = useState([]);
   const [error, setError] = useState('');
-  const sheetRef = createRef(null);
-
   const thirdInputReference = useRef(null);
   const secondInputReference = useRef(null);
   const [questionRef, setQuestionRef] = useState('');
@@ -57,6 +55,11 @@ export default (props) => {
       setOptions(optionList);
     }
   };
+
+  /**
+   * Handler for creating a poll based on validations.
+   * @param 
+  */
   const createPoll = () => {
     const question = questionRef.trim();
     const firstOption = optionOneRef.trim();
@@ -75,9 +78,9 @@ export default (props) => {
     });
     let receiverId;
     const receiverType = props.type;
-    if (props.type === 'user') {
+    if (props.type === enums.TYPE_USER) {
       receiverId = props.item.uid;
-    } else if (props.type === 'group') {
+    } else if (props.type === enums.TYPE_GROUP) {
       receiverId = props.item.guid;
     }
     CometChat.callExtension('polls', 'POST', 'v2/create', {
@@ -87,9 +90,6 @@ export default (props) => {
       receiverType,
     })
       .then(() => {
-        // const { data } = response.message;
-        // const { customData } = data.data;
-        // const { options } = customData;
         const resultOptions = {};
         optionItems.map((option) => {
           resultOptions[option] = {
@@ -98,7 +98,6 @@ export default (props) => {
           };
         });
         const polls = {
-          // id: data.id,
           options: optionItems,
           results: {
             total: 0,
@@ -108,12 +107,9 @@ export default (props) => {
           question,
         };
         const message = {
-          // ...data,
-          // sender: { uid: data.sender },
           metadata: { '@injected': { extensions: { polls } } },
         };
-        props.actionGenerated('pollCreated', message);
-        // setError({ error: null });
+        props.actionGenerated(actions.POLL_CREATED, message);
       })
       .catch((err) => {
         setError({ error: err });
@@ -134,7 +130,7 @@ export default (props) => {
         </View>
         <TextInput
           placeholder="Enter your question"
-          style={styles.Inputbox}
+          style={styles.InputBox}
           onChangeText={(feedback) => {
             QuestionChangeHandler(feedback);
           }}
@@ -152,7 +148,7 @@ export default (props) => {
           onChangeText={(feedback) => {
             OptionOneChangeHandler(feedback);
           }}
-          style={styles.Inputbox}
+          style={styles.InputBox}
           onSubmitEditing={() => {
             thirdInputReference.current.focus();
           }}
@@ -167,7 +163,7 @@ export default (props) => {
           onChangeText={(feedback) => {
             OptionTwoChangeHandler(feedback);
           }}
-          style={styles.Inputbox}
+          style={styles.InputBox}
           placeholder="Enter your option"
           ref={thirdInputReference}
         />
@@ -191,6 +187,11 @@ export default (props) => {
       </View>
     </View>
   );
+
+  /**
+   * Implemented to combine and display whole create poll view screen.
+   * @param 
+  */
   const pollOptionView = (
     <FlatList
       data={optionArray}
@@ -208,76 +209,51 @@ export default (props) => {
       keyExtractor={(item) => String(item.id)}
       showsVerticalScrollIndicator={false}
       showsHorizontalScrollIndicator={false}
-      scrollEnabled={showscroll}
+      scrollEnabled={showScroll}
       ListHeaderComponent={HeaderComponentForList}
       ListFooterComponent={FooterComponentForList}
       onContentSizeChange={onChangeScreenSize}
     />
   );
 
-  // useEffect(()=>{
-  //   sheetRef.current.snapTo(0);
-  // },[props.open])
-
   return (
     <Modal transparent animated animationType="fade" visible={props.open}>
-      <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.7)',justifyContent:"flex-end" }}>
-        {/* <BottomSheet
-          ref={sheetRef}
-          snapPoints={[Dimensions.get('window').height - 80, 0]}
-          borderRadius={30}
-          initialSnap={0}
-          // enabledInnerScrolling={false}
-          enabledContentTapInteraction={false}
-          overdragResistanceFactor={10}
-          renderContent={() => {
-            return ( */}
-              <View
-                style={{
-                  backgroundColor: 'white',
-                  height: '90%',
-                  borderTopLeftRadius: 15,
-                  borderTopRightRadius: 15,
-                }}>
-                <View style={styles.ModalWrapperStyle}>
-                  <View style={styles.ModalHeader}>
-                    <View style={styles.ModalHeadingContainer}>
-                      <Text style={styles.HeadingText}>Create Poll</Text>
-                      <TouchableOpacity
-                        style={styles.ModalCloseButtonContainer}
-                        onPress={() => {
-                          props.close(); // props.close needed to be send as a function
-                        }}>
-                        {close}
-                      </TouchableOpacity>
-                    </View>
-                    {error && (error.error || error.error.message) ? (
-                      <View style={styles.ModalErrorContainer}>
-                        <Text style={styles.ErrorText}>
-                          {error.error.message || error.error}
-                        </Text>
-                      </View>
-                    ) : null}
-                  </View>
-                  {pollOptionView}
-                  <View style={styles.WrapperForCreateButton}>
-                    <TouchableOpacity
-                      style={styles.CreateButtonContainer}
-                      onPress={() => {
-                        createPoll();
-                      }}>
-                      <Text style={styles.CreateButtonText}>Create</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
+      <View style={styles.container}>
+        <View style={styles.innerContainer}>
+          <View style={styles.ModalWrapperStyle}>
+            <View style={styles.ModalHeader}>
+              <View style={styles.ModalHeadingContainer}>
+                <Text style={styles.HeadingText}>Create Poll</Text>
+                <TouchableOpacity
+                  style={styles.ModalCloseButtonContainer}
+                  onPress={() => {
+                    props.close(); // props.close needed to be send as a function
+                  }}>
+                  {close}
+                </TouchableOpacity>
               </View>
-            {/* ); */}
-          {/* }}
-          onCloseEnd={() => {
-            props.close();
-          }}
-        /> */}
+              {error && (error.error || error.error.message) ? (
+                <View style={styles.ModalErrorContainer}>
+                  <Text style={styles.ErrorText}>
+                    {error.error.message || error.error}
+                  </Text>
+                </View>
+              ) : null}
+            </View>
+            {pollOptionView}
+            <View style={styles.WrapperForCreateButton}>
+              <TouchableOpacity
+                style={styles.CreateButtonContainer}
+                onPress={() => {
+                  createPoll();
+                }}>
+                <Text style={styles.CreateButtonText}>Create</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
       </View>
     </Modal>
   );
 };
+export default CometChatCreatePoll

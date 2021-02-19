@@ -7,8 +7,8 @@ import CometChatReadReceipt from '../CometChatReadReceipt';
 import { CometChatMessageReactions } from '../../Messages/Extensions';
 import style from './styles';
 import theme from '../../../resources/theme';
-
-const messageFrom = 'receiver';
+import * as enums from '../../../utils/enums';
+import * as actions from '../../../utils/actions';
 
 function usePrevious(value) {
   const ref = useRef();
@@ -18,17 +18,20 @@ function usePrevious(value) {
   return ref.current;
 }
 
-export default (props) => {
-  const [message, setMessage] = useState({ ...props.message, messageFrom });
+const CometChatReceiverImageMessageBubble = (props) => {
+  const [message, setMessage] = useState({
+    ...props.message,
+    messageFrom: enums.MESSAGE_FROM_RECEIVER,
+  });
   const prevMessage = usePrevious(message);
-  const ViewTheme = { ...theme, ...props.theme };
+  const viewTheme = { ...theme, ...props.theme };
   let senderAvatar = null;
-  if (message.receiverType === 'group') {
+  if (message.receiverType === enums.TYPE_GROUP) {
     senderAvatar = { uri: message.sender.avatar };
   }
 
   const open = () => {
-    props.actionGenerated('viewActualImage', message);
+    props.actionGenerated(actions.VIEW_ACTUAL_IMAGE, message);
   };
 
   useEffect(() => {
@@ -36,7 +39,10 @@ export default (props) => {
     const currentMessageStr = JSON.stringify(props.message);
 
     if (previousMessageStr !== currentMessageStr) {
-      const newMessage = { ...props.message, messageFrom };
+      const newMessage = {
+        ...props.message,
+        messageFrom: enums.MESSAGE_FROM_RECEIVER,
+      };
       setMessage(newMessage);
     }
   }, [props]);
@@ -45,11 +51,17 @@ export default (props) => {
   if (Object.prototype.hasOwnProperty.call(message, 'metadata')) {
     const { metadata } = message;
     const injectedObject = metadata['@injected'];
-    if (injectedObject && Object.prototype.hasOwnProperty.call(injectedObject, 'extensions')) {
+    if (
+      injectedObject &&
+      Object.prototype.hasOwnProperty.call(injectedObject, 'extensions')
+    ) {
       const extensionsObject = injectedObject.extensions;
       if (
         extensionsObject &&
-        Object.prototype.hasOwnProperty.call(extensionsObject, 'thumbnail-generation')
+        Object.prototype.hasOwnProperty.call(
+          extensionsObject,
+          'thumbnail-generation',
+        )
       ) {
         thumbnailGenerationObject = extensionsObject['thumbnail-generation'];
       }
@@ -57,13 +69,13 @@ export default (props) => {
   }
 
   return (
-    <View style={{ marginBottom: 16 }}>
-      <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
-        {props.message.receiverType === 'group' ? (
+    <View style={style.container}>
+      <View style={style.mainContainer}>
+        {props.message.receiverType === enums.TYPE_GROUP ? (
           <View style={style.avatarStyle}>
             <CometChatAvatar
               cornerRadius={18}
-              borderColor={ViewTheme.color.secondary}
+              borderColor={viewTheme.color.secondary}
               borderWidth={0}
               image={senderAvatar}
               name={message.sender.name}
@@ -71,8 +83,8 @@ export default (props) => {
           </View>
         ) : null}
         <View>
-          {props.message.receiverType === 'group' ? (
-            <View style={{ marginBottom: 5 }}>
+          {props.message.receiverType === enums.TYPE_GROUP ? (
+            <View style={style.senderNameContainer}>
               <Text>{message.sender.name}</Text>
             </View>
           ) : null}
@@ -81,12 +93,11 @@ export default (props) => {
               onPress={() => open()}
               style={style.messageImgWrapperStyle}
               onLongPress={() => {
-                props.actionGenerated('openMessageActions', message);
+                props.actionGenerated(actions.OPEN_MESSAGE_ACTIONS, message);
               }}>
               <FastImage
                 style={style.messageImg}
                 source={{
-                  // uri: message.data.url,
                   uri: thumbnailGenerationObject
                     ? thumbnailGenerationObject.url_small
                     : message.data.url,
@@ -102,7 +113,13 @@ export default (props) => {
 
         <CometChatThreadedMessageReplyCount {...props} message={message} />
       </View>
-      <CometChatMessageReactions theme={props.theme} {...props} message={message} />
+      <CometChatMessageReactions
+        theme={props.theme}
+        {...props}
+        message={message}
+      />
     </View>
   );
 };
+
+export default CometChatReceiverImageMessageBubble;

@@ -2,6 +2,17 @@ import { StyleSheet } from 'react-native';
 import { widthRatio, heightRatio } from '../../../../utils/consts';
 
 export default StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.7)',
+    justifyContent: 'flex-end',
+  },
+  innerContainer: {
+    backgroundColor: 'white',
+    height: '90%',
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
+  },
   ModalWrapperStyle: {
     marginTop: heightRatio * 40,
     alignItems: 'flex-start',
@@ -60,14 +71,12 @@ export default StyleSheet.create({
     borderColor: 'pink',
   },
   ModalBodyItem: {
-    // marginLeft: 26 * widthRatio,
     alignSelf: 'center',
 
     width: '30%',
     alignItems: 'center',
   },
   ItemText: {
-    // width: 80 * widthRatio,
     fontWeight: '500',
     fontSize: 16,
   },
@@ -80,7 +89,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    width: '70%', /// ////
+    width: '70%',
     alignSelf: 'center',
   },
   TextInAddWrapper: {
@@ -98,12 +107,10 @@ export default StyleSheet.create({
     height: 28,
     width: 28,
   },
-  Inputbox: {
+  InputBox: {
     width: '70%',
     borderColor: 'green',
-    fontSize: 16, /// //
-    // height: 32,
-    //  marginLeft: 25,
+    fontSize: 16,
     alignSelf: 'center',
   },
   ModalBody: {
