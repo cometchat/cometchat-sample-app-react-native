@@ -53,6 +53,11 @@ CometChat Kitchen Sink Sample App (built using **CometChat UIKit**) is a fully f
 
 <hr/> 
 
+
+|<div align="left"><span>**Note:**<span style="font-weight:500"> Support for Expo CLI based apps.</span> </span></div>  |
+|-----------------------------------------|
+|If you are using Expo CLI to build a React Native app, the calling component will not work as our calling component needs native-level changes.However, you can create a React Native app using React Native CLI or use the 'expo eject' command to convert your app from an expo-managed workflow to a bare workflow.|
+---
 # Installation
 
 1. Simply clone the project from this project. After cloning the repository:
@@ -84,7 +89,7 @@ Learn more about how to integrate [UI Kit](https://github.com/cometchat-pro/reac
 
 # Troubleshooting
 
-- To read the full dcoumentation on UI Kit integration visit our [Documentation](https://prodocs.cometchat.com/docs/react-native-ui-kit) .
+- To read the full documentation on UI Kit integration visit our [Documentation](https://prodocs.cometchat.com/docs/react-native-ui-kit) .
 
 - Facing any issues while integrating or installing the UI Kit please <a href="https://app.cometchat.io/"> connect with us via real time support present in CometChat Dashboard.</a>.
 
