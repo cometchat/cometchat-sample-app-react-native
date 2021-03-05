@@ -1,7 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-
 import styles from './styles';
 import * as actions from '../../store/action';
 import {Text, View, ScrollView, TouchableOpacity} from 'react-native';
@@ -17,8 +16,8 @@ const HomePage = (props) => {
       <SafeAreaView>
         <View style={styles.wrapperStyle}>
           <Text style={styles.titleStyle}>
-            The UI Kit has different ways to make fully customizable UI
-            required to build a chat application.
+            The UI Kit has different ways to make fully customizable UI required
+            to build a chat application.
           </Text>
           <Text style={styles.subTitleStyle}>
             The UI Kit has been developed to help developers of different levels
@@ -30,17 +29,11 @@ const HomePage = (props) => {
             <View style={styles.boxStyle}>
               <View style={styles.boxContent}>
                 <View style={styles.titleWrapperStyle}>
-
-                  <Text style={styles.componentTitleStyle}>
-                    CometChatUI
-                  </Text>
+                  <Text style={styles.componentTitleStyle}>CometChatUI</Text>
                 </View>
                 <View style={styles.descWrapperStyle}>
                   <Text>
-                    The{' '}
-                    <Text style={styles.descTextColor}>
-                      CometChatUI
-                    </Text>{' '}
+                    The <Text style={styles.descTextColor}>CometChatUI</Text>{' '}
                     component launches a fully working chat application.
                   </Text>
                 </View>
@@ -61,7 +54,6 @@ const HomePage = (props) => {
             <View style={styles.boxStyle}>
               <View style={styles.boxContent}>
                 <View style={styles.titleWrapperStyle}>
-
                   <Text style={styles.componentTitleStyle}>Conversations</Text>
                 </View>
                 <View style={styles.descWrapperStyle}>
@@ -90,7 +82,6 @@ const HomePage = (props) => {
             <View style={styles.boxStyle}>
               <View style={styles.boxContent}>
                 <View style={styles.titleWrapperStyle}>
-
                   <Text style={styles.componentTitleStyle}>Groups</Text>
                 </View>
                 <View style={styles.descWrapperStyle}>
@@ -119,7 +110,6 @@ const HomePage = (props) => {
               <View style={styles.boxStyle}>
                 <View style={styles.boxContent}>
                   <View style={styles.titleWrapperStyle}>
-
                     <Text style={styles.componentTitleStyle}>Users</Text>
                   </View>
                   <View style={styles.descWrapperStyle}>
@@ -148,7 +138,6 @@ const HomePage = (props) => {
             <View style={styles.boxStyle}>
               <View style={styles.boxContent}>
                 <View style={styles.titleWrapperStyle}>
-
                   <Text style={styles.componentTitleStyle}>
                     Conversation List
                   </Text>
@@ -178,7 +167,6 @@ const HomePage = (props) => {
             <View style={styles.boxStyle}>
               <View style={styles.boxContent}>
                 <View style={styles.titleWrapperStyle}>
-
                   <Text style={styles.componentTitleStyle}>Group List</Text>
                 </View>
                 <View style={styles.descWrapperStyle}>
@@ -204,7 +192,6 @@ const HomePage = (props) => {
             <View style={styles.boxStyle}>
               <View style={styles.boxContent}>
                 <View style={styles.titleWrapperStyle}>
-
                   <Text style={styles.componentTitleStyle}>User List</Text>
                 </View>
                 <View style={styles.descWrapperStyle}>
