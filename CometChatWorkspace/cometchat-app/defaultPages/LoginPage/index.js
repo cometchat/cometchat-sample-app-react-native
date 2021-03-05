@@ -1,16 +1,11 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {CometChatAvatar} from '../../react-native-chat-ui-kit';
+import {CometChatAvatar} from '../../cometchat-pro-react-native-ui-kit';
 import {COMETCHAT_CONSTANTS} from '../../CONSTS';
 import style from './style';
 import * as actions from '../../store/action';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Text, TextInput, TouchableOpacity} from 'react-native';
 import {ActivityIndicator} from 'react-native';
 
 class LoginPage extends React.PureComponent {

@@ -82,6 +82,10 @@ CometChat Kitchen Sink Sample App (built using **CometChat UIKit**) is a fully f
 
 Build and run the Sample App.
 
+|<div align="left"><span>**Note:**<span style="font-weight:500"> generating release APK.</span> </span></div>  |
+|-----------------------------------------|
+|Setting the below line in android/build.gradle `true` or `false` will determine whether to generate multiple APKs for different CPU architectures or a single APK bundle that works on all devices despite the CPU you're running it on but at the cost of APK bundle size. Default value is `true`<br/> `def  enableSeparateBuildPerCPUArchitecture = true`  |
+
 # Learn more about UI-Kit
 
 Learn more about how to integrate [UI Kit](https://github.com/cometchat-pro/react-native-chat-ui-kit) inside your app.

@@ -15,7 +15,7 @@ import {
   CometChatGroupList,
   CometChatConversationListWithMessages,
   CometChatConversationList,
-} from './react-native-chat-ui-kit';
+} from './cometchat-pro-react-native-ui-kit';
 
 function StackNavigator(props) {
   const Stack = createStackNavigator();
