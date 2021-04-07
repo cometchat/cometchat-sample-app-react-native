@@ -7,6 +7,7 @@ import * as actions from '../../store/action';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {View, Text, TextInput, TouchableOpacity} from 'react-native';
 import {ActivityIndicator} from 'react-native';
+import DropDownAlert from '../../cometchat-pro-react-native-ui-kit/src/components/Shared/DropDownAlert';
 
 class LoginPage extends React.PureComponent {
   constructor(props) {
@@ -43,9 +44,10 @@ class LoginPage extends React.PureComponent {
 
     let errorMessage = null;
     if (this.props.error) {
-      errorMessage = (
-        <Text style={style.errorStyle}>{this.props.error.message}</Text>
-      );
+      this.dropDownAlertRef?.showMessage('error', this.props.error.message);
+      // errorMessage = (
+      //   <Text style={style.errorStyle}>{this.props.error.message}</Text>
+      // );
     }
 
     return (
@@ -145,6 +147,7 @@ class LoginPage extends React.PureComponent {
             </TouchableOpacity>
           </View>
         </View>
+        <DropDownAlert ref={(ref) => (this.dropDownAlertRef = ref)} />
       </SafeAreaView>
     );
   }
