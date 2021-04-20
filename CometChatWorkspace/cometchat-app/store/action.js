@@ -23,6 +23,27 @@ export const authFail = (error) => {
   };
 };
 
+export const createNewUser = (uid, authKey) => {
+  return (dispatch) => {
+    let apiKey = 'API_KEY';
+    let name = uid;
+    let user = new CometChat.User(uid);
+    user.setName(name);
+    CometChat.createUser(user, authKey).then(
+      (user) => {
+        if (user) {
+          dispatch(auth(uid, authKey));
+        } else {
+          dispatch(authFail(user));
+        }
+      },
+      (error) => {
+        dispatch(authFail(error));
+      },
+    );
+  };
+};
+
 export const logoutSuccess = () => {
   return {
     type: actionTypes.AUTH_LOGOUT,
@@ -36,7 +57,7 @@ export const logout = () => {
   };
 };
 
-export const auth = (uid, authKey) => {
+export const auth = (uid, authKey, createUser) => {
   return (dispatch) => {
     dispatch(authStart());
 
@@ -50,7 +71,11 @@ export const auth = (uid, authKey) => {
       })
       .catch((error) => {
         // console.log('CometChatLogin Failed', error);
-        dispatch(authFail(error));
+        if (error.code === 'ERR_UID_NOT_FOUND') {
+          dispatch(createNewUser(uid, authKey));
+        } else {
+          dispatch(authFail(error));
+        }
       });
   };
 };
