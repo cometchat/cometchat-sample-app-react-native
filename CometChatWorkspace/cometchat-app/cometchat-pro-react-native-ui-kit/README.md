@@ -88,8 +88,13 @@ These packages help make the ui-kit smooth and functioning
 [react-native-autolink](https://www.npmjs.com/package/react-native-autolink)</br>
 [react-native-screens](https://www.npmjs.com/package/react-native-screens)</br>
 [emoji-mart-native](https://www.npmjs.com/package/emoji-mart-native)</br>
+[react-native-keep-awake](https://www.npmjs.com/package/react-native-keep-awake)</br>
+
+<<<<<<< HEAD
+=======
 <br/>
 
+>>>>>>> dev
 ## 2. Configure CometChat inside your app
 
 ### i. Initialize CometChat 🌟

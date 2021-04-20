@@ -1,6 +1,6 @@
 {
   "name": "example",
-  "version": "3.0.0-beta1-1",
+  "version": "3.0.0-beta1-2",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -20,6 +20,7 @@
     "@react-navigation/stack": "^5.12.8",
     "emoji-mart-native": "^0.6.2-beta",
     "lodash": "^4.17.20",
+    "prop-types": "^15.7.2",
     "react": "16.13.1",
     "react-native": "0.63.3",
     "react-native-autolink": "^3.0.0",
@@ -28,6 +29,7 @@
     "react-native-fast-image": "^8.3.4",
     "react-native-gesture-handler": "^1.9.0",
     "react-native-image-picker": "^3.1.1",
+    "react-native-keep-awake": "^4.0.0",
     "react-native-reanimated": "^1.13.2",
     "react-native-safe-area-context": "^3.1.9",
     "react-native-screens": "^2.16.1",
