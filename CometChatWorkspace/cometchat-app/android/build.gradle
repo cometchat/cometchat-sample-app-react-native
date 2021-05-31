@@ -36,8 +36,8 @@ allprojects {
             // Android JSC is installed from npm
             url("$rootDir/../node_modules/jsc-android/dist")
         }
-        maven {
-      url "https://dl.bintray.com/cometchat/pro"
+         maven {
+            url "https://dl.cloudsmith.io/public/cometchat/cometchat-pro-android/maven/"
         }
 
         google()
