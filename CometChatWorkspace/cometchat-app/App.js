@@ -50,10 +50,15 @@ const App = () => {
     .build();
 
   useEffect(() => {
-    console.log('init***');
-    CometChat.init(COMETCHAT_CONSTANTS.APP_ID, appSetting).catch(() => {
-      return null;
-    });
+    CometChat.init(COMETCHAT_CONSTANTS.APP_ID, appSetting)
+      .then(() => {
+        if (CometChat.setSource) {
+          CometChat.setSource('ui-kit', Platform.OS, 'react-native');
+        }
+      })
+      .catch(() => {
+        return null;
+      });
 
     if (Platform.OS === 'android') {
       setDefaultFontFamily();
