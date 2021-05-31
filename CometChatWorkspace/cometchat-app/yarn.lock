@@ -663,15 +663,15 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@cometchat-pro/react-native-calls@2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@cometchat-pro/react-native-calls/-/react-native-calls-2.0.1.tgz#77c104247838d6ce56d8b1de5b572088de0d1e3f"
-  integrity sha512-opoEZm9qD2F8cHp6MNjjDjUfbRWlsPBFczFD9rOJqzznIDGgmIXvTC+3kE2lG7/7q63zcZqGsmE2T1ZFz0AcxA==
+"@cometchat-pro/react-native-calls@2.0.3-beta1":
+  version "2.0.3-beta1"
+  resolved "https://registry.yarnpkg.com/@cometchat-pro/react-native-calls/-/react-native-calls-2.0.3-beta1.tgz#404d4057a3a4614300f5677d0c0c6d4fc3b48831"
+  integrity sha512-HmdnlDMiZ1RlLgfHxog/BamTxv7xyQevwv//GgATe+v1zghvAcc4mRWcXkWZTlq7qjjiOEzJ1K+fjLyZoA7eBQ==
 
-"@cometchat-pro/react-native-chat@2.3.0":
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/@cometchat-pro/react-native-chat/-/react-native-chat-2.3.0.tgz#91bfefd2cac430683572999eb8d7581587c0fb49"
-  integrity sha512-IdEzFISsAY3ts/12CLEHWP0rx9KrQ8MVdbfXklNpsPKPJdIPM5Mc9P52w2Q4oRAgyftG0lPFnLxReJqSwUtaPw==
+"@cometchat-pro/react-native-chat@2.3.3":
+  version "2.3.3"
+  resolved "https://registry.yarnpkg.com/@cometchat-pro/react-native-chat/-/react-native-chat-2.3.3.tgz#f87d0407c7c36e431e39646e1068f2758e865354"
+  integrity sha512-W67t8+EjxN6KixW9KJv5bCArI+1zkemVo/j655yNQaRuDJIiFVibZcDR1rY9Km4NVpUmqfZroH6ub8vsYbEBgw==
 
 "@egjs/hammerjs@^2.0.17":
   version "2.0.17"
@@ -2564,15 +2564,15 @@ escape-html@~1.0.3:
   resolved "https://registry.yarnpkg.com/escape-html/-/escape-html-1.0.3.tgz#0258eae4d3d0c0974de1c169188ef0051d1d1988"
   integrity sha1-Aljq5NPQwJdN4cFpGI7wBR0dGYg=
 
+escape-string-regexp@2.0.0, escape-string-regexp@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-2.0.0.tgz#a30304e99daa32e23b2fd20f51babd07cffca344"
+  integrity sha512-UpzcLCXolUWcNu5HtVMHYdXJjArjsF9C0aNnquZYY4uW/Vu0miy5YoWvbV345HauVvcAUnpRuhMMcqTcGOY2+w==
+
 escape-string-regexp@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
   integrity sha1-G2HAViGQqN/2rjuyzwIAyhMLhtQ=
-
-escape-string-regexp@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-2.0.0.tgz#a30304e99daa32e23b2fd20f51babd07cffca344"
-  integrity sha512-UpzcLCXolUWcNu5HtVMHYdXJjArjsF9C0aNnquZYY4uW/Vu0miy5YoWvbV345HauVvcAUnpRuhMMcqTcGOY2+w==
 
 escape-string-regexp@^4.0.0:
   version "4.0.0"
@@ -3536,7 +3536,7 @@ internal-slot@^1.0.2:
     has "^1.0.3"
     side-channel "^1.0.4"
 
-invariant@^2.2.4:
+invariant@2.2.4, invariant@^2.2.4:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.4.tgz#610f3c92c9359ce1db616e538008d23ff35158e6"
   integrity sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==
@@ -5687,6 +5687,11 @@ react-native-iphone-x-helper@^1.3.0:
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.3.1.tgz#20c603e9a0e765fd6f97396638bdeb0e5a60b010"
   integrity sha512-HOf0jzRnq2/aFUcdCJ9w9JGzN3gdEg0zFE4FyYlp4jtidqU03D5X7ZegGKfT1EWteR0gPBGp9ye5T5FvSWi9Yg==
 
+react-native-keep-awake@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-keep-awake/-/react-native-keep-awake-4.0.0.tgz#d89fdc3fb60b3cffa979ef37dc5816196df998a2"
+  integrity sha512-0Fotox+eLXQooeibVs3P60yASYUWjtRw9MZNmbuHt5UZQrgUrAKsE4jm7gTr4tPU1m1RkwGzcgUFpcOkh/ec7g==
+
 react-native-ratings@^7.3.0:
   version "7.4.0"
   resolved "https://registry.yarnpkg.com/react-native-ratings/-/react-native-ratings-7.4.0.tgz#2b93c9bdd201238591d09747791b4c55e5862959"
@@ -5751,6 +5756,14 @@ react-native-video@^5.1.0-alpha8:
     keymirror "^0.1.1"
     prop-types "^15.7.2"
     shaka-player "^2.5.9"
+
+react-native-webview@^11.6.2:
+  version "11.6.2"
+  resolved "https://registry.yarnpkg.com/react-native-webview/-/react-native-webview-11.6.2.tgz#e19b3325d6777caee29d04eb2edf9b70f0b29915"
+  integrity sha512-7e5ltLBgqt1mX0gdTTS2nFPIjfS6y300wqJ4rLWqU71lDO+8ZeayfsF5qo83qxo2Go74CtLnSeWae4pdGwUqYw==
+  dependencies:
+    escape-string-regexp "2.0.0"
+    invariant "2.2.4"
 
 react-native@0.63.3:
   version "0.63.3"
