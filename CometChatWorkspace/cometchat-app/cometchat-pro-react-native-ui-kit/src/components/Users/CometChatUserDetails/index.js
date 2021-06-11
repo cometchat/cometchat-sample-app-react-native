@@ -24,13 +24,17 @@ export default class CometChatUserDetails extends React.Component {
     this.sheetRef = React.createRef(null);
     this.state = {
       status: this.props.item.status,
+
       restrictions: null,
+
     };
   }
 
   componentDidMount() {
     this.setStatusForUser();
+
     this.checkRestrictions();
+
   }
 
   /**
@@ -41,6 +45,7 @@ export default class CometChatUserDetails extends React.Component {
       this.sheetRef.current.snapTo(0);
     }
   }
+
 
   checkRestrictions = async () => {
     let isSharedMediaEnabled = await this.context.FeatureRestriction.isSharedMediaEnabled();
@@ -56,6 +61,7 @@ export default class CometChatUserDetails extends React.Component {
       },
     });
   };
+
 
   setStatusForUser = () => {
     try {
@@ -122,9 +128,11 @@ export default class CometChatUserDetails extends React.Component {
           image={{ uri: this.props.item.avatar }}
           name={this.props.item.name}
         />
+
         {this.props.item &&
         this.props.item.blockedByMe &&
         !this.state.restrictions?.isUserPresenceEnabled ? null : (
+
           <CometChatUserPresence
             status={this.props.item.status}
             style={{ top: 35 }}
@@ -173,9 +181,11 @@ export default class CometChatUserDetails extends React.Component {
       </TouchableOpacity>
     );
 
+
     if (!this.state.restrictions?.isViewProfileEnabled) {
       showProfile = null;
     }
+
 
     let blockUserView = (
       <View style={style.blockContainer}>
@@ -189,6 +199,7 @@ export default class CometChatUserDetails extends React.Component {
         <View style={style.blockText}>{blockUserText}</View>
       </View>
     );
+
 
     if (!this.state.restrictions?.isBlockUserEnabled) {
       blockUserView = null;
@@ -208,6 +219,7 @@ export default class CometChatUserDetails extends React.Component {
           <View style={style.blockText}>{showProfile}</View>
         </View>
       ) : null;
+
 
     let sharedMediaView = (
       <CometChatSharedMedia

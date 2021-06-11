@@ -16,6 +16,7 @@ import { CometChat } from '@cometchat-pro/react-native-chat';
 const actionIconSize = 26;
 
 export default (props) => {
+
   const [restrictions, setRestrictions] = useState(null);
   const context = useContext(CometChatContext);
   useEffect(() => {
@@ -52,6 +53,7 @@ export default (props) => {
     props.message.messageFrom === enums.MESSAGE_FROM_RECEIVER &&
     props.message.receiverType === CometChat.RECEIVER_TYPE.GROUP &&
     restrictions?.enableMessageInPrivate
+
   ) {
     sendMessage = (
       <TouchableOpacity
@@ -96,12 +98,14 @@ export default (props) => {
 
   // if deleting messages need to be disabled
 
+
   if (
     props.message.messageFrom === enums.MESSAGE_FROM_RECEIVER &&
     (props.item.scope == CometChat.GROUP_MEMBER_SCOPE.MODERATOR ||
     props.item.scope == CometChat.GROUP_MEMBER_SCOPE.ADMIN
       ? !restrictions?.enableDeleteMessageForModerator
       : !restrictions?.enableDeleteMessage)
+
   ) {
     deleteMessage = null;
   }

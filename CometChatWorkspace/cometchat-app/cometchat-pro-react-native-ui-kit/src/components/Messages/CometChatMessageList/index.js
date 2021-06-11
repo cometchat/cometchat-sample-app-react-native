@@ -35,7 +35,9 @@ import styles from './styles';
 import { logger } from '../../../utils/common';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
+
 import { CometChatContext } from '../../../utils/CometChatContext';
+
 
 let cDate = null;
 
@@ -1159,7 +1161,9 @@ class CometChatMessageList extends React.PureComponent {
               : null
           }
           data={messages}
+
           keyExtractor={(item, index) => item.messageId + '_' + index}
+
           renderItem={this.renderItem}
         />
         {this.state.showNewMsg ? newMsgPopUp : null}
