@@ -1,6 +1,8 @@
 {
   "name": "example",
-  "version": "3.0.0-beta4-1",
+
+  "version": "3.0.0-beta5-1",
+
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -10,8 +12,10 @@
     "lint": "eslint ."
   },
   "dependencies": {
+
     "@cometchat-pro/react-native-calls": "2.0.3-beta1",
-    "@cometchat-pro/react-native-chat": "3.0.0-beta4",
+    "@cometchat-pro/react-native-chat": "3.0.0-beta5",
+
     "@react-native-async-storage/async-storage": "^1.13.4",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-picker/picker": "^1.9.4",
@@ -34,6 +38,7 @@
     "react-native-safe-area-context": "^3.1.9",
     "react-native-screens": "^2.16.1",
     "react-native-sound": "^0.11.0",
+    "react-native-swipe-list-view": "^3.2.8",
     "react-native-vector-icons": "^7.1.0",
     "react-native-video": "^5.1.0-alpha8",
     "react-native-video-controls": "^2.7.1",
