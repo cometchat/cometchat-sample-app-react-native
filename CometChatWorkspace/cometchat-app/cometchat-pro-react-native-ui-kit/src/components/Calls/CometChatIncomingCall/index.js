@@ -25,7 +25,6 @@ import videoCallIcon from './resources/incomingvideocall.png';
 import { incomingCallAlert } from '../../../resources/audio';
 import { logger } from '../../../utils/common';
 import DropDownAlert from '../../Shared/DropDownAlert';
-import { CometChatContext } from '../../../utils/CometChatContext';
 
 export default (props) => {
   let callAlertManager = null;

@@ -9,25 +9,28 @@ import { MessageListManager } from './controller';
 
 import * as enums from '../../../utils/enums';
 import * as actions from '../../../utils/actions';
-import CometChatSenderPollMessageBubble from '../../Messages/Extensions/CometChatSenderPollMessageBubble';
-import CometChatSenderStickerMessageBubble from '../../Messages/Extensions/CometChatSenderStickerMessageBubble';
-import CometChatReceiverPollMessageBubble from '../../Messages/Extensions/CometChatReceiverPollMessageBubble';
-import CometChatReceiverStickerMessageBubble from '../../Messages/Extensions/CometChatReceiverStickerMessageBubble';
-import CometChatActionMessageBubble from '../CometChatActionMessageBubble';
-import CometChatDeleteMessageBubble from '../CometChatDeleteMessageBubble';
-import CometChatReceiverVideoMessageBubble from '../CometChatReceiverVideoMessageBubble';
-import CometChatSenderVideoMessageBubble from '../CometChatSenderVideoMessageBubble';
-import CometChatSenderFileMessageBubble from '../CometChatSenderFileMessageBubble';
-import CometChatReceiverFileMessageBubble from '../CometChatReceiverFileMessageBubble';
-import CometChatSenderAudioMessageBubble from '../CometChatSenderAudioMessageBubble';
-import CometChatReceiverAudioMessageBubble from '../CometChatReceiverAudioMessageBubble';
-import CometChatReceiverImageMessageBubble from '../CometChatReceiverImageMessageBubble';
-import CometChatSenderTextMessageBubble from '../CometChatSenderTextMessageBubble';
-import CometChatSenderImageMessageBubble from '../CometChatSenderImageMessageBubble';
-import CometChatReceiverTextMessageBubble from '../CometChatReceiverTextMessageBubble';
-import CometChatReceiverDirectCallBubble from '../CometChatReceiverDirectCallBubble';
-import CometChatSenderDirectCallBubble from '../CometChatSenderDirectCallBubble';
-
+import {
+  CometChatSenderPollMessageBubble,
+  CometChatSenderStickerMessageBubble,
+  CometChatReceiverPollMessageBubble,
+  CometChatReceiverStickerMessageBubble,
+} from '../../Messages/Extensions';
+import {
+  CometChatActionMessageBubble,
+  CometChatDeleteMessageBubble,
+  CometChatReceiverVideoMessageBubble,
+  CometChatSenderVideoMessageBubble,
+  CometChatSenderFileMessageBubble,
+  CometChatReceiverFileMessageBubble,
+  CometChatSenderAudioMessageBubble,
+  CometChatReceiverAudioMessageBubble,
+  CometChatSenderImageMessageBubble,
+  CometChatReceiverImageMessageBubble,
+  CometChatSenderTextMessageBubble,
+  CometChatReceiverTextMessageBubble,
+  CometChatReceiverDirectCallBubble,
+  CometChatSenderDirectCallBubble,
+} from '../index';
 import styles from './styles';
 import { logger } from '../../../utils/common';
 import { TouchableOpacity } from 'react-native-gesture-handler';

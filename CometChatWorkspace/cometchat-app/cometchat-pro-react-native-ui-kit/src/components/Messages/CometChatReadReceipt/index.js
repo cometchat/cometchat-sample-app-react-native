@@ -9,7 +9,6 @@ import sendingTick from './resources/sending.png';
 import errorTick from './resources/error.png';
 import styles from './styles';
 import { CometChat } from '@cometchat-pro/react-native-chat';
-import { CometChatContext } from '../../../utils/CometChatContext';
 const CometChatReadReceipt = (props) => {
   const context = useContext(CometChatContext);
   const [isDeliveryReceiptsEnabled, setIsDeliveryReceiptsEnabled] = useState(

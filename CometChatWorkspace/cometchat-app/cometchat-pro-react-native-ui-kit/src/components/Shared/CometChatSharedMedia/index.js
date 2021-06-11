@@ -15,6 +15,13 @@ import CometChatImageViewer from '../../Messages/CometChatImageViewer';
 import DropDownAlert from '../../Shared/DropDownAlert';
 import { SharedMediaManager } from './controller';
 import styles from './styles';
+import VideoPlayer from 'react-native-video-controls';
+import DropDownAlert from '../../Shared/DropDownAlert';
+
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import { CometChat } from '@cometchat-pro/react-native-chat';
+import { deviceHeight, heightRatio } from '../../../utils/consts';
+import { logger } from '../../../utils/common';
 
 export default class CometChatSharedMedia extends React.Component {
   static contextType = CometChatContext;

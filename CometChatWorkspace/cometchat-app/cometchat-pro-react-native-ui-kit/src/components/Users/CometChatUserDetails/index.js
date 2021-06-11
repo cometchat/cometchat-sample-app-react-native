@@ -14,7 +14,6 @@ import BottomSheet from 'reanimated-bottom-sheet';
 import * as actions from '../../../utils/actions';
 import { deviceHeight } from '../../../utils/consts';
 import DropDownAlert from '../../Shared/DropDownAlert';
-import { CometChatContext } from '../../../utils/CometChatContext';
 
 export default class CometChatUserDetails extends React.Component {
   static contextType = CometChatContext;

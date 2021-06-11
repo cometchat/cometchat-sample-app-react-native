@@ -1,8 +1,6 @@
 {
   "name": "cometchat-pro-react-native-ui-kit",
-
-  "version": "3.0.0-beta5-1",
-
+  "version": "3.0.0-beta1-2",
   "description": "Chat UI Kit for React Native App",
   "main": "./src/index.js",
   "scripts": {
@@ -53,9 +51,11 @@
   },
   "dependencies": {
 
+
     "@cometchat-pro/react-native-calls": "2.0.3-beta1",
     "@cometchat-pro/react-native-chat": "3.0.0-beta5",
     "@react-native-async-storage/async-storage": "^1.13.4",
+
 
     "lodash": "^4.17.20",
     "react-native-autolink": "^3.0.0",

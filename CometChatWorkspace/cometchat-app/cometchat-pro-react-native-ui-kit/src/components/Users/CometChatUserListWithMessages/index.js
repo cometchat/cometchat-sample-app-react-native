@@ -380,39 +380,37 @@ class CometChatUserListWithMessages extends React.Component {
       );
     }
     return (
-      <CometChatContextProvider ref={(el) => (this.contextProviderRef = el)}>
-        <View style={{ backgroundColor: 'white' }}>
-          <CometChatUserList
-            theme={this.theme}
-            item={this.state.item}
-            type={this.state.type}
-            onItemClick={this.itemClicked}
-            actionGenerated={this.actionHandler}
-            navigation={this.props.navigation}
-          />
-          {imageView}
-          <CometChatIncomingCall
-            showMessage={(type, message) => {
-              this.dropDownAlertRef?.showMessage(type, message);
-            }}
-            theme={this.props.theme}
-            loggedInUser={this.loggedInUser}
-            outgoingCall={this.state.outgoingCall}
-            actionGenerated={this.actionHandler}
-          />
-          <CometChatOutgoingCall
-            theme={this.props.theme}
-            item={this.state.item}
-            type={this.state.type}
-            incomingCall={this.state.incomingCall}
-            outgoingCall={this.state.outgoingCall}
-            loggedInUser={this.loggedInUser}
-            lang={this.state.lang}
-            actionGenerated={this.actionHandler}
-          />
-          <DropDownAlert ref={(ref) => (this.dropDownAlertRef = ref)} />
-        </View>
-      </CometChatContextProvider>
+      <View style={{ backgroundColor: 'white' }}>
+        <CometChatUserList
+          theme={this.theme}
+          item={this.state.item}
+          type={this.state.type}
+          onItemClick={this.itemClicked}
+          actionGenerated={this.actionHandler}
+          navigation={this.props.navigation}
+        />
+        {imageView}
+        <CometChatIncomingCall
+          showMessage={(type, message) => {
+            this.dropDownAlertRef?.showMessage(type, message);
+          }}
+          theme={this.props.theme}
+          loggedInUser={this.loggedInUser}
+          outgoingCall={this.state.outgoingCall}
+          actionGenerated={this.actionHandler}
+        />
+        <CometChatOutgoingCall
+          theme={this.props.theme}
+          item={this.state.item}
+          type={this.state.type}
+          incomingCall={this.state.incomingCall}
+          outgoingCall={this.state.outgoingCall}
+          loggedInUser={this.loggedInUser}
+          lang={this.state.lang}
+          actionGenerated={this.actionHandler}
+        />
+        <DropDownAlert ref={(ref) => (this.dropDownAlertRef = ref)} />
+      </View>
     );
   }
 }

@@ -215,10 +215,10 @@ class CometChatMessages extends React.PureComponent {
       case actions.MESSAGE_READ:
         params.actionGenerated(action, messages);
         break;
-      case actions.MESSAGE_SENT:
-      case actions.ERROR_IN_SEND_MESSAGE:
+      case 'messageSent':
+      case 'errorSentInMessage':
         this.messageSent(messages);
-      case actions.MESSAGE_COMPOSED: {
+      case 'messageComposed': {
         this.appendMessage(messages);
         break;
       }
@@ -276,18 +276,10 @@ class CometChatMessages extends React.PureComponent {
       case actions.VIEW_ACTUAL_IMAGE:
         params.actionGenerated(actions.VIEW_ACTUAL_IMAGE, messages);
         break;
-      case actions.VIEW_ACTUAL_VIDEO:
-        this.setState({ videoMessage: messages });
-        break;
-      case actions.AUDIO_CALL:
-      case actions.VIDEO_CALL:
-        if (params.type === CometChat.RECEIVER_TYPE.GROUP) {
-          this.setState({ joinDirectCall: false, ongoingDirectCall: true });
-        } else {
-          params.actionGenerated(action, { ...params.item, type: params.type });
-        }
-      case actions.MENU_CLICKED:
-        // case actions.JOIN_DIRECT_CALL:
+      case 'audioCall':
+      case 'videoCall':
+      case 'menuClicked':
+      case actions.JOIN_DIRECT_CALL:
         params.actionGenerated(action);
         break;
       case actions.SEND_REACTION:
@@ -350,47 +342,9 @@ class CometChatMessages extends React.PureComponent {
       case actions.MEMBER_UNBANNED:
         this.memberUnbanned(messages);
         break;
-      case actions.SEND_MESSAGE:
-        this.setState({ messageToReact: null });
-        this.sendMessage(messages);
-        break;
-      case actions.SHOW_PROFILE:
-        this.showProfile();
-        break;
-      case actions.JOIN_DIRECT_CALL:
-        this.setState({ joinDirectCall: true }, () => {
-          this.setState({ ongoingDirectCall: true });
-        });
-        break;
-      case actions.DIRECT_CALL_ENDED:
-        this.setState({ joinDirectCall: false, ongoingDirectCall: null });
-
-        break;
       default:
         break;
     }
-  };
-
-  sendMessage = (message) => {
-    const { route } = this.props;
-
-    const params = route?.params || this.props;
-
-    this.props.navigation.push(enums.NAVIGATION_CONSTANTS.COMET_CHAT_MESSAGES, {
-      theme: params.theme,
-      item: { ...message.sender },
-      type: CometChat.RECEIVER_TYPE.USER,
-      loggedInUser: params.loggedInUser,
-      actionGenerated: params.actionGenerated,
-    });
-  };
-
-  showProfile = () => {
-    this.setState({
-      userDetailVisible: false,
-      groupDetailVisible: false,
-      showProfile: true,
-    });
   };
 
   messageSent = (message) => {
@@ -1034,47 +988,58 @@ class CometChatMessages extends React.PureComponent {
               loggedInUser={params.loggedInUser}
               actionGenerated={this.actionHandler}
             />
-            <CometChatMessageList
+          ) : null}
+          {threadMessageView}
+          {this.state.groupDetailVisible ? (
+            <CometChatGroupDetails
               theme={this.theme}
-              messages={this.state.messageList}
-              item={
-                params.type === CometChat.RECEIVER_TYPE.USER
-                  ? this.state.user
-                  : this.state.item
-              }
-              type={params.type}
-              scrollToBottom={this.state.scrollToBottom}
-              messageConfig={params.messageconfig}
-              showMessage={(type, message) => {
-                this.DropDownAlertRef?.showMessage(type, message);
-              }}
-              // widgetsettings={route.params.widgetsettings}
-              // widgetconfig={route.params.widgetconfig}
-              loggedInUser={params.loggedInUser}
-              actionGenerated={this.actionHandler}
-            />
-            {liveReactionView}
-            {messageComposer}
-          </SafeAreaView>
-          <DropDownAlert ref={(ref) => (this.DropDownAlertRef = ref)} />
-        </KeyboardAvoidingView>
-        {this.state.ongoingDirectCall ? (
-          <>
-            <CometChatOutgoingDirectCall
-              open
-              close={() => this.actionHandler(actions.DIRECT_CALL_ENDED)}
-              theme={this.theme}
+              open={this.state.groupDetailVisible}
               item={this.state.item}
               type={params.type}
-              lang={this.state.lang}
-              callType={CometChat.CALL_TYPE.VIDEO}
-              joinDirectCall={this.state.joinDirectCall}
-              loggedInUser={params.loggedInUser}
               actionGenerated={this.actionHandler}
+              loggedInUser={this.loggedInUser}
             />
-          </>
-        ) : null}
-      </CometChatContextProvider>
+          ) : null}
+          <CometChatMessageActions
+            open={!!this.state.messageToReact}
+            message={this.state.messageToReact}
+            actionGenerated={this.actionHandler}
+            close={() => {
+              this.actionHandler('closeMessageActions');
+            }}
+          />
+          <CometChatMessageHeader
+            sidebar={params.sidebar}
+            theme={this.theme}
+            item={params.type === 'user' ? this.state.user : this.state.item}
+            type={params.type}
+            viewdetail={params.viewdetail !== false}
+            audioCall={params.audioCall !== false}
+            videoCall={params.videoCall !== false}
+            // widgetsettings={route.params.widgetsettings}
+            loggedInUser={params.loggedInUser}
+            actionGenerated={this.actionHandler}
+          />
+          <CometChatMessageList
+            theme={this.theme}
+            messages={this.state.messageList}
+            item={params.type === 'user' ? this.state.user : this.state.item}
+            type={params.type}
+            scrollToBottom={this.state.scrollToBottom}
+            messageConfig={params.messageconfig}
+            showMessage={(type, message) => {
+              this.DropDownAlertRef?.showMessage(type, message);
+            }}
+            // widgetsettings={route.params.widgetsettings}
+            // widgetconfig={route.params.widgetconfig}
+            loggedInUser={params.loggedInUser}
+            actionGenerated={this.actionHandler}
+          />
+          {liveReactionView}
+          {messageComposer}
+        </SafeAreaView>
+        <DropDownAlert ref={(ref) => (this.DropDownAlertRef = ref)} />
+      </KeyboardAvoidingView>
     );
   }
 }

@@ -19,7 +19,6 @@ import * as enums from '../../../../utils/enums';
 import { ModalPicker, Emoji } from 'emoji-mart-native';
 import ReactionDetails from './reactionDetails';
 import DropDownAlert from '../../../Shared/DropDownAlert';
-import { CometChatContext } from '../../../../utils/CometChatContext';
 
 class CometChatMessageReactions extends Component {
   static contextType = CometChatContext;

@@ -320,10 +320,31 @@ class CometChatUserList extends React.PureComponent {
     return (
       <View style={[style.contactHeaderStyle]}>
         <Text style={style.contactHeaderTitleStyle}>Users</Text>
-        {this.state.restrictions?.isUserSearchEnabled ? (
-          <TouchableWithoutFeedback
-            onPress={() => this.textInputRef.current.focus()}>
-            <View
+        <TouchableWithoutFeedback
+          onPress={() => this.textInputRef.current.focus()}>
+          <View
+            style={[
+              style.contactSearchStyle,
+              {
+                backgroundColor: `${this.theme.backgroundColor.grey}`,
+              },
+            ]}>
+            <Icon name="search" size={18} color={this.theme.color.helpText} />
+            <TextInput
+              ref={this.textInputRef}
+              autoCompleteType="off"
+              value={this.state.textInputValue}
+              placeholder="Search"
+              placeholderTextColor={this.theme.color.textInputPlaceholder}
+              onChangeText={this.searchUsers}
+              onFocus={() => {
+                this.setState({ textInputFocused: true });
+              }}
+              onBlur={() => {
+                this.setState({ textInputFocused: false });
+              }}
+              clearButtonMode="always"
+              numberOfLines={1}
               style={[
                 style.contactSearchStyle,
                 {
@@ -402,35 +423,32 @@ class CometChatUserList extends React.PureComponent {
     }
 
     return (
-      <CometChatContextProvider ref={(el) => (this.contextProviderRef = el)}>
-        <TouchableWithoutFeedback
-          onPress={() => {
-            Keyboard.dismiss();
-          }}>
-          <KeyboardAvoidingView
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            style={style.contactWrapperStyle}>
-            <View style={style.headerContainer}></View>
-            {this.listHeaderComponent()}
-            <FlatList
-              data={userListWithHeaders}
-              renderItem={this.renderUserView}
-              contentContainerStyle={{ flexGrow: 1 }}
-              ListEmptyComponent={this.listEmptyContainer}
-              ItemSeparatorComponent={this.itemSeparatorComponent}
-              keyExtractor={(item, index) => item.uid + '_' + index}
-              stickyHeaderIndices={
-                Platform.OS === 'android' ? null : headerIndices
-              }
-              onScroll={this.handleScroll}
-              onEndReached={this.endReached}
-              onEndReachedThreshold={0.3}
-              showsVerticalScrollIndicator={false}
-            />
-            <DropDownAlert ref={(ref) => (this.dropDownAlertRef = ref)} />
-          </KeyboardAvoidingView>
-        </TouchableWithoutFeedback>
-      </CometChatContextProvider>
+      <TouchableWithoutFeedback
+        onPress={() => {
+          Keyboard.dismiss();
+        }}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={style.contactWrapperStyle}>
+          <View style={style.headerContainer}></View>
+          {this.listHeaderComponent()}
+          <FlatList
+            data={userListWithHeaders}
+            renderItem={this.renderUserView}
+            contentContainerStyle={{ flexGrow: 1 }}
+            ListEmptyComponent={this.listEmptyContainer}
+            ItemSeparatorComponent={this.itemSeparatorComponent}
+            stickyHeaderIndices={
+              Platform.OS === 'android' ? null : headerIndices
+            }
+            onScroll={this.handleScroll}
+            onEndReached={this.endReached}
+            onEndReachedThreshold={0.3}
+            showsVerticalScrollIndicator={false}
+          />
+          <DropDownAlert ref={(ref) => (this.dropDownAlertRef = ref)} />
+        </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
     );
   }
 }
