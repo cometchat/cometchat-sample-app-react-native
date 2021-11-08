@@ -708,15 +708,15 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@cometchat-pro/react-native-calls@2.0.3-beta1":
-  version "2.0.3-beta1"
-  resolved "https://registry.yarnpkg.com/@cometchat-pro/react-native-calls/-/react-native-calls-2.0.3-beta1.tgz#404d4057a3a4614300f5677d0c0c6d4fc3b48831"
-  integrity sha512-HmdnlDMiZ1RlLgfHxog/BamTxv7xyQevwv//GgATe+v1zghvAcc4mRWcXkWZTlq7qjjiOEzJ1K+fjLyZoA7eBQ==
+"@cometchat-pro/react-native-calls@2.1.1":
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/@cometchat-pro/react-native-calls/-/react-native-calls-2.1.1.tgz#6331f973c094510d6db6e3419099d932d18c9aaf"
+  integrity sha512-+I8NbbE+JB5ItinLgcNewlg+2cMkDMMPlGLSFpXTahq5z+op2vtrImxixF5g31OIONWVqLP9mGlMSpLE/5nKsA==
 
-"@cometchat-pro/react-native-chat@3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@cometchat-pro/react-native-chat/-/react-native-chat-3.0.0.tgz#ca02af3c66a965756e11c3eea704f84463493cc1"
-  integrity sha512-kUia4XYanHnApkzoJ9KT7TMevJPizx4srOuyVLE4YwyvVGZhdvBlWH4KqKUWfuXnlhc6L37GWCc2yKYyMOTmHQ==
+"@cometchat-pro/react-native-chat@3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@cometchat-pro/react-native-chat/-/react-native-chat-3.0.2.tgz#38cde052dfda9583cac1d58e8499ed1e2f7c7a2e"
+  integrity sha512-fZZ5v/WBqmXzFHU4Wo1zBj16EGhk2xcU+bPuVDKvrGINyMbxwP3axvo4Ytk/U5yHDttodsA3nqULPI1tper7ig==
 
 "@egjs/hammerjs@^2.0.17":
   version "2.0.17"
