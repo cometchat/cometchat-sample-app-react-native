@@ -1,6 +1,6 @@
 {
   "name": "example",
-  "version": "3.0.0-1",
+  "version": "3.0.2-1",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -10,8 +10,8 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@cometchat-pro/react-native-calls": "2.0.3-beta1",
-    "@cometchat-pro/react-native-chat": "3.0.0",
+    "@cometchat-pro/react-native-calls": "2.1.1",
+    "@cometchat-pro/react-native-chat": "3.0.2",
     "@react-native-async-storage/async-storage": "^1.13.4",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-picker/picker": "^1.9.4",
