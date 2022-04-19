@@ -132,11 +132,7 @@ class CometChatMessageHeader extends React.Component {
           status =
             'Yesterday, ' + hours + ':' + minutes + ' ' + ampm.toUpperCase();
         } else {
-<<<<<<< HEAD:CometChatWorkspace/src/cometchat-pro-react-native-ui-kit/CometChatWorkspace/src/components/Messages/CometChatMessageHeader/index.js
-          const month = String(messageTimestamp.getMonth()+1).padStart(2, '0');
-=======
           const month = String(messageTimestamp.getMonth()).padStart(2, '0');
->>>>>>> origin/master:CometChatWorkspace/cometchat-app/cometchat-pro-react-native-ui-kit/src/components/Messages/CometChatMessageHeader/index.js
           const day = String(messageTimestamp.getDate()).padStart(2, '0');
           const year = messageTimestamp.getFullYear();
           status = day + '/' + month + '/' + year;
