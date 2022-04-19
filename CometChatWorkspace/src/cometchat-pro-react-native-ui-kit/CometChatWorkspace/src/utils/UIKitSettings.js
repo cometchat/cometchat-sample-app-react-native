@@ -61,7 +61,11 @@ export class UIKitSettings {
     this.joinLeaveNotifications = true;
 
     this.enableSoundForMessages = true;
+<<<<<<< HEAD:CometChatWorkspace/src/cometchat-pro-react-native-ui-kit/CometChatWorkspace/src/utils/UIKitSettings.js
     this.enableSoundForCalls = true;
+=======
+    this.enableSoundForCalls = false;
+>>>>>>> origin/master:CometChatWorkspace/cometchat-app/cometchat-pro-react-native-ui-kit/src/utils/UIKitSettings.js
 
     this.userVideoCall = true;
     this.groupVideoCall = true;

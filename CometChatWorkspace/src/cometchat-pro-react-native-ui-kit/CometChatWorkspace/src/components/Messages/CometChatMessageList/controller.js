@@ -49,8 +49,7 @@ export class MessageListManager {
   }
 
   checkRestrictions = async (item, type, parentMessageId, context) => {
-    this.hideDeletedMessages =
-      await context.FeatureRestriction.isHideDeletedMessagesEnabled();
+    this.hideDeletedMessages = await context.FeatureRestriction.isHideDeletedMessagesEnabled();
     this.buildRequestBuilder(item, type, parentMessageId, context);
   };
 

@@ -1,12 +1,8 @@
 {
   "name": "example",
-<<<<<<< HEAD:CometChatWorkspace/package.json
-  "version": "3.0.6-1",
-=======
 
-  "version": "3.0.2-2",
+  "version": "3.0.6-2",
 
->>>>>>> origin/dev-v3:CometChatWorkspace/cometchat-app/package.json
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -18,11 +14,7 @@
   },
   "dependencies": {
     "@cometchat-pro/react-native-calls": "2.1.1",
-<<<<<<< HEAD:CometChatWorkspace/package.json
-    "@cometchat-pro/react-native-chat": "3.0.6",
-=======
     "@cometchat-pro/react-native-chat": "3.0.2",
->>>>>>> origin/dev-v3:CometChatWorkspace/cometchat-app/package.json
     "@react-native-async-storage/async-storage": "^1.13.4",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-picker/picker": "^2.2.1",

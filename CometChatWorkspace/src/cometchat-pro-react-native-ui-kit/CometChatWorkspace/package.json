@@ -1,6 +1,10 @@
 {
   "name": "cometchat-pro-react-native-ui-kit",
+<<<<<<< HEAD:CometChatWorkspace/src/cometchat-pro-react-native-ui-kit/CometChatWorkspace/package.json
   "version": "3.0.6-1",
+=======
+  "version": "2.4.0-3",
+>>>>>>> origin/master:CometChatWorkspace/cometchat-app/cometchat-pro-react-native-ui-kit/package.json
   "description": "Chat UI Kit for React Native App",
   "main": "./src/index.js",
   "scripts": {
@@ -8,9 +12,13 @@
     "lint": "eslint 'src/**/*.{js,jsx}' --quiet --fix"
   },
   "repository": {
+<<<<<<< HEAD:CometChatWorkspace/src/cometchat-pro-react-native-ui-kit/CometChatWorkspace/package.json
 
     "type": "git"
 
+=======
+    "type": "git"
+>>>>>>> origin/master:CometChatWorkspace/cometchat-app/cometchat-pro-react-native-ui-kit/package.json
   },
   "peerDependencies": {
     "react-native-keep-awake": "^4.0.0",
@@ -51,6 +59,7 @@
     "prettier": "^2.1.2"
   },
   "dependencies": {
+<<<<<<< HEAD:CometChatWorkspace/src/cometchat-pro-react-native-ui-kit/CometChatWorkspace/package.json
     "@react-native-picker/picker": "^2.2.1",
     "prop-types": "^15.7.2",
     "rn-fetch-blob": "^0.12.0",
@@ -58,6 +67,13 @@
     "@cometchat-pro/react-native-chat": "3.0.6",
     "@react-native-async-storage/async-storage": "^1.13.4",
     "react-native-autolink": "^4.0.0",
+=======
+    "@cometchat-pro/react-native-calls": "2.1.1",
+    "@cometchat-pro/react-native-chat": "2.4.0",
+    "@react-native-async-storage/async-storage": "^1.13.4",
+    "lodash": "^4.17.20",
+    "react-native-autolink": "^3.0.0",
+>>>>>>> origin/master:CometChatWorkspace/cometchat-app/cometchat-pro-react-native-ui-kit/package.json
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "emoji-mart-native": "^0.6.2-beta"

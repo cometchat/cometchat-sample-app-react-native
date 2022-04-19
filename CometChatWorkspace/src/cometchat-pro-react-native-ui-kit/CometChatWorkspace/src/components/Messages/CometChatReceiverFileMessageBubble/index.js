@@ -34,8 +34,10 @@ const CometChatReceiverFileMessageBubble = (props) => {
     let PictureDir = Platform.OS === 'ios' ? RNFetchBlob.fs.dirs.DocumentDir: RNFetchBlob.fs.dirs.PictureDir;
     let date = new Date();
     let name = props.message.data.attachments[0].name;
-    
-    const configfb = {
+
+    RNFetchBlob.config({
+      // add option that makes response data to be stored as a file,
+      // is much more performant.
       fileCache: true,
       useDownloadManager: true,
       notification: true,
@@ -43,13 +45,10 @@ const CometChatReceiverFileMessageBubble = (props) => {
       title: name,
       path: PictureDir + '/' + name,
       appendExt: props.message.data.attachments[0].extension,
-    }
-    const configOptions = Platform.select({
-      ios: {
-          fileCache: configfb.fileCache,
-          title: configfb.title,
-          path: configfb.path,
-          appendExt: props.message.data.attachments[0].extension,
+      addAndroidDownloads: {
+        useDownloadManager: true,
+        notification: true,
+        path: PictureDir + '/' + name,
       },
       android: configfb,
   });

@@ -29,7 +29,10 @@ class AnimatedHeart extends Component {
     this.state = {
       position: new Animated.Value(0),
     };
+<<<<<<< HEAD:CometChatWorkspace/src/cometchat-pro-react-native-ui-kit/CometChatWorkspace/src/components/Messages/CometChatLiveReactions/index.js
 
+=======
+>>>>>>> origin/master:CometChatWorkspace/cometchat-app/cometchat-pro-react-native-ui-kit/src/components/Messages/CometChatLiveReactions/index.js
     this._yAnimation = this.state.position.interpolate({
       inputRange: [NEGATIVE_END_Y, 0],
       outputRange: [ANIMATION_END_Y, 0],

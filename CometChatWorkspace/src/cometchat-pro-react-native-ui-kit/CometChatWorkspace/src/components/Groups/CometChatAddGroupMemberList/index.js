@@ -129,6 +129,7 @@ class CometChatAddGroupMemberList extends React.Component {
   searchUsers = (val) => {
     try {
       this.setState(
+<<<<<<< HEAD:CometChatWorkspace/src/cometchat-pro-react-native-ui-kit/CometChatWorkspace/src/components/Groups/CometChatAddGroupMemberList/index.js
         { textInputValue: val,
           userList: [],
           membersToRemove: [],
@@ -138,6 +139,28 @@ class CometChatAddGroupMemberList extends React.Component {
         this.AddMembersManager.initializeMembersRequest().then(() => {
               this.getUsers();
             });
+=======
+        { textInputValue: val },
+
+        () => {
+          if (this.timeout) {
+            clearTimeout(this.timeout);
+          }
+
+          this.timeout = setTimeout(() => {
+            this.AddMembersManager = new AddMembersManager(val);
+            this.setState(
+              {
+                userList: [],
+                membersToRemove: [],
+                filteredList: [],
+              },
+              () => this.getUsers(),
+            );
+          }, 500);
+        },
+      );
+>>>>>>> origin/master:CometChatWorkspace/cometchat-app/cometchat-pro-react-native-ui-kit/src/components/Groups/CometChatAddGroupMemberList/index.js
     } catch (error) {
       logger(error);
     }

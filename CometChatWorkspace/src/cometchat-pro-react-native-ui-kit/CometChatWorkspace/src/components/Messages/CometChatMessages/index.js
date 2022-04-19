@@ -22,7 +22,10 @@ import CometChatMessageList from '../CometChatMessageList';
 import CometChatMessageComposer from '../CometChatMessageComposer';
 import CometChatMessageActions from '../CometChatMessageActions';
 import CometChatMessageThread from '../CometChatMessageThread';
+<<<<<<< HEAD:CometChatWorkspace/src/cometchat-pro-react-native-ui-kit/CometChatWorkspace/src/components/Messages/CometChatMessages/index.js
 import CometChatImageViewer from '../CometChatImageViewer';
+=======
+>>>>>>> origin/master:CometChatWorkspace/cometchat-app/cometchat-pro-react-native-ui-kit/src/components/Messages/CometChatMessages/index.js
 import {
   CometChatIncomingCall,
   CometChatOutgoingCall,
@@ -34,7 +37,11 @@ import CometChatVideoViewer from '../CometChatVideoViewer';
 import theme from '../../../resources/theme';
 import { CometChatManager } from '../../../utils/controller';
 import * as enums from '../../../utils/enums';
+<<<<<<< HEAD:CometChatWorkspace/src/cometchat-pro-react-native-ui-kit/CometChatWorkspace/src/components/Messages/CometChatMessages/index.js
 import { checkMessageForExtensionsData, logger } from '../../../utils/common';
+=======
+import { checkMessageForExtensionsData } from '../../../utils/common';
+>>>>>>> origin/master:CometChatWorkspace/cometchat-app/cometchat-pro-react-native-ui-kit/src/components/Messages/CometChatMessages/index.js
 import DropDownAlert from '../../Shared/DropDownAlert';
 import BottomSheet from 'reanimated-bottom-sheet';
 import style from './styles';
@@ -66,8 +73,11 @@ class CometChatMessages extends React.PureComponent {
       user: params.type === 'user' ? params.item : null,
       showProfile: false,
       ongoingDirectCall: false,
+<<<<<<< HEAD:CometChatWorkspace/src/cometchat-pro-react-native-ui-kit/CometChatWorkspace/src/components/Messages/CometChatMessages/index.js
       imageView:null,
       joinDirectCall:false,
+=======
+>>>>>>> origin/master:CometChatWorkspace/cometchat-app/cometchat-pro-react-native-ui-kit/src/components/Messages/CometChatMessages/index.js
     };
 
     this.composerRef = React.createRef();
@@ -281,7 +291,11 @@ class CometChatMessages extends React.PureComponent {
         this.appendPollMessage(messages);
         break;
       case actions.VIEW_ACTUAL_IMAGE:
+<<<<<<< HEAD:CometChatWorkspace/src/cometchat-pro-react-native-ui-kit/CometChatWorkspace/src/components/Messages/CometChatMessages/index.js
         this.setState({ imageView: messages});
+=======
+        params.actionGenerated(actions.VIEW_ACTUAL_IMAGE, messages);
+>>>>>>> origin/master:CometChatWorkspace/cometchat-app/cometchat-pro-react-native-ui-kit/src/components/Messages/CometChatMessages/index.js
         break;
       case actions.VIEW_ACTUAL_VIDEO:
         this.setState({ videoMessage: messages });
@@ -295,12 +309,19 @@ class CometChatMessages extends React.PureComponent {
         }
         break;
       case actions.MENU_CLICKED:
+<<<<<<< HEAD:CometChatWorkspace/src/cometchat-pro-react-native-ui-kit/CometChatWorkspace/src/components/Messages/CometChatMessages/index.js
+=======
+        // case actions.JOIN_DIRECT_CALL:
+>>>>>>> origin/master:CometChatWorkspace/cometchat-app/cometchat-pro-react-native-ui-kit/src/components/Messages/CometChatMessages/index.js
         params.actionGenerated(action);
         break;
       case actions.SEND_REACTION:
         this.toggleReaction(true);
         break;
+<<<<<<< HEAD:CometChatWorkspace/src/cometchat-pro-react-native-ui-kit/CometChatWorkspace/src/components/Messages/CometChatMessages/index.js
 
+=======
+>>>>>>> origin/master:CometChatWorkspace/cometchat-app/cometchat-pro-react-native-ui-kit/src/components/Messages/CometChatMessages/index.js
       case actions.SHOW_REACTION:
         this.showReaction(messages);
         break;
@@ -374,9 +395,12 @@ class CometChatMessages extends React.PureComponent {
         this.setState({ joinDirectCall: false, ongoingDirectCall: null });
 
         break;
+<<<<<<< HEAD:CometChatWorkspace/src/cometchat-pro-react-native-ui-kit/CometChatWorkspace/src/components/Messages/CometChatMessages/index.js
       case enums.TRANSIENT_MESSAGE_RECEIVED:
         this.liveReactionReceived(messages);
         break;
+=======
+>>>>>>> origin/master:CometChatWorkspace/cometchat-app/cometchat-pro-react-native-ui-kit/src/components/Messages/CometChatMessages/index.js
       case actions.STATUS_UPDATED:
         this.setState({ user: { ...this.state.user, status: messages } });
 
@@ -605,7 +629,11 @@ class CometChatMessages extends React.PureComponent {
       .catch((error) => {
         const errorCode = error?.message || 'ERROR';
         this.dropDownAlertRef?.showMessage('error', errorCode);
+<<<<<<< HEAD:CometChatWorkspace/src/cometchat-pro-react-native-ui-kit/CometChatWorkspace/src/components/Messages/CometChatMessages/index.js
         logger('Blocking user fails with error', error);
+=======
+        console.log('Blocking user fails with error', error);
+>>>>>>> origin/master:CometChatWorkspace/cometchat-app/cometchat-pro-react-native-ui-kit/src/components/Messages/CometChatMessages/index.js
       });
   };
 
@@ -1023,7 +1051,10 @@ class CometChatMessages extends React.PureComponent {
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={{ flex: 1 }}>
           <SafeAreaView style={style.chatWrapperStyle}>
+<<<<<<< HEAD:CometChatWorkspace/src/cometchat-pro-react-native-ui-kit/CometChatWorkspace/src/components/Messages/CometChatMessages/index.js
                   {imageView}
+=======
+>>>>>>> origin/master:CometChatWorkspace/cometchat-app/cometchat-pro-react-native-ui-kit/src/components/Messages/CometChatMessages/index.js
             {this.state.showProfile ? (
               <CometChatUserProfile
                 open

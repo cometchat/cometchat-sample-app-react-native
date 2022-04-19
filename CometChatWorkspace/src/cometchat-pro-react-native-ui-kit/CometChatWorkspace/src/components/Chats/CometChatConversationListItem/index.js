@@ -182,9 +182,9 @@ class CometChatConversationListItem extends React.Component {
         if (Platform.OS === 'android' && timestamp !== 'Yesterday') {
           let time = timestamp.split(':'); // convert to array
 
-          let hours = Number(time[0]);
-          let minutes = Number(time[1]?.split(' ')[0]);
-          let timeValue;
+          var hours = Number(time[0]);
+          var minutes = Number(time[1]?.split(' ')[0]);
+          var timeValue;
 
           if (hours > 0 && hours <= 12) {
             timeValue = '' + hours;
