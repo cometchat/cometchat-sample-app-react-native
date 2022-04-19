@@ -1,7 +1,7 @@
 <div style="width:100%">
     <div style="width:50%;">
         <div align="center">
-       <a> <img align="center" width="180" height="180" alt="CometChat" src="./images/logo.png"> </a>  
+       <a> <img align="center" width="180" height="180" alt="CometChat" src="./Screenshots/logo.png"> </a>  
         </div>    
     </div>    
 </div>
@@ -20,7 +20,7 @@
 <div style="width:100%">
     <div style="width:50%; display:inline-block">
         <div align="center">
-          <img align="left" alt="Main" src="./images/main.png">    
+          <img align="left" alt="Main" src="./Screenshots/main.png">    
         </div>    
     </div>    
 </div>
