@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
 import theme from '../../../resources/theme';
 import CometChatUserPresence from '../../Shared/CometChatUserPresence';
-<<<<<<< HEAD:CometChatWorkspace/src/cometchat-pro-react-native-ui-kit/CometChatWorkspace/src/components/Groups/CometChatAddGroupMemberListItem/index.js
-import CometChatAvatar from '../../Shared/CometChatAvatar';
-=======
 import CometChatAvatar from '../../Shared/CometChatUserPresence';
->>>>>>> origin/master:CometChatWorkspace/cometchat-app/cometchat-pro-react-native-ui-kit/src/components/Groups/CometChatAddGroupMemberListItem/index.js
 
 import { Text, View, Image, TouchableOpacity } from 'react-native';
 import style from './styles';

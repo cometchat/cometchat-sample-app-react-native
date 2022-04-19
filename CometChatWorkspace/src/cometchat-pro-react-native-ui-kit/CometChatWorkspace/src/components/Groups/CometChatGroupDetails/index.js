@@ -45,10 +45,6 @@ export default class CometChatGroupDetails extends React.Component {
       addModerator: false,
       enableLeaveGroup: false,
       restrictions: null,
-<<<<<<< HEAD:CometChatWorkspace/src/cometchat-pro-react-native-ui-kit/CometChatWorkspace/src/components/Groups/CometChatGroupDetails/index.js
-      modalVisible: this.props.open
-=======
->>>>>>> origin/master:CometChatWorkspace/cometchat-app/cometchat-pro-react-native-ui-kit/src/components/Groups/CometChatGroupDetails/index.js
     };
 
     this.viewTheme = { ...theme, ...this.props.theme };
