@@ -68,11 +68,11 @@ CometChat Kitchen Sink Sample App (built using **CometChat UIKit**) is a fully f
 
 - Open the project.
 
-- Run `cd CometChatWorkspace/cometchat-app`.
+- Run `cd CometChatWorkspace/src`.
 
 - Modify `APP_ID` and `AUTH_KEY` and `REGION` with your own (update the `CONSTS.ts` file).
 
-- Hit `npm i` to install the packages.
+- Hit `yarn add` to install the packages.
 
 - Run `cd ios` then run `pod install` to install the pods. Once pods are installed run `cd ..` to go back to the root folder.
 
