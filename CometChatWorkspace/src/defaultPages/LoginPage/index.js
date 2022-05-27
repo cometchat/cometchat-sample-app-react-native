@@ -13,6 +13,7 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   Platform,
+  Alert,
 } from 'react-native';
 import {ActivityIndicator} from 'react-native';
 import DropDownAlert from '../../cometchat-pro-react-native-ui-kit/CometChatWorkspace/src/components/Shared/DropDownAlert';
