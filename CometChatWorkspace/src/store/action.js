@@ -35,6 +35,7 @@ export const createNewUser = (uid, authKey) => {
           dispatch(auth(uid, authKey));
         } else {
           dispatch(authFail(user));
+          
         }
       },
       (error) => {
@@ -70,7 +71,6 @@ export const auth = (uid, authKey, createUser) => {
         }
       })
       .catch((error) => {
-        // console.log('CometChatLogin Failed', error);
         if (error.code === 'ERR_UID_NOT_FOUND') {
           dispatch(createNewUser(uid, authKey));
         } else {
