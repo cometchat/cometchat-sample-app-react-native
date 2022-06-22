@@ -70,7 +70,7 @@ CometChat Kitchen Sink Sample App (built using **CometChat UIKit**) is a fully f
 
 - Run `cd CometChatWorkspace/src`.
 
-- Modify `APP_ID` and `AUTH_KEY` and `REGION` with your own (update the `CONSTS.ts` file).
+- Modify `APP_ID` and `AUTH_KEY` and `REGION` with your own (update the `CONSTS.js` file).
 
 - Hit `yarn install` to install the packages.
 
