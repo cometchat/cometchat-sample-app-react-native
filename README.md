@@ -70,9 +70,9 @@ CometChat Kitchen Sink Sample App (built using **CometChat UIKit**) is a fully f
 
 - Run `cd CometChatWorkspace/src`.
 
-- Modify `APP_ID` and `AUTH_KEY` and `REGION` with your own (update the `CONSTS.js` file).
+- Modify `APP_ID` and `AUTH_KEY` and `REGION` with your own (update the `CONSTS.ts` file).
 
-- Hit `yarn install` to install the packages.
+- Hit `yarn add` to install the packages.
 
 - Run `cd ios` then run `pod install` to install the pods. Once pods are installed run `cd ..` to go back to the root folder.
 
@@ -82,17 +82,21 @@ CometChat Kitchen Sink Sample App (built using **CometChat UIKit**) is a fully f
 
 Build and run the Sample App.
 
+| <div align="left"><span>**Note:**<span style="font-weight:500"> error:0308010C:digital envelope routines</span> </span></div>                                                                                                                                                                                                                                                |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| If you are using node 17 and above, You may come accross this error code. To solve this please set <b>NODE_OPTIONS</b> with <b>openssl-legacy-provider</b>. Execute below command in terminal<br /> `export NODE_OPTIONS=--openssl-legacy-provider` then `react-native start`.   |
+
 | <div align="left"><span>**Note:**<span style="font-weight:500"> generating release APK.</span> </span></div>                                                                                                                                                                                                                                                |
 | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Setting the below line in android/build.gradle `true` or `false` will determine whether to generate multiple APKs for different CPU architectures or a single APK bundle that works on all devices despite the CPU you're running it on but at the cost of APK bundle size. Default value is `true`<br/> `def enableSeparateBuildPerCPUArchitecture = true` |
 
 # Learn more about UI-Kit
 
-Learn more about how to integrate [UI Kit](https://github.com/cometchat-pro/react-native-chat-ui-kit) inside your app.
+Learn more about how to integrate [UI Kit](https://github.com/cometchat-pro/cometchat-pro-react-native-ui-kit/tree/v3) inside your app.
 
 # Troubleshooting
 
-- To read the full documentation on UI Kit integration visit our [Documentation](https://prodocs.cometchat.com/docs/react-native-ui-kit) .
+- To read the full documentation on UI Kit integration visit our [Documentation](https://prodocs.cometchat.com/v3.0-beta/docs/react-native-ui-kit) .
 
 - Facing any issues while integrating or installing the UI Kit please <a href="https://app.cometchat.com/"> connect with us via real time support present in CometChat Dashboard.</a>.
 
