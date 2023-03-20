@@ -15,6 +15,7 @@ import {
   Modal,
   Dimensions,
   TouchableOpacity,
+  Keyboard,
 } from 'react-native';
 import BottomSheet from 'reanimated-bottom-sheet';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -29,6 +30,8 @@ import { logger } from '../../../utils/common';
 
 class CometChatAddGroupMemberList extends React.Component {
   static contextType = GroupDetailContext;
+  showSubscription;
+  hideSubscription;
 
   decoratorMessage = 'Loading...';
 
@@ -40,6 +43,7 @@ class CometChatAddGroupMemberList extends React.Component {
       membersToAdd: [],
       filteredList: [],
       textInputValue: '',
+      keyboardAppeared: false
     };
     this.sheetRef = React.createRef(null);
     this.textInputRef = React.createRef(null);
@@ -56,6 +60,8 @@ class CometChatAddGroupMemberList extends React.Component {
       this.getUsers();
       this.AddMembersManager.attachListeners(this.userUpdated);
     });
+    this.showSubscription = Keyboard.addListener("keyboardDidShow", () => this.setState({keyboardAppeared: true}))
+    this.hideSubscription = Keyboard.addListener("keyboardDidHide", () => this.setState({keyboardAppeared: false}))
   }
 
   componentDidUpdate() {
@@ -72,6 +78,8 @@ class CometChatAddGroupMemberList extends React.Component {
     try {
       this.AddMembersManager.removeListeners();
       this.AddMembersManager = null;
+      this.showSubscription.remove();
+      this.hideSubscription.remove();
     } catch (error) {
       logger(error);
     }
@@ -138,14 +146,17 @@ class CometChatAddGroupMemberList extends React.Component {
 
           this.timeout = setTimeout(() => {
             this.AddMembersManager = new AddMembersManager(val);
-            this.setState(
-              {
-                userList: [],
-                membersToRemove: [],
-                filteredList: [],
-              },
-              () => this.getUsers(),
-            );
+            this.AddMembersManager.initializeMembersRequest()
+              .then(() => {
+                this.setState(
+                  {
+                    userList: [],
+                    membersToRemove: [],
+                    filteredList: [],
+                  },
+                  () => this.getUsers(),
+                );
+              });
           }, 500);
         },
       );
@@ -344,6 +355,11 @@ class CometChatAddGroupMemberList extends React.Component {
     this.getUsers();
   };
 
+  getSnapHeight = () => {
+    let windowHeight = Dimensions.get("window").height;
+    return this.state.keyboardAppeared ? windowHeight * .5 : windowHeight - 90
+  }
+
   render() {
     const group = this.context;
 
@@ -359,7 +375,7 @@ class CometChatAddGroupMemberList extends React.Component {
           visible={this.props.open}>
           <BottomSheet
             ref={this.sheetRef}
-            snapPoints={[Dimensions.get('window').height - 90, 0]}
+            snapPoints={[this.getSnapHeight(), 0]}
             borderRadius={30}
             initialSnap={0}
             enabledInnerScrolling={false}
@@ -367,7 +383,7 @@ class CometChatAddGroupMemberList extends React.Component {
             overdragResistanceFactor={10}
             renderContent={() => {
               return (
-                <View style={style.reactionDetailsContainer}>
+                <View style={[style.reactionDetailsContainer, {height: this.getSnapHeight()}]}>
                   <View style={style.headerContainer}>
                     <View style={{}}>
                       <Text style={style.contactHeaderTitleStyle}>
