@@ -1,7 +1,7 @@
 /* eslint-disable react/no-did-update-set-state */
 /* eslint-disable react/no-unused-state */
 import React from 'react';
-import { View, Text, TouchableOpacity, Dimensions, Modal } from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions, Modal, Keyboard } from 'react-native';
 import theme from '../../../resources/theme';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import CometChatSharedMedia from '../../Shared/CometChatSharedMedia';
@@ -29,6 +29,9 @@ const BAN_MEMBER = 'banMember';
 
 export default class CometChatGroupDetails extends React.Component {
   static contextType = CometChatContext;
+  showSubscription;
+  hideSubscription;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -44,6 +47,7 @@ export default class CometChatGroupDetails extends React.Component {
       addModerator: false,
       enableLeaveGroup: false,
       restrictions: null,
+      keyboardAppeared: false,
     };
 
     this.viewTheme = { ...theme, ...this.props.theme };
@@ -64,6 +68,8 @@ export default class CometChatGroupDetails extends React.Component {
     this.getBannedGroupMembers();
     this.GroupDetailManager.attachListeners(this.groupUpdated);
     this.checkRestrictions();
+    this.showSubscription = Keyboard.addListener("keyboardDidShow", () => this.setState({keyboardAppeared: true}))
+    this.hideSubscription = Keyboard.addListener("keyboardDidHide", () => this.setState({keyboardAppeared: false}))
   }
 
   componentDidUpdate(prevProps) {
@@ -109,6 +115,8 @@ export default class CometChatGroupDetails extends React.Component {
   componentWillUnmount() {
     this.GroupDetailManager.removeListeners();
     this.GroupDetailManager = null;
+    this.showSubscription.remove();
+    this.hideSubscription.remove();
   }
 
   /**
@@ -591,6 +599,11 @@ export default class CometChatGroupDetails extends React.Component {
     }
   };
 
+  getSnapHeight = () => {
+    let windowHeight = Dimensions.get("window").height;
+    return this.state.keyboardAppeared ? windowHeight * .5 : windowHeight - 90
+  }
+
   render() {
     let viewMembersBtn = (
       <TouchableOpacity
@@ -800,7 +813,7 @@ export default class CometChatGroupDetails extends React.Component {
         <View style={style.container}>
           <BottomSheet
             ref={this.sheetRef}
-            snapPoints={[deviceHeight - 80, 0]}
+            snapPoints={[this.getSnapHeight(), 0]}
             borderRadius={30}
             initialSnap={0}
             enabledInnerScrolling={false}
