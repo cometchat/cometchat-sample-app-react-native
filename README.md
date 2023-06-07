@@ -1,105 +1,156 @@
-<div style="width:100%">
-    <div style="width:50%;">
-        <div align="center">
-       <a> <img align="center" width="180" height="180" alt="CometChat" src="./Screenshots/logo.png"> </a>  
-        </div>    
-    </div>    
+<!-- PROJECT LOGO -->
+<p align="left">
+  <a href="https://cometchat.com">
+    <img src="./Screenshots/logo.png" alt="CometChat logo" width="180" height="180">
+  </a>
+
+  <h2 align="left">React Native Sample App</h3>
+
+  <p align="left">
+    CometChat Kitchen Sink Sample App (built using <b>CometChat UI Kits</b>) is a fully functional real-time messaging app capable of private (one-on-one), group messaging, voice & video calling.
+    <br />
+    <a href="https://www.cometchat.com/docs/react-native-chat-ui-kit/overview"><strong>Explore the docs »</strong></a>
+    <br />
+    <br />
+    <a href="https://github.com/cometchat-pro/react-native-chat-app/issues">Report Bug</a>
+  </p>
+</p>
+
+<div align="left">
+    <a href="https://github.com/cometchat-pro/react-native-chat-app/releases" alt="Releases">
+        <img src="https://img.shields.io/github/v/release/cometchat-pro/cometchat-pro-react-native-sample-app" />
+    </a>
+    <a href="https://img.shields.io/github/languages/top/cometchat-pro/cometchat-pro-react-native-sample-app">
+        <img src="https://img.shields.io/github/languages/top/cometchat-pro/cometchat-pro-react-native-sample-app" />
+    </a>
+    <a href="https://github.com/cometchat-pro/react-native-chat-app/stargazers">
+        <img src="https://img.shields.io/github/stars/cometchat-pro/cometchat-pro-react-native-sample-app?style=social" />
+    </a>
+    <a href="https://twitter.com/CometChat">
+        <img src="https://img.shields.io/twitter/follow/CometChat?label=CometChat&style=social" />
+    </a>
 </div>
 
-</br></br>
+<!-- TABLE OF CONTENTS -->
 
-# CometChat Kitchen Sink Sample App (React Native)
+## Table of Contents
 
-[![Platform](https://img.shields.io/badge/Platform-ReactNative-brightgreen)](#)
-![GitHub repo size](https://img.shields.io/github/repo-size/cometchat-pro/react-native-chat-app)
-![GitHub contributors](https://img.shields.io/github/contributors/cometchat-pro/react-native-chat-app)
-![GitHub stars](https://img.shields.io/github/stars/cometchat-pro/react-native-chat-app?style=social)
-![Twitter Follow](https://img.shields.io/twitter/follow/cometchat?style=social)
-</br></br>
+- [About the Project](#about-the-project)
+  - [Built With](#built-with)
+- [Getting Started](#getting-started)
+  - [Dependencies](#dependencies)
+  - [Installing](#installing)
+  - [Usage](#usage)
+    - [Run locally](#run-project-locally)
+  - [Help](#help)
+- [Contributing](#contributing)
+- [Support](#support)
+- [License](#license)
+- [About Authors](#about-authors)
 
-<div style="width:100%">
-    <div style="width:50%; display:inline-block">
-        <div align="center">
-          <img align="left" alt="Main" src="./Screenshots/main.png">    
-        </div>    
-    </div>    
-</div>
+<!-- ABOUT THE PROJECT -->
 
-</br></br>
+## About The Project
 
-CometChat Kitchen Sink Sample App (built using **CometChat UIKit**) is a fully functional real-time messaging app capable of private (one-on-one), group messaging, voice & video calling.
+CometChat Kitchen Sink Sample App (built using **CometChat UI Kit**) is a fully functional real-time messaging app capable of private (one-on-one), group messaging, voice & video calling.
 
-## Features
+### Built With
 
-- Login
-- Private(1-1) & Group conversations
-- Voice & video calling & conferencing
-- Rich Media Attachments
-- Typing Indicators
-- Text, Media and Custom messages
-- Read receipts
-- Online Presence Indicators
-- Message History
-- Users & Friends List
-- Groups List
-- Search by users and groups
-- Conversations List
-- Threaded Conversations
+- [React](https://react.dev)
+- [React Native](https://reactnative.dev)
+- [CometChat](https://cometchat.com)
+  - [CometChat React Native UI Kit](https://github.com/cometchat-pro/cometchat-pro-react-native-ui-kit)
 
-## Extensions
+<!-- GETTING STARTED -->
 
-[Thumbnail Generation](https://prodocs.cometchat.com/docs/extensions-thumbnail-generation) | [Link Preview](https://prodocs.cometchat.com/docs/extensions-link-preview) | [Rich Media Preview](https://prodocs.cometchat.com/docs/extensions-rich-media-preview) | [Smart Reply](https://prodocs.cometchat.com/docs/extensions-smart-reply)| [Emojis](https://prodocs.cometchat.com/docs/extensions-emojis) | [Polls](https://prodocs.cometchat.com/docs/extensions-polls) | [Reactions](https://prodocs.cometchat.com/docs/extensions-reactions) | [Stickers](https://prodocs.cometchat.com/docs/extensions-stickers)
+## Getting Started
 
-<hr/>
+Simply clone or fork this repo and run it using the instructions below to see all features in action. Or use it as a starter template/boilerplate and make edits to suit your needs.
 
-| <div align="left"><span>**Note:**<span style="font-weight:500"> Support for Expo CLI based apps.</span> </span></div>                                                                                                                                                                                                  |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| If you are using Expo CLI to build a React Native app, the calling component will not work as our calling component needs native-level changes.However, you can create a React Native app using React Native CLI or use the 'expo eject' command to convert your app from an expo-managed workflow to a bare workflow. |
+## Dependencies
 
----
+- CometChat - [Sign up for CometChat](https://app.cometchat.com) and create an app to obtain your keys and other credentials
 
-# Installation
+- npm
 
-1. Simply clone the project from this project. After cloning the repository:
+  ```sh
+  npm install npm@latest -g
+  ```
 
-# Setting up the sample app
+## Installing
 
-- Obtain your `APP_ID`, `AUTH_KEY` and `REGION` from [CometChat-Pro Dashboard](https://app.cometchat.com/)
+1. Clone the repo
 
-- Open the project.
+   ```sh
+   git clone https://github.com/cometchat-pro/react-native-chat-app.git -b v4
+   ```
 
-- Run `cd CometChatWorkspace/src`.
+2. Change to the working directory
 
-- Modify `APP_ID` and `AUTH_KEY` and `REGION` with your own (update the `CONSTS.js` file).
+   ```sh
+   cd CometChatWorkspace
+   ```
 
-- Hit `yarn add` to install the packages.
+3. Install dependencies via NPM
 
-- Run `cd ios` then run `pod install` to install the pods. Once pods are installed run `cd ..` to go back to the root folder.
+   ```sh
+   npm install
+   ```
 
-- Run the app on iOS using `npx react-native run-ios` & on Android using `npx react-native run-android`.
+4. Replace `APP_ID`, `REGION` and `AUTH_KEY` with your CometChat `App ID`, `Region` and `Auth Key` in `src/CONSTS.ts` file.
 
-- Select demo users or enter the **UID** at the time of login once the app is launched.
+   ![Replacing constants in src/CONSTS.ts](./Screenshots/constants.png "Replacing constants in src/consts.js")
 
-Build and run the Sample App.
+<!-- USAGE EXAMPLES -->
 
-| <div align="left"><span>**Note:**<span style="font-weight:500"> error:0308010C:digital envelope routines</span> </span></div>                                                                                                                                                                                                                                                |
-| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| If you are using node 17 and above, You may come accross this error code. To solve this please set <b>NODE_OPTIONS</b> with <b>openssl-legacy-provider</b>. Execute below command in terminal<br /> `export NODE_OPTIONS=--openssl-legacy-provider` then `react-native start`.   |
+## Usage
 
-| <div align="left"><span>**Note:**<span style="font-weight:500"> generating release APK.</span> </span></div>                                                                                                                                                                                                                                                |
-| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Setting the below line in android/build.gradle `true` or `false` will determine whether to generate multiple APKs for different CPU architectures or a single APK bundle that works on all devices despite the CPU you're running it on but at the cost of APK bundle size. Default value is `true`<br/> `def enableSeparateBuildPerCPUArchitecture = true` |
+This app contains all features offered by CometChat through its UI Kit. [Read more about the ReactNative UI Kit here.](https://www.cometchat.com/docs/react-native-chat-ui-kit/overview)
 
-# Learn more about UI-Kit
+### Run project locally
 
-Learn more about how to integrate [UI Kit](https://github.com/cometchat-pro/cometchat-pro-react-native-ui-kit/tree/v3) inside your app.
+```sh
+npm start
+```
+open another terminal and execute one of below command
+```sh
+npm run android
+```
+or
+```sh
+npm run ios
+```
 
-# Troubleshooting
+For more on UI Kits, please refer to the [documentation](https://www.cometchat.com/docs/beta-uikits).
 
-- To read the full documentation on UI Kit integration visit our [Documentation](https://prodocs.cometchat.com/v3.0-beta/docs/react-native-ui-kit) .
+## Help
 
-- Facing any issues while integrating or installing the UI Kit please <a href="https://app.cometchat.com/"> connect with us via real time support present in CometChat Dashboard.</a>.
+To learn more about our UI kits, visit our [documentation](https://www.cometchat.com/docs/react-native-uikit-beta/overview).
 
-# Contact 📪
+If you are still facing issues while running this project or integrating with our UI Kits, please connect with our real time support via the [CometChat Dashboard](https://app.cometchat.com/).
 
-Contact us via real time support present in [CometChat Dashboard](https://app.cometchat.com/).
+<!-- CONTRIBUTING -->
+
+## Contributing
+
+Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**. Sincere thanks to all our [contributors](https://github.com/cometchat-pro/react-native-chat-app/graphs/contributors)!
+
+You are requested to follow the contribution guidelines specified in [CONTRIBUTING.md](./CONTRIBUTING.md) while contributing to the project :smile:.
+
+## Support
+
+Please connect with our real time support via the [CometChat Dashboard](https://app.cometchat.com/).
+
+<!-- LICENSE -->
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
+
+## About Authors
+
+`react-native-chat-app` is created & maintained by CometChat.
+
+The names and logos for CometChat are trademarks of CometChat, Inc.
+
+We love open source software! See [our other projects](https://github.com/cometchat-pro) or [sign up with us](https://app.cometchat.com) to start using our product.

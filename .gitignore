@@ -25,6 +25,7 @@ project.xcworkspace
 # Android/IntelliJ
 #
 CometChatWorkspace/cometchat-app/android/app/build/
+CometChatWorkspace/ios/Pods
 cometchat-app/android/app/build/
 /android/app/build/
 /app/build/

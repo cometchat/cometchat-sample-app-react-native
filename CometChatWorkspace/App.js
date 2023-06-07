@@ -1,56 +1,39 @@
-import React, {useEffect} from 'react';
-import 'react-native-gesture-handler';
-import {CometChat} from '@cometchat-pro/react-native-chat';
-import {Provider} from 'react-redux';
-import {store, persistor} from './src/store/store';
-import StackNavigator from './StackNavigator';
-import {COMETCHAT_CONSTANTS} from './src/CONSTS';
-import {
-  LogBox,
-  PermissionsAndroid,
-  StyleSheet,
-  Text,
-  Platform,
-} from 'react-native';
-import {PersistGate} from 'redux-persist/integration/react';
-import theme from './src/cometchat-pro-react-native-ui-kit/CometChatWorkspace/src/resources/theme'
-
-const styles = StyleSheet.create({
-  defaultFontFamily: {
-    fontFamily: theme.fontFamily,
-  },
-});
-
-const customProps = {style: styles.defaultFontFamily};
-
-// To set default font family, avoiding issues with specific android fonts like OnePlus Slate
-function setDefaultFontFamily() {
-  const TextRender = Text.render;
-  const initialDefaultProps = Text.defaultProps;
-  Text.defaultProps = {
-    ...initialDefaultProps,
-    ...customProps,
-  };
-  Text.render = function render(props) {
-    let oldProps = props;
-    props = {...props, style: [customProps.style, props.style]};
-    try {
-      return TextRender.apply(this, arguments);
-    } finally {
-      props = oldProps;
-    }
-  };
-}
+import React, { useEffect, useRef, useState } from 'react';
+import { PermissionsAndroid, Platform, SafeAreaView, Text } from 'react-native';
+import { CometChat } from "@cometchat-pro/react-native-chat";
+import { COMETCHAT_CONSTANTS } from './src/CONSTS';
+import { CometChatContextProvider } from '@cometchat/chat-uikit-react-native';
+import { CometChatTheme } from '@cometchat/chat-uikit-react-native';
+import { CometChatUIKit } from '@cometchat/chat-uikit-react-native';
+import StackNavigator from './src/StackNavigator';
+import { UserContextProvider } from './UserContext';
+import { CometChatIncomingCall } from '@cometchat/chat-uikit-react-native';
+import { CometChatUIEventHandler } from '@cometchat/chat-uikit-react-native';
+var listnerID = "UNIQUE_LISTENER_ID";
 
 const App = () => {
-  LogBox.ignoreAllLogs();
-  var appSetting = new CometChat.AppSettingsBuilder()
-    .subscribePresenceForAllUsers()
-    .setRegion(COMETCHAT_CONSTANTS.REGION)
-    .build();
+
+  const getPermissions = () => {
+    if (Platform.OS == "android") {
+      PermissionsAndroid.requestMultiple([
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+      ]);
+    }
+  }
+
+  const [callRecevied, setCallReceived] = useState(false);
+  const incomingCall = useRef(null);
 
   useEffect(() => {
-    CometChat.init(COMETCHAT_CONSTANTS.APP_ID, appSetting)
+    getPermissions();
+    CometChatUIKit.init({
+      appId: COMETCHAT_CONSTANTS.APP_ID,
+      authKey: COMETCHAT_CONSTANTS.AUTH_KEY,
+      region: COMETCHAT_CONSTANTS.REGION,
+    })
       .then(() => {
         if (CometChat.setSource) {
           CometChat.setSource('ui-kit', Platform.OS, 'react-native');
@@ -60,37 +43,55 @@ const App = () => {
         return null;
       });
 
-    if (Platform.OS === 'android') {
-      setDefaultFontFamily();
+    CometChat.addCallListener(
+      listnerID,
+      new CometChat.CallListener({
+        onIncomingCallReceived: (call) => {
+          incomingCall.current = call;
+          setCallReceived(true);
+        },
+        onOutgoingCallRejected: (call) => {
+          incomingCall.current = null;
+          setCallReceived(false);
+        },
+        onIncomingCallCancelled: (call) => {
+          incomingCall.current = null;
+          setCallReceived(false);
+        }
+      })
+    );
+
+    CometChatUIEventHandler.addCallListener(listnerID, {
+      ccCallEnded: () => {
+        incomingCall.current = null;
+        setCallReceived(false);
+      },
+    });
+
+    return () => {
+      CometChatUIEventHandler.removeCallListener(listnerID);
+      CometChat.removeCallListener(listnerID)
     }
 
-    const getPermissions = async () => {
-      if (Platform.OS === 'android') {
-        let granted = await PermissionsAndroid.requestMultiple([
-          PermissionsAndroid.PERMISSIONS.CAMERA,
-          PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
-          PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-        ]);
-        if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
-          granted = await PermissionsAndroid.requestMultiple([
-            PermissionsAndroid.PERMISSIONS.CAMERA,
-            PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
-            PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-            PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-          ]);
-        }
-      }
-    };
-    getPermissions();
   }, []);
 
   return (
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <StackNavigator />
-      </PersistGate>
-    </Provider>
+    <SafeAreaView style={{ flex: 1 }}>
+      {
+        callRecevied &&
+        <CometChatIncomingCall
+          call={incomingCall.current}
+          onDecline={(call) => {
+            setCallReceived(false)
+          }}
+        />
+      }
+      <UserContextProvider>
+        <CometChatContextProvider theme={new CometChatTheme({})}>
+          <StackNavigator />
+        </CometChatContextProvider>
+      </UserContextProvider>
+    </SafeAreaView>
   );
 };
 

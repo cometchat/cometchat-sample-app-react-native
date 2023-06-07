@@ -1,0 +1,22 @@
+import React from 'react'
+import { Image, StyleSheet, Text, TouchableOpacity } from 'react-native'
+import { AppStyle } from '../../AppStyle'
+import { RightArrow } from '../../resources'
+
+export const AppTopBar = ({navigation, title}) => {
+    return (
+        <TouchableOpacity style={{ flexDirection: "row", marginBottom: 16 }} onPress={() => navigation.goBack()}>
+            <Image style={[Style.image, { transform: [{ rotate: '180deg' }] }]} source={RightArrow} />
+            <Text style={AppStyle.heading}>{title}</Text>
+        </TouchableOpacity>
+    )
+}
+
+const Style = StyleSheet.create({
+    image: {
+        height: 24,
+        width: 24,
+        margin: 4,
+        resizeMode: "contain"
+    }
+})
