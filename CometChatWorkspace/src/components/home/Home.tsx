@@ -86,7 +86,7 @@ export const Home = ({ navigation }) => {
                         navigation.navigate("Login");
                     });
                 }}>
-                    <Image source={Logout} style={{ height: 24, width: 24, tintColor: 'red' }} />
+                    <Image source={Logout} style={{ height: 24, width: 24 }} />
                 </TouchableOpacity>
             </View>
             <ScrollView>

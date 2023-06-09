@@ -134,7 +134,8 @@ const Style = StyleSheet.create({
     image: {
         height: 24,
         width: 24,
-        tintColor: "black"
+        tintColor: "black",
+        alignSelf: "center"
     },
     info: {
         fontSize: 16,

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { PermissionsAndroid, Platform, SafeAreaView, Text } from 'react-native';
+import { PermissionsAndroid, Platform, SafeAreaView, StatusBar } from 'react-native';
 import { CometChat } from "@cometchat-pro/react-native-chat";
 import { COMETCHAT_CONSTANTS } from './src/CONSTS';
 import { CometChatContextProvider } from '@cometchat/chat-uikit-react-native';
@@ -77,6 +77,7 @@ const App = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      <StatusBar backgroundColor={"white"} barStyle={"dark-content"} />
       {
         callRecevied &&
         <CometChatIncomingCall

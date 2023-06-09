@@ -9,8 +9,13 @@ export const AppStyle = StyleSheet.create({
     flexDirection: 'row',
   },
   heading: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: "bold",
+  },
+  heading2: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginStart: 8
   },
   featureHeading: {
     fontSize: 22,

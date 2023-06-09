@@ -13,7 +13,7 @@ export const CardView = (props: { name?: string, info?: string, image?: any, onP
         name,
         image,
         onPress,
-        hideRightArrow = true
+        hideRightArrow = false
     } = props;
 
     if (children)
@@ -63,10 +63,12 @@ export const Style = StyleSheet.create({
     image: {
         height: 24,
         width: 24,
-        tintColor: "black"
+        tintColor: "black",
+        alignSelf:"center",
     },
     info: {
-        fontSize: 16,
-        color: "grey"
+        fontSize: 14,
+        color: "grey",
+        marginEnd: 4
     }
 })

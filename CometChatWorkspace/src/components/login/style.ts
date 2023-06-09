@@ -15,7 +15,7 @@ export const Style = StyleSheet.create({
     Version: {
         fontSize: 34,
         fontWeight: "700",
-        color: "rgb(37, 51, 245)"
+        color: "rgb(37, 151, 245)"
     },
     LoginButton: {
         backgroundColor: 'black',

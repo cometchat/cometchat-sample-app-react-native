@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { View, Text, Image, SafeAreaView, ActivityIndicator } from 'react-native';
+import { View, Text, Image, SafeAreaView, ActivityIndicator, Modal } from 'react-native';
 import { RoudedButton } from "../common/RoundedButton";
 import {
     AppLogo, Ironman, Captainamerica,
@@ -39,19 +39,23 @@ export const Login = ({navigation}) => {
     }
 
     return (
-        <SafeAreaView style={{ flex: 1, justifyContent: 'space-between', margin: 16 }}>
+        <SafeAreaView style={{ flex: 1, justifyContent: 'space-between', padding: 16, backgroundColor :"#ffffffff" }}>
             {
                 isLoginInPregress ? 
-                    <View style={[AppStyle.floating, AppStyle.center]}>
-                        <ActivityIndicator size="large" color={theme.palette.getPrimary()} />
-                    </View> :
+                    <Modal transparent>
+                        <View style={{backgroundColor: "rgba(20,20,20,0.5)", flex: 1, justifyContent: "center"}}>
+                        <View style={{alignSelf:"center", alignItems: "center", justifyContent: "center", backgroundColor: "#fff", width: "80%", padding: 16, borderRadius: 16}}>
+                            <Image style={{height: 200, width: 200, marginBottom: 8, alignSelf: "center"}} source={require("./logo.png")} />
+                            <ActivityIndicator size="large" color={theme.palette.getPrimary()} />
+                        </View>
+                        </View>
+                    </Modal> :
                     null
             }
             <View style={{marginTop: 16}}>
                 <Image source={AppLogo} style={Style.LogoImage} />
                 <Text style={Style.Title}>CometChat</Text>
-                <Text style={Style.Title}>Kitchen Sink</Text>
-                <Text style={Style.Version}>App</Text>
+                <Text style={Style.Version}>Kitchen Sink App</Text>
             </View>
             <View>
                 <Text style={{color: theme.palette.getAccent()}}>Login with one of our sample users</Text>

@@ -37,7 +37,7 @@ export const MessageModuleList = ({ navigation }) => {
         <View style={AppStyle.container}>
             <TouchableOpacity style={{ flexDirection: "row", marginBottom: 16 }} onPress={() => navigation.goBack()}>
                 <Image style={[Style.image, { transform: [{ rotate: '180deg' }] }]} source={RightArrow} />
-                <Text style={AppStyle.heading}>Messages</Text>
+                <Text style={AppStyle.heading2}>Messages</Text>
             </TouchableOpacity>
             {
                 MessageModules.map(module => {
@@ -64,6 +64,7 @@ const Style = StyleSheet.create({
         height: 24,
         width: 24,
         margin: 4,
-        resizeMode: "contain"
+        resizeMode: "contain",
+        alignSelf: "center"
     }
 })

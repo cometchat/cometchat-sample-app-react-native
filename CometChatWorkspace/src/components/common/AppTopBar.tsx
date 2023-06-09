@@ -7,7 +7,7 @@ export const AppTopBar = ({navigation, title}) => {
     return (
         <TouchableOpacity style={{ flexDirection: "row", marginBottom: 16 }} onPress={() => navigation.goBack()}>
             <Image style={[Style.image, { transform: [{ rotate: '180deg' }] }]} source={RightArrow} />
-            <Text style={AppStyle.heading}>{title}</Text>
+            <Text style={AppStyle.heading2}>{title}</Text>
         </TouchableOpacity>
     )
 }
@@ -17,6 +17,7 @@ const Style = StyleSheet.create({
         height: 24,
         width: 24,
         margin: 4,
-        resizeMode: "contain"
+        resizeMode: "contain",
+        alignSelf: "center"
     }
 })
