@@ -13,7 +13,7 @@ import {
   Platform,
 } from 'react-native';
 import {PersistGate} from 'redux-persist/integration/react';
-import theme from './src/cometchat-pro-react-native-ui-kit/CometChatWorkspace/src/resources/theme'
+import theme from './src/cometchat-chat-uikit-react-native/CometChatWorkspace/src/resources/theme'
 
 const styles = StyleSheet.create({
   defaultFontFamily: {

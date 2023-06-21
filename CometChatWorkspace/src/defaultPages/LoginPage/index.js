@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {CometChatAvatar} from '../../cometchat-pro-react-native-ui-kit/CometChatWorkspace/src/index';
+import {CometChatAvatar} from '../../cometchat-chat-uikit-react-native/CometChatWorkspace/src/index';
 import {COMETCHAT_CONSTANTS} from '../../../src/CONSTS';
 import style from './style';
 import * as actions from '../../store/action';
@@ -16,7 +16,7 @@ import {
   Alert,
 } from 'react-native';
 import {ActivityIndicator} from 'react-native';
-import DropDownAlert from '../../cometchat-pro-react-native-ui-kit/CometChatWorkspace/src/components/Shared/DropDownAlert';
+import DropDownAlert from '../../cometchat-chat-uikit-react-native/CometChatWorkspace/src/components/Shared/DropDownAlert';
 class LoginPage extends React.PureComponent {
   constructor(props) {
     super(props);

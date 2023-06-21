@@ -92,7 +92,7 @@ Build and run the Sample App.
 
 # Learn more about UI-Kit
 
-Learn more about how to integrate [UI Kit](https://github.com/cometchat-pro/cometchat-pro-react-native-ui-kit/tree/v3) inside your app.
+Learn more about how to integrate [UI Kit](https://github.com/cometchat-pro/cometchat-chat-uikit-react-native/tree/v3) inside your app.
 
 # Troubleshooting
 
