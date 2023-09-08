@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { PermissionsAndroid, Platform, SafeAreaView, StatusBar } from 'react-native';
-import { CometChat } from "@cometchat-pro/react-native-chat";
+import { PermissionsAndroid, Platform, SafeAreaView, StatusBar, Text } from 'react-native';
+import { CometChat } from "@cometchat/chat-sdk-react-native";
 import { COMETCHAT_CONSTANTS } from './src/CONSTS';
 import { CometChatContextProvider } from '@cometchat/chat-uikit-react-native';
 import { CometChatTheme } from '@cometchat/chat-uikit-react-native';
@@ -85,6 +85,15 @@ const App = () => {
           onDecline={(call) => {
             setCallReceived(false)
           }}
+          incomingCallStyle={{
+            backgroundColor: 'white',
+            titleColor: 'black',
+            subtitleColor: 'gray',
+            titleFont: {
+                fontSize: 20,
+                fontWeight: 'bold'
+            }
+        }}
         />
       }
       <UserContextProvider>

@@ -1,4 +1,4 @@
-import { CometChat } from '@cometchat-pro/react-native-chat';
+import { CometChat } from '@cometchat/chat-sdk-react-native';
 import React, { createContext, useState } from 'react';
 
 export const UserContext = createContext<{

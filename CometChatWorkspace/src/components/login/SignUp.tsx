@@ -1,4 +1,4 @@
-import { CometChat } from "@cometchat-pro/react-native-chat";
+import { CometChat } from "@cometchat/chat-sdk-react-native";
 import React, { useContext } from "react"
 import { StyleSheet, View, Text, TextInput, Modal, ActivityIndicator, Image } from "react-native"
 import { RoudedButton } from "../../components/common/RoundedButton"
