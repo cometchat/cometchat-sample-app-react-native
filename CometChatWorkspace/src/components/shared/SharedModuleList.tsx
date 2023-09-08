@@ -3,7 +3,7 @@ import { View, Text, ScrollView, TouchableOpacity, Image, StyleSheet } from 'rea
 import { AppTopBar } from '../common/AppTopBar'
 import { AppStyle } from '../../AppStyle'
 import { CardView } from '../common/CardView'
-import { AudioBubble, AvatarIc, BadgeCount, FileBubble, ImageBubble, List, Message, MessageReceipt, RightArrow, SoundManger, StatusIndicator, Theme, Translate, VideoBubble } from '../../resources'
+import { AudioBubble, AvatarIc, BadgeCount, FileBubble, ImageBubble, List, Message, MessageReceipt, Microphone, RightArrow, SoundManger, StatusIndicator, Theme, Translate, VideoBubble } from '../../resources'
 
 const SharedModuleFeaturesList = {
     "Resources": [
@@ -86,6 +86,12 @@ const SharedModuleFeaturesList = {
             name: "List Item",
             info: "CometChatListItem displays data on a tile and that tile may contain leading, trailing, title and subtitile. To learn more about this component tap here.",
             image: List
+        },
+        {
+            id: "MediaRecorder",
+            name: "Media Recorder",
+            info: "CometChaMediaRecorder is a component that allows you to record and send audio messages. To learn more about this component tap here.",
+            image: Microphone
         }
     ],
 }

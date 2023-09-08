@@ -31,6 +31,13 @@ import Members from "./Groups.png";
 import Transfer from "./TransferOwnership.png"
 import BanUser from "./BanUser.png"
 import Details from "./Details.png";
+import IncomingCall from "./incoming-call.png";
+import OutgoingCall from "./outgoing-call.png";
+import CallButton from "./call-buttons.png";
+import CallBubble from "./call_bubble.png";
+import VideoCall from './VideoCall.png';
+import Microphone from './mic.png';
+import Info from './info.png';
 
 export {
   Details,
@@ -66,4 +73,11 @@ export {
   Component2,
   Component3,
   List,
+  CallBubble,
+  IncomingCall,
+  CallButton,
+  OutgoingCall,
+  VideoCall,
+  Microphone,
+  Info
 };

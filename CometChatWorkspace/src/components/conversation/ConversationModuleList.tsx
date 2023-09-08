@@ -17,6 +17,12 @@ const ConversationModule = [
         info: "CometChatConversations is an independent component used to set up a screen that shows the recent conversations alone",
         image: Component2
     },
+    {
+        id: "Contacts",
+        name: "Contacts",
+        info: "CometChatContacts is an independent component used to set up a screen that shows the user and group contact.",
+        image: Component2
+    },
 ];
 
 export const ConversationComponentList = (props) => {

@@ -1,0 +1,21 @@
+# Logs
+*.log
+npm-debug.log
+
+# Runtime data
+tmp
+build
+lib
+
+# Dependency directory
+node_modules
+*.DS_Store
+example/development2
+example/development
+# Build file for local testing
+cometchat-pro-react-native-ui-kit-1.0.0.tgz
+package-lock.json
+Pods
+.idea
+.gradle
+vendor

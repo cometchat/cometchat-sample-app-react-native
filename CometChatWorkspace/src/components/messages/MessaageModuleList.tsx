@@ -1,5 +1,5 @@
 import React from "react";
-import { Component1, Component2, Component3, List, RightArrow } from "../../resources";
+import { Component1, Component2, Component3, Info, List, RightArrow } from "../../resources";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { AppStyle } from "../../AppStyle";
 import { CardView } from "../common/CardView";
@@ -28,6 +28,12 @@ const MessageModules = [
         name: "Message Composer",
         info: "CometChatComposer is an independant and a critical component that allows users to compose and send various types of messages such as text, image, video and custom messages.",
         image: Component3
+    },
+    {
+        id: "MessageInformation",
+        name: "Message Information",
+        info: "CometChatMessageInformation is an independant that allows users to see the information of a message such as sent at, delivered at, read at and so on.",
+        image: Info
     }
 ];
 

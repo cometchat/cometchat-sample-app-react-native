@@ -1,4 +1,4 @@
-import { CometChat } from "@cometchat-pro/react-native-chat";
+import { CometChat } from "@cometchat/chat-sdk-react-native";
 import React, { useContext, useEffect } from "react"
 import { View, Text, TouchableOpacity, ScrollView, Image } from "react-native";
 import { AppStyle } from "../../AppStyle";

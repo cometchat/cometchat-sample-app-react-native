@@ -11,6 +11,12 @@ import { Details } from "./components/users/Details";
 import { JoinGroup, AddMember, BannedMembers, CreateGroup, GroupDetails, GroupMember, GroupModuleList, Groups, GroupsWithMessages, TransferOwnership } from "./components/groups";
 import { AudioBubble, Avatar, BadgeCount, FileBubble, ImageBubble, ListItem, Localize, MessageReceipt, SharedModuleList, SoundManager, StatusIndicator, TextBubble, Theme, VideoBubble } from "./components/shared";
 import { CallButton, CallFeatureList } from "./components/calls";
+import { CallBubble } from "./components/calls/CallBubble";
+import { IncomingCall } from "./components/calls/IncomingCall";
+import { OutgoingCall } from "./components/calls/OutgoingCall";
+import Contacts from "./components/conversation/Contacts";
+import MessageInformation from "./components/messages/MessageInformation";
+import MediaRecorder from "./components/shared/MediaRecorder";
 
 function StackNavigator(props) {
   const Stack = createStackNavigator();
@@ -26,6 +32,10 @@ function StackNavigator(props) {
         <Stack.Screen name="MessagesModule" component={MessageModuleList} />
         <Stack.Screen name="CallsModule" component={CallFeatureList} />
         <Stack.Screen name="CallButton" component={CallButton} />
+        <Stack.Screen name="IncomingCall" component={IncomingCall} options={{gestureEnabled: false}} />
+        <Stack.Screen name="OutgoingCall" component={OutgoingCall} />
+        <Stack.Screen name="CallBubble" component={CallBubble} />
+        <Stack.Screen name="Contacts" component={Contacts} />
         <Stack.Screen name="SharedModule" component={SharedModuleList} />
         <Stack.Screen name="UsersModule" component={UserModuleList} />
         <Stack.Screen name="GroupsModule" component={GroupModuleList} />
@@ -35,6 +45,7 @@ function StackNavigator(props) {
         <Stack.Screen name="MessageHeader" component={MessageHeader} />
         <Stack.Screen name="MessageList" component={MessageList} />
         <Stack.Screen name="MessageComposer" component={MessageComposer} />
+        <Stack.Screen name="MessageInformation" component={MessageInformation} />
         <Stack.Screen name="UsersWithMessages" component={CometChatUsersWithMessages} />
         <Stack.Screen name="Users" component={CometChatUsers} />
         <Stack.Screen name="Details" component={Details} />
@@ -60,6 +71,7 @@ function StackNavigator(props) {
         <Stack.Screen name="TextBubble" component={TextBubble} />
         <Stack.Screen name="Theme" component={Theme} />
         <Stack.Screen name="VideoBubble" component={VideoBubble} />
+        <Stack.Screen name="MediaRecorder" component={MediaRecorder} />
       </Stack.Navigator>
     </NavigationContainer>
   );
