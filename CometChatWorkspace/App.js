@@ -9,6 +9,8 @@ import StackNavigator from './src/StackNavigator';
 import { UserContextProvider } from './UserContext';
 import { CometChatIncomingCall } from '@cometchat/chat-uikit-react-native';
 import { CometChatUIEventHandler } from '@cometchat/chat-uikit-react-native';
+import { metaInfo } from './src/metaInfo';
+
 var listnerID = "UNIQUE_LISTENER_ID";
 
 const App = () => {
@@ -35,6 +37,7 @@ const App = () => {
       region: COMETCHAT_CONSTANTS.REGION,
     })
       .then(() => {
+        try{CometChat.setDemoMetaInfo(metaInfo)}catch(err){}
         if (CometChat.setSource) {
           CometChat.setSource('ui-kit', Platform.OS, 'react-native');
         }
