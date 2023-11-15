@@ -3,7 +3,7 @@ import { View, Text, ScrollView, TouchableOpacity, Image, StyleSheet } from 'rea
 import { AppTopBar } from '../common/AppTopBar'
 import { AppStyle } from '../../AppStyle'
 import { CardView } from '../common/CardView'
-import { AudioBubble, AvatarIc, BadgeCount, FileBubble, ImageBubble, List, Message, MessageReceipt, Microphone, RightArrow, SoundManger, StatusIndicator, Theme, Translate, VideoBubble } from '../../resources'
+import { AudioBubble, AvatarIc, BadgeCount, Card, FileBubble, Form, ImageBubble, List, Message, MessageReceipt, Microphone, RightArrow, SoundManger, StatusIndicator, Theme, Translate, VideoBubble } from '../../resources'
 
 const SharedModuleFeaturesList = {
     "Resources": [
@@ -90,9 +90,21 @@ const SharedModuleFeaturesList = {
         {
             id: "MediaRecorder",
             name: "Media Recorder",
-            info: "CometChaMediaRecorder is a component that allows you to record and send audio messages. To learn more about this component tap here.",
+            info: "CometChatMediaRecorder is a component that allows you to record and send audio messages. To learn more about this component tap here.",
             image: Microphone
-        }
+        },
+        {
+            id: "FormBubble",
+            name: "Form Bubble",
+            info: "The CometChatFormBubble component is used to render a form within a chat bubble. To learn more about this component tap here",
+            image: Form
+        },
+        {
+            id: "CardBubble",
+            name: "Card Bubble",
+            info: "The CometChatCardBubble component is used to display a card within a chat bubble. To learn more about this component tap here.",
+            image: Card
+        },
     ],
 }
 

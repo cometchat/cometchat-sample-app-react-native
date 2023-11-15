@@ -17,6 +17,8 @@ import { OutgoingCall } from "./components/calls/OutgoingCall";
 import Contacts from "./components/conversation/Contacts";
 import MessageInformation from "./components/messages/MessageInformation";
 import MediaRecorder from "./components/shared/MediaRecorder";
+import FormBubble from "./components/shared/FormBubble";
+import CardBubble from "./components/shared/CardBubble";
 
 function StackNavigator(props) {
   const Stack = createStackNavigator();
@@ -72,6 +74,8 @@ function StackNavigator(props) {
         <Stack.Screen name="Theme" component={Theme} />
         <Stack.Screen name="VideoBubble" component={VideoBubble} />
         <Stack.Screen name="MediaRecorder" component={MediaRecorder} />
+        <Stack.Screen name="FormBubble" component={FormBubble} />
+        <Stack.Screen name="CardBubble" component={CardBubble} />
       </Stack.Navigator>
     </NavigationContainer>
   );
