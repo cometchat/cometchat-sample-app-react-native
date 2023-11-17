@@ -38,6 +38,8 @@ import CallBubble from "./call_bubble.png";
 import VideoCall from './VideoCall.png';
 import Microphone from './mic.png';
 import Info from './info.png';
+import Form from './form.png';
+import Card from './card.png';
 
 export {
   Details,
@@ -79,5 +81,7 @@ export {
   OutgoingCall,
   VideoCall,
   Microphone,
-  Info
+  Info,
+  Form,
+  Card
 };
