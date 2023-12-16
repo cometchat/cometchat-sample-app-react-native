@@ -1151,22 +1151,21 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@cometchat/calls-sdk-react-native@^4.0.2":
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/@cometchat/calls-sdk-react-native/-/calls-sdk-react-native-4.0.2.tgz#962ea76ea4e0d1663755ce5aeb29206ee71a264a"
-  integrity sha512-uJFN0e5xPMpy7ZCMjfvCyJ/Q5EumQ1bej5RkzF3Z7vWDTRI8Yn+xj3952XHYnU7FZTpf4Ha1zqXCAu17spgRRg==
+"@cometchat/calls-sdk-react-native@^4.0.4":
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/@cometchat/calls-sdk-react-native/-/calls-sdk-react-native-4.0.4.tgz#25299dafb2e338f3b6f78e1516aad8a2d82661d0"
+  integrity sha512-sA3bZjpddMrrxBFOjONrhYKkIAAZSJXhrvCfFHTIuhO0mZVaUWk6wRZ8LNarXMdeY855dTlcU/Sg6DXwkcZ46g==
 
-"@cometchat/chat-sdk-react-native@^4.0.2", "@cometchat/chat-sdk-react-native@^4.0.3":
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/@cometchat/chat-sdk-react-native/-/chat-sdk-react-native-4.0.3.tgz#90a7c85b95e4ff03d05d7c3d1b75aedc121eef84"
-  integrity sha512-9gWWaoQ7CTEEj76wcmMcKfpcQbnHEMXDRk6xX2ugIbRFsyiThkGGzD5CBPCDxMGGLvwENbIby3AtTUp/iuG/Lw==
+"@cometchat/chat-sdk-react-native@^4.0.5":
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/@cometchat/chat-sdk-react-native/-/chat-sdk-react-native-4.0.5.tgz#48dd92659dc0e96bffb05150274a3e919b8dde93"
+  integrity sha512-7JmK46rYr/N+HB70mrmBO97+dAmSExqb88nwf6mD2SHOu0ndFQQuH9bajRmXRZ1KAZNF5yJmh5WO5LWYW5kI8w==
 
-"@cometchat/chat-uikit-react-native@^4.0.2":
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/@cometchat/chat-uikit-react-native/-/chat-uikit-react-native-4.0.2.tgz#d70d8f9ad3d058357900a99d9931b9c9fe30c1f7"
-  integrity sha512-HANEpIfwj9PsxkiZwptcJiHYJ2+ZPZVODlZOzqM7tMKUKQ4aUa1SPwuY6LhxAGNyql1vgeqtoOT7u+WIcGJ4Cg==
+"@cometchat/chat-uikit-react-native@^4.1.0":
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/@cometchat/chat-uikit-react-native/-/chat-uikit-react-native-4.1.0.tgz#684cdc8ff3c91cd6c9a6c1becdb4c5c32d1b744b"
+  integrity sha512-VW0dQ6+78tvPZ7/DLKm+z+X+N8MCkJH1PC77kF0zzMbfZJhMUCsRHwqv0Qu4TISXWdM1RAuDQj5DzsceIbW55Q==
   dependencies:
-    "@cometchat/chat-sdk-react-native" "^4.0.3"
     "@react-native-async-storage/async-storage" "^1.17.10"
     "@react-native-community/clipboard" "^1.5.1"
 

@@ -27,6 +27,11 @@ const UiKitModules = [
         name: "Calls",
         info: "Calls module helps you to list the recent call history between your users and groups. To learn more about this component click here."
     },
+    {
+        name: "Call Logs",
+        id: "CallLogs",
+        info: "Call Logs module contains all available components involving CallLog objects. To explore the available components tap here."
+    },
     {name: "Shared",
         info: "Share module contains several resuable components that are devided into Primary, Secondary and SDKderived components. To learn more about these components click here.",
     },
@@ -96,7 +101,7 @@ export const Home = ({ navigation }) => {
                             key={module.name}
                             name={module.name}
                             info={module.info}
-                            onPress={() => Navigate(module.name)}
+                            onPress={() => Navigate(module.id || module.name)}
                         />
                     )
                 }
