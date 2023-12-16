@@ -4,7 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { Login, SignIn, SignUp } from "./components/login";
 import { Home } from "./components/home/Home";
 import { ConversationComponentList } from "./components/conversation";
-import { CometChatConversationsWithMessages, CometChatConversations, CometChatUsersWithMessages, CometChatUsers } from "@cometchat/chat-uikit-react-native";
+import { CometChatConversationsWithMessages, CometChatConversations, CometChatUsersWithMessages, CometChatUsers, CometChatCallLogs, CometChatCallLogsWithDetails } from "@cometchat/chat-uikit-react-native";
 import { Messages, MessageComposer, MessageHeader, MessageList, MessageModuleList } from "./components/messages";
 import { UserModuleList } from "./components/users/UserModuleList";
 import { Details } from "./components/users/Details";
@@ -19,6 +19,11 @@ import MessageInformation from "./components/messages/MessageInformation";
 import MediaRecorder from "./components/shared/MediaRecorder";
 import FormBubble from "./components/shared/FormBubble";
 import CardBubble from "./components/shared/CardBubble";
+import { CallLogsModuleList } from "./components/callLogs/CallLogsModules";
+import CallLogDetails from "./components/callLogs/CometChatCallLogDetails";
+import CallLogParticipants from "./components/callLogs/CometChatParticipants";
+import CallLogRecordings from "./components/callLogs/CometChatCallLogRecordings";
+import CallLogHistory from "./components/callLogs/CometChatCallLogHistory";
 
 function StackNavigator(props) {
   const Stack = createStackNavigator();
@@ -37,6 +42,13 @@ function StackNavigator(props) {
         <Stack.Screen name="IncomingCall" component={IncomingCall} options={{gestureEnabled: false}} />
         <Stack.Screen name="OutgoingCall" component={OutgoingCall} />
         <Stack.Screen name="CallBubble" component={CallBubble} />
+        <Stack.Screen name="CallLogsModule" component={CallLogsModuleList} />
+        <Stack.Screen name="CometChatCallLogs" component={CometChatCallLogs} />
+        <Stack.Screen name="CometChatCallLogsWithDetails" component={CometChatCallLogsWithDetails} />
+        <Stack.Screen name="CometChatCallLogDetails" component={CallLogDetails} />
+        <Stack.Screen name="CometChatCallLogParticipants" component={CallLogParticipants} />
+        <Stack.Screen name="CometChatCallLogRecordings" component={CallLogRecordings} />
+        <Stack.Screen name="CometChatCallLogHistory" component={CallLogHistory} />
         <Stack.Screen name="Contacts" component={Contacts} />
         <Stack.Screen name="SharedModule" component={SharedModuleList} />
         <Stack.Screen name="UsersModule" component={UserModuleList} />

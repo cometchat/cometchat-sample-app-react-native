@@ -1,0 +1,83 @@
+import React from 'react'
+import { View, Text, TouchableOpacity, Image, StyleSheet, ScrollView } from 'react-native'
+import { AppStyle } from '../../AppStyle';
+import { Component1, Component2, Component3, RightArrow } from '../../resources';
+import { CardView } from '../common/CardView';
+
+const CallLogsModules = [
+    {
+        id: "CometChatCallLogs",
+        name: "Call Logs Listing",
+        info: "CometChatCallLogs is a widget which is used to display list of Call Logs.",
+        image: Component1
+    },
+    {
+        id: "CometChatCallLogsWithDetails",
+        name: "Call Logs With Details",
+        info: "CometChatCallLogsWithDetails is a widget which is used to display list of Call Logs with an icon to display call details.",
+        image: Component2
+    },
+    {
+        id: "CometChatCallLogDetails",
+        name: "Call Log Details",
+        info: "CometChatCallLogDetails is a widget which is used to display call detail of a particular callLog.",
+        image: Component3
+    },
+    {
+        id: "CometChatCallLogParticipants",
+        name: "Call Log Participants",
+        info: "CometChatCallLogParticipants is a widget that displays list of participants for a particular Call.",
+        image: Component3
+    },
+    {
+        id: "CometChatCallLogRecordings",
+        name: "Call Log Recordings",
+        info: "CometChatCallLogRecordings is a widget that displays list of recordings for a particular Call.",
+        image: Component3
+    },
+    {
+        id: "CometChatCallLogHistory",
+        name: "Call Log History",
+        info: "CometChatCallLogHistory is a widget which is used to display list of call history for a particular user or group.",
+        image: Component3
+    }
+];
+
+export const CallLogsModuleList = ({ navigation }) => {
+    return (
+        <View style={AppStyle.container}>
+            <TouchableOpacity style={{ flexDirection: "row", marginBottom: 16 }} onPress={() => navigation.goBack()}>
+                <Image style={[Style.image, { transform: [{ rotate: '180deg' }] }]} source={RightArrow} />
+                <Text style={AppStyle.heading2}>Call Logs</Text>
+            </TouchableOpacity>
+            <ScrollView>
+            {
+                CallLogsModules.map(module => {
+                    return <CardView
+                        name={module.name}
+                        info={module.info}
+                        image={module.image}
+                        onPress={() => navigation.navigate(module.id)}
+                    />
+                })
+            }
+            </ScrollView>
+        </View>
+    )
+}
+
+const Style = StyleSheet.create({
+    optionButton: {
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        width: "100%",
+        justifyContent: 'space-between'
+    },
+    image: {
+        height: 24,
+        width: 24,
+        margin: 4,
+        resizeMode: "contain",
+        alignSelf: "center"
+    }
+})
