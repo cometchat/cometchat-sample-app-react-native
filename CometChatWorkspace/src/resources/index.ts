@@ -40,6 +40,11 @@ import Microphone from './mic.png';
 import Info from './info.png';
 import Form from './form.png';
 import Card from './card.png';
+import Call from './call.png';
+import CallHistory from './callhistory.png';
+import CallRecording from './Calllogrecording.png';
+import CallLogs from './Calllogs.png';
+import CallParticipants from './callparticipants.png';
 
 export {
   Details,
@@ -83,5 +88,10 @@ export {
   Microphone,
   Info,
   Form,
-  Card
+  Card,
+  Call,
+  CallHistory,
+  CallRecording,
+  CallLogs,
+  CallParticipants
 };
