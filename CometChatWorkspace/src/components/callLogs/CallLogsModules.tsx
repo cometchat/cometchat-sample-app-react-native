@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, TouchableOpacity, Image, StyleSheet, ScrollView } from 'react-native'
 import { AppStyle } from '../../AppStyle';
-import { Component1, Component2, Component3, RightArrow } from '../../resources';
+import { CallLogs, Call, RightArrow, CallParticipants, CallRecording, CallHistory } from '../../resources';
 import { CardView } from '../common/CardView';
 
 const CallLogsModules = [
@@ -9,37 +9,37 @@ const CallLogsModules = [
         id: "CometChatCallLogs",
         name: "Call Logs Listing",
         info: "CometChatCallLogs is a widget which is used to display list of Call Logs.",
-        image: Component1
+        image: Call
     },
     {
         id: "CometChatCallLogsWithDetails",
         name: "Call Logs With Details",
         info: "CometChatCallLogsWithDetails is a widget which is used to display list of Call Logs with an icon to display call details.",
-        image: Component2
+        image: CallLogs
     },
     {
         id: "CometChatCallLogDetails",
         name: "Call Log Details",
         info: "CometChatCallLogDetails is a widget which is used to display call detail of a particular callLog.",
-        image: Component3
+        image: CallLogs
     },
     {
         id: "CometChatCallLogParticipants",
         name: "Call Log Participants",
         info: "CometChatCallLogParticipants is a widget that displays list of participants for a particular Call.",
-        image: Component3
+        image: CallParticipants
     },
     {
         id: "CometChatCallLogRecordings",
         name: "Call Log Recordings",
         info: "CometChatCallLogRecordings is a widget that displays list of recordings for a particular Call.",
-        image: Component3
+        image: CallRecording
     },
     {
         id: "CometChatCallLogHistory",
         name: "Call Log History",
         info: "CometChatCallLogHistory is a widget which is used to display list of call history for a particular user or group.",
-        image: Component3
+        image: CallHistory
     }
 ];
 
