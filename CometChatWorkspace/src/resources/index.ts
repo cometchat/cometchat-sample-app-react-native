@@ -45,6 +45,7 @@ import CallHistory from './callhistory.png';
 import CallRecording from './Calllogrecording.png';
 import CallLogs from './Calllogs.png';
 import CallParticipants from './callparticipants.png';
+import Scheduler from './schedule.png';
 
 export {
   Details,
@@ -93,5 +94,6 @@ export {
   CallHistory,
   CallRecording,
   CallLogs,
-  CallParticipants
+  CallParticipants,
+  Scheduler
 };

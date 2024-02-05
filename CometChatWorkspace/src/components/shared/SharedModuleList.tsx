@@ -3,7 +3,7 @@ import { View, Text, ScrollView, TouchableOpacity, Image, StyleSheet } from 'rea
 import { AppTopBar } from '../common/AppTopBar'
 import { AppStyle } from '../../AppStyle'
 import { CardView } from '../common/CardView'
-import { AudioBubble, AvatarIc, BadgeCount, Card, FileBubble, Form, ImageBubble, List, Message, MessageReceipt, Microphone, RightArrow, SoundManger, StatusIndicator, Theme, Translate, VideoBubble } from '../../resources'
+import { AudioBubble, AvatarIc, BadgeCount, Card, FileBubble, Form, ImageBubble, List, Message, MessageReceipt, Microphone, RightArrow, Scheduler, SoundManger, StatusIndicator, Theme, Translate, VideoBubble } from '../../resources'
 
 const SharedModuleFeaturesList = {
     "Resources": [
@@ -104,6 +104,12 @@ const SharedModuleFeaturesList = {
             name: "Card Bubble",
             info: "The CometChatCardBubble component is used to display a card within a chat bubble. To learn more about this component tap here.",
             image: Card
+        },
+        {
+            id: "SchedulerBubble",
+            name: "Scheduler Bubble",
+            info: "The CometChatSchedulerBubble component is used to display a scheduler within a chat bubble. To learn more about this component tap here.",
+            image: Scheduler
         },
     ],
 }
