@@ -1,6 +1,6 @@
 {
   "name": "cometchat-chat-sample-app-react-native",
-  "version": "4.1.0",
+  "version": "4.1.1",
   "license": "SEE LICENSE IN LICENSE.md",
   "private": true,
   "scripts": {
@@ -13,10 +13,11 @@
   "dependencies": {
     "@cometchat/calls-sdk-react-native": "^4.0.4",
     "@cometchat/chat-sdk-react-native": "^4.0.5",
-    "@cometchat/chat-uikit-react-native": "^4.1.0",
+    "@cometchat/chat-uikit-react-native": "^4.2.0",
     "@react-native-async-storage/async-storage": "1.17.10",
     "@react-native-community/cli-platform-android": "^8.0.5",
     "@react-native-community/clipboard": "1.5.1",
+    "@react-native-community/datetimepicker": "^7.6.2",
     "@react-native-community/netinfo": "7.1.7",
     "@react-navigation/native": "^5.8.10",
     "@react-navigation/stack": "^5.12.8",
