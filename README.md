@@ -6,8 +6,8 @@ This reference application showcases the integration of [**CometChat's React Nat
 - Visual Studio Code or any other IDE.
 - For iOS:
 	- XCode
-  	- pod (CocoaPods) and Android Studio for Android
-     	- An iOS device or emulator with iOS 12.0 or above.
+  	- pod (CocoaPods)
+	- An iOS device or emulator with iOS 12.0 or above.
 - For Android:
 	- Android Studio
 	- Android device or emulator with Android version 5.0 or above.
