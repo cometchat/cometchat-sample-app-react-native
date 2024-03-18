@@ -3,11 +3,14 @@
 This reference application showcases the integration of [**CometChat's React Native UI Kit**](https://www.cometchat.com/docs/v4/react-native-uikit/overview) within an React Native framework. It provides developers with examples of implementing real-time messaging and voice and video calling features in their React Native-based applications.
 
 ## Prerequisites
-
-- XCode for iOS and Android Studio for Android
-- pod (CocoaPods) for iOS
-- Android device or emulator with Android version 5.0 or above.
-- An iOS device or emulator with iOS 12.0 or above.
+- Visual Studio Code or any other IDE.
+- For iOS:
+	- XCode
+  	- pod (CocoaPods) and Android Studio for Android
+     	- An iOS device or emulator with iOS 12.0 or above.
+- For Android:
+	- Android Studio
+	- Android device or emulator with Android version 5.0 or above.
 - Sign up for a [CometChat](https://app.cometchat.com/) account to get your app credentials: _`App ID`_, _`Region`_, and _`Auth Key`_
 
 
