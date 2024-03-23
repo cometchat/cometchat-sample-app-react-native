@@ -6,14 +6,14 @@ import { CometChatContext, CometChatUIKit } from "@cometchat/chat-uikit-react-na
 
 export const SignIn = (props) => {
     const [uid, setUID] = React.useState("");
-    const [isLoginInPregress, setLoginInProgress] = React.useState(false);
+    const [isLoginInProgress, setLoginInProgress] = React.useState(false);
     
     const {theme} = useContext(CometChatContext);
 
     return (
         <View style={{flex: 1, padding: 8}}>
             {
-                isLoginInPregress ? 
+                isLoginInProgress ? 
                     <Modal transparent statusBarTranslucent>
                         <View style={{backgroundColor: "rgba(20,20,20,0.5)", flex: 1, justifyContent: "center"}}>
                         <View style={{alignSelf:"center", alignItems: "center", justifyContent: "center", backgroundColor: "#fff", width: "80%", padding: 16, borderRadius: 16}}>

@@ -5,8 +5,9 @@ export const Style = StyleSheet.create({
         padding: 8
     },
     LogoImage: {
-        height: 100,
-        width: 100,
+        height: 50,
+        width: 50,
+        borderRadius: 5
     },
     Title: {
         fontSize: 26,
@@ -15,20 +16,22 @@ export const Style = StyleSheet.create({
     Version: {
         fontSize: 34,
         fontWeight: "700",
-        color: "rgb(37, 151, 245)"
+        color: "black"
     },
     LoginButton: {
         backgroundColor: 'black',
-        margin: 8,
-        padding: 16
+        marginBottom: 8,
+        padding: 16,
+        width: "48%"
     },
     ButtonText: {
         color: 'white'
     },
     CustomLoginButton: {
         backgroundColor: 'rgb(50,150,255)',
-        padding: 8,
-        margin: 8
+        padding: 10,
+        marginVertical: 8,
+        borderRadius: 8
     },
     DefaultText: {},
     ButtonImage: {

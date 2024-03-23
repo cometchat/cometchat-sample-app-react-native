@@ -2,19 +2,19 @@ import { CometChat } from "@cometchat/chat-sdk-react-native";
 import React, { useContext } from "react"
 import { StyleSheet, View, Text, TextInput, Modal, ActivityIndicator, Image } from "react-native"
 import { RoudedButton } from "../../components/common/RoundedButton"
-import { COMETCHAT_CONSTANTS } from "../../CONSTS";
+import { AppConstants } from "../../../AppConstants";
 import { CometChatContext, CometChatUIKit } from "@cometchat/chat-uikit-react-native";
 
 export const SignUp = (props) => {
     const [uid, setUID] = React.useState("");
     const [name, setName] = React.useState("");
-    const [isLoginInPregress, setLoginInProgress] = React.useState(false);
+    const [isLoginInProgress, setLoginInProgress] = React.useState(false);
     const {theme} = useContext(CometChatContext);
     
     return (
         <View style={{flex: 1, padding: 8}}>
             {
-                isLoginInPregress ? 
+                isLoginInProgress ? 
                     <Modal transparent>
                         <View style={{backgroundColor: "rgba(20,20,20,0.5)", flex: 1, justifyContent: "center"}}>
                         <View style={{alignSelf:"center", alignItems: "center", justifyContent: "center", backgroundColor: "#fff", width: "80%", padding: 16, borderRadius: 16}}>
@@ -49,7 +49,7 @@ export const SignUp = (props) => {
                         if (uid.length == 0 && name.length == 0)
                             return;
                             setLoginInProgress(true);
-                        CometChat.createUser({uid, name}, COMETCHAT_CONSTANTS.AUTH_KEY)
+                        CometChat.createUser({uid, name}, AppConstants.AUTH_KEY)
                             .then(user => {
                                 CometChatUIKit.login({uid: uid})
                                 .then(loggedInUser => {
