@@ -2,8 +2,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { PermissionsAndroid, Platform, SafeAreaView, StatusBar, Text } from 'react-native';
 import { CometChat } from "@cometchat/chat-sdk-react-native";
-import { COMETCHAT_CONSTANTS } from './src/CONSTS';
-import { CometChatContextProvider, CometChatConversationsWithMessages } from '@cometchat/chat-uikit-react-native';
+import { AppConstants } from './AppConstants';
+import { CometChatContextProvider, CometChatLocalize } from '@cometchat/chat-uikit-react-native';
 import { CometChatTheme } from '@cometchat/chat-uikit-react-native';
 import { CometChatUIKit } from '@cometchat/chat-uikit-react-native';
 import StackNavigator from './src/StackNavigator';
@@ -32,11 +32,12 @@ const App = () => {
   useEffect(() => {
     getPermissions();
     CometChatUIKit.init({
-      appId: COMETCHAT_CONSTANTS.APP_ID,
-      authKey: COMETCHAT_CONSTANTS.AUTH_KEY,
-      region: COMETCHAT_CONSTANTS.REGION,
+      appId: AppConstants.APP_ID,
+      authKey: AppConstants.AUTH_KEY,
+      region: AppConstants.REGION,
     })
       .then(() => {
+        CometChatLocalize.setLocale("en");
         try{CometChat.setDemoMetaInfo(metaInfo)}catch(err){}
         if (CometChat.setSource) {
           CometChat.setSource('ui-kit', Platform.OS, 'react-native');

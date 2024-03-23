@@ -1156,18 +1156,18 @@
   resolved "https://registry.yarnpkg.com/@cometchat/calls-sdk-react-native/-/calls-sdk-react-native-4.0.4.tgz#25299dafb2e338f3b6f78e1516aad8a2d82661d0"
   integrity sha512-sA3bZjpddMrrxBFOjONrhYKkIAAZSJXhrvCfFHTIuhO0mZVaUWk6wRZ8LNarXMdeY855dTlcU/Sg6DXwkcZ46g==
 
-"@cometchat/chat-sdk-react-native@^4.0.5":
-  version "4.0.5"
-  resolved "https://registry.yarnpkg.com/@cometchat/chat-sdk-react-native/-/chat-sdk-react-native-4.0.5.tgz#48dd92659dc0e96bffb05150274a3e919b8dde93"
-  integrity sha512-7JmK46rYr/N+HB70mrmBO97+dAmSExqb88nwf6mD2SHOu0ndFQQuH9bajRmXRZ1KAZNF5yJmh5WO5LWYW5kI8w==
+"@cometchat/chat-sdk-react-native@^4.0.6":
+  version "4.0.6"
+  resolved "https://registry.yarnpkg.com/@cometchat/chat-sdk-react-native/-/chat-sdk-react-native-4.0.6.tgz#597090ca53bc39f25d2ab2badbc7f3adf8046f3d"
+  integrity sha512-xEt0PBOuoYxNkXbLCCMb7H1wuTsMGKDkK/LiFgelJ+xC8bOmuyLT+PvQZt9bLF8AF1c7MepXHdZLP3HkFNvpnw==
 
-"@cometchat/chat-uikit-react-native@^4.1.0":
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/@cometchat/chat-uikit-react-native/-/chat-uikit-react-native-4.1.0.tgz#684cdc8ff3c91cd6c9a6c1becdb4c5c32d1b744b"
-  integrity sha512-VW0dQ6+78tvPZ7/DLKm+z+X+N8MCkJH1PC77kF0zzMbfZJhMUCsRHwqv0Qu4TISXWdM1RAuDQj5DzsceIbW55Q==
+"@cometchat/chat-uikit-react-native@^4.3.0":
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/@cometchat/chat-uikit-react-native/-/chat-uikit-react-native-4.3.0.tgz#0d698b197de8905f76efe4a17a012734014e0c35"
+  integrity sha512-9wnfLzt1r06f7q++LdJHxnVq6ydR7+PwwT2qNBWZdXYhz/iMZRlA060cztnTDXfpqHfptGDYpT2gcrQWVBnJdg==
   dependencies:
     "@react-native-async-storage/async-storage" "^1.17.10"
-    "@react-native-community/clipboard" "^1.5.1"
+    "@react-native-clipboard/clipboard" "^1.13.2"
 
 "@egjs/hammerjs@^2.0.17":
   version "2.0.17"
@@ -1558,6 +1558,11 @@
   dependencies:
     merge-options "^3.0.4"
 
+"@react-native-clipboard/clipboard@^1.13.2":
+  version "1.13.2"
+  resolved "https://registry.yarnpkg.com/@react-native-clipboard/clipboard/-/clipboard-1.13.2.tgz#28adcfc43ed2addddf79a59198ec1b25087c115e"
+  integrity sha512-uVM55oEGc6a6ZmSATDeTcMm55A/C1km5X47g0xaoF0Zagv7N/8RGvLceA5L/izPwflIy78t7XQeJUcnGSib0nA==
+
 "@react-native-community/cli-clean@11.3.6":
   version "11.3.6"
   resolved "https://registry.yarnpkg.com/@react-native-community/cli-clean/-/cli-clean-11.3.6.tgz#43a06cbee1a5480da804debc4f94662a197720f2"
@@ -1753,10 +1758,12 @@
     prompts "^2.4.0"
     semver "^7.5.2"
 
-"@react-native-community/clipboard@1.5.1", "@react-native-community/clipboard@^1.5.1":
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/@react-native-community/clipboard/-/clipboard-1.5.1.tgz#32abb3ea2eb91ee3f9c5fb1d32d5783253c9fabe"
-  integrity sha512-AHAmrkLEH5UtPaDiRqoULERHh3oNv7Dgs0bTC0hO5Z2GdNokAMPT5w8ci8aMcRemcwbtdHjxChgtjbeA38GBdA==
+"@react-native-community/datetimepicker@^7.6.2":
+  version "7.6.3"
+  resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-7.6.3.tgz#c6b7b84a3d6a824b55d2710658d86fe64ce12a72"
+  integrity sha512-Ceb+zWwX67tJKK8gTk6JRRIlU1DqIuwe2kaFwz28s6SKrU8bn/nSSB8/y9B4vic3hb8Z0WTo22807GA1Kg4W7A==
+  dependencies:
+    invariant "^2.2.4"
 
 "@react-native-community/netinfo@7.1.7":
   version "7.1.7"

@@ -19,31 +19,39 @@ This reference application showcases the integration of [**CometChat's React Nat
     ```
     git clone https://github.com/cometchat/cometchat-sample-app-react-native.git
     ```
+2. Install dependencies
+    ```sh 
+    yarn install
+    ```
 
-2. Enter your CometChat _`App ID`_, _`Region`_, and _`Auth Key`_ in the [CometChatWorkspace/src/CONSTS.ts](https://github.com/cometchat/cometchat-sample-app-react-native/blob/v4/CometChatWorkspace/src/CONSTS.ts) file:
+3. Enter your CometChat _`App ID`_, _`Region`_, and _`Auth Key`_ in the [AppConstants.ts](./AppConstants.ts) file:
     ```typescript
-      export const COMETCHAT_CONSTANTS = {
+      export const AppConstants = {
          APP_ID: 'APP_ID', // Enter your App ID
          REGION: 'REGION', // Enter your App Region
          AUTH_KEY: 'AUTH_KEY', // Enter your App Auth Key
       }
     ```
 
-3. For iOS, install dependencies after navigating to ios :
+4. For iOS, install dependencies after navigating to ios :
     ```sh
-      cd CometChatWorkspace/ios
+      cd ios
       pod install
     ```
 
-4. Run the app on a device or emulator from the repo root.
+5. Run the app on a device or emulator from the repo root.
 	```sh 
-      cd CometChatWorkspace
-      npm start
-      npm run android
-      npm run ios
+      yarn start
+      yarn run android
+      yarn run ios
 	```
  
-   ![image (5)](https://github.com/cometchat/cometchat-sample-app-react-native/assets/2210730/48c8278d-6b66-4cdb-a71e-37866f8327a7)
+   <div style="
+    display: flex;
+    align-items: center;
+    justify-content: center;">
+   <img src="./Screenshots/login.png" alt="login" width="300">
+   </div>
 
 
 
