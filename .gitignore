@@ -47,7 +47,7 @@ yarn.lock # include if you are using yarn - don't use both npm and yarn
 # BUCK
 buck-out/
 \.buckd/
-*.keystore
+# *.keystore
 !CometChatWorkspace/cometchat-app/android/app/debug.keystore
 
 # Fastlane
