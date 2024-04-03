@@ -2,9 +2,9 @@
   <img alt="CometChat" src="https://assets.cometchat.io/website/images/logos/banner.png">
 </p>
 
-# React Native Sample App by CometChat
+# iOS Sample App by CometChat
 
-This reference application showcases the integration of [**CometChat's React Native UI Kit**](https://www.cometchat.com/docs/v4/react-native-uikit/overview) within an React Native framework. It provides developers with examples of implementing real-time messaging and voice and video calling features in their React Native-based applications.
+This reference application showcases the integration of [**CometChat's React Native UI Kit**](https://www.cometchat.com/docs/v4/react-native-uikit/overview) within an React Native framework. It provides developers with examples of implementing real-time messaging and voice and video calling features in their react native based applications.
 
 ## Prerequisites
 - Visual Studio Code or any other IDE.
