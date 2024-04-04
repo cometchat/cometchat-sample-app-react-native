@@ -24,8 +24,8 @@ project.xcworkspace
 
 # Android/IntelliJ
 #
-CometChatWorkspace/cometchat-app/android/app/build/
-CometChatWorkspace/ios/Pods
+cometchat-app/android/app/build/
+ios/Pods
 cometchat-app/android/app/build/
 /android/app/build/
 /app/build/
@@ -48,7 +48,8 @@ yarn.lock # include if you are using yarn - don't use both npm and yarn
 buck-out/
 \.buckd/
 # *.keystore
-!CometChatWorkspace/cometchat-app/android/app/debug.keystore
+!cometchat-app/android/app/debug.keystore
+!cometchat-app/android/app/my-upload-key.keystore
 
 # Fastlane
 #
@@ -62,10 +63,35 @@ buck-out/
 */fastlane/screenshots
 
 # Pods 
-CometChatWorkspace/cometchat-app/ios/Pods/
+cometchat-app/ios/Pods/
 cometchat-app/ios/Pods/
 /ios/Pods/
 ios/Pods/*
 
 # Bundle artifact
 *.jsbundle
+
+# Build file for ui-kit
+cometchat-pro-react-native-ui-kit-1.0.0.tgz
+
+# Logs
+*.log
+npm-debug.log
+
+# Runtime data
+tmp
+build
+lib
+
+# Dependency directory
+node_modules
+*.DS_Store
+example/development2
+example/development
+# Build file for local testing
+cometchat-pro-react-native-ui-kit-1.0.0.tgz
+package-lock.json
+Pods
+.idea
+.gradle
+vendor

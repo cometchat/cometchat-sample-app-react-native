@@ -1,6 +1,6 @@
 
 import React, { useEffect, useRef, useState } from 'react';
-import { PermissionsAndroid, Platform, SafeAreaView, StatusBar, Text } from 'react-native';
+import { PermissionsAndroid, Platform, SafeAreaView, StatusBar, StyleSheet, View } from 'react-native';
 import { CometChat } from "@cometchat/chat-sdk-react-native";
 import { AppConstants } from './AppConstants';
 import { CometChatContextProvider, CometChatLocalize } from '@cometchat/chat-uikit-react-native';
@@ -80,33 +80,42 @@ const App = () => {
   }, []);
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <StatusBar backgroundColor={"white"} barStyle={"dark-content"} />
-      {
-        callRecevied &&
-        <CometChatIncomingCall
-          call={incomingCall.current}
-          onDecline={(call) => {
-            setCallReceived(false)
-          }}
-          incomingCallStyle={{
-            backgroundColor: 'white',
-            titleColor: 'black',
-            subtitleColor: 'gray',
-            titleFont: {
-              fontSize: 20,
-              fontWeight: 'bold'
-            }
-          }}
-        />
-      }
-      <UserContextProvider>
-        <CometChatContextProvider theme={new CometChatTheme({})}>
-          <StackNavigator />
-        </CometChatContextProvider>
-      </UserContextProvider>
-    </SafeAreaView>
+    <View style={styles.container}>
+      <SafeAreaView style={{ flex: 1 }}>
+        <StatusBar backgroundColor={"white"} barStyle={"dark-content"} />
+        {
+          callRecevied &&
+          <CometChatIncomingCall
+            call={incomingCall.current}
+            onDecline={(call) => {
+              setCallReceived(false)
+            }}
+            incomingCallStyle={{
+              backgroundColor: 'white',
+              titleColor: 'black',
+              subtitleColor: 'gray',
+              titleFont: {
+                fontSize: 20,
+                fontWeight: 'bold'
+              }
+            }}
+          />
+        }
+        <UserContextProvider>
+          <CometChatContextProvider theme={new CometChatTheme({})}>
+            <StackNavigator />
+          </CometChatContextProvider>
+        </UserContextProvider>
+      </SafeAreaView>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff"
+  }
+})
 
 export default App;
