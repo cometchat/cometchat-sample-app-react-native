@@ -4,11 +4,11 @@
 
 # React Native Sample App by CometChat
 
-This is a reference application showcasing the integration of [**CometChat's React Native UI Kit**](https://www.cometchat.com/docs/v4/react-native-uikit/overview) in React Native. It offers developers practical examples for incorporating real-time messaging, as well as voice and video calling functionalities, into their React Native based applications.
+This is a reference application showcasing the integration of [**CometChat's React Native UI Kit**](https://www.cometchat.com/docs/v4/react-native-uikit/overview) in React Native. It offers developers practical examples for incorporating real-time messaging, as well as voice and video calling functionalities, into their React Native-based applications.
 
 ## Prerequisites
 
-- Ensure that you have React Native development environment set up.
+- Ensure that you have the React Native development environment set up.
   - Follow instructions for your environment at https://reactnative.dev/docs/environment-setup
 - Sign up for a [CometChat](https://app.cometchat.com/) account to get your app credentials: _`App ID`_, _`Region`_, and _`Auth Key`_
 
@@ -36,7 +36,7 @@ This is a reference application showcasing the integration of [**CometChat's Rea
      cd ios
      pod install
    ```
-5. Enter your CometChat _`App ID`_, _`Region`_, and _`Auth Key`_ in the [src/AppConstants.ts](https://github.com/cometchat/cometchat-sample-app-react-native/blob/v4/AppConstants.ts) file:
+5. Enter your CometChat _`App ID`_, _`Region`_, and _`Auth Key`_ in the [AppConstants.ts](https://github.com/cometchat/cometchat-sample-app-react-native/blob/v4/AppConstants.ts) file:
    https://github.com/cometchat/cometchat-sample-app-react-native/blob/f7d4945414da14405f5dece975c8cf43926b01c7/AppConstants.ts#L1-L5
 6. Run the app on a device or emulator from the repo root.
    ```sh
