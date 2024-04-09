@@ -39,7 +39,6 @@ local.properties
 # node.js
 #
 node_modules/
-package-lock.json # include if you are using npm - don't use both yarn and npm
 npm-debug.log
 yarn-error.log
 yarn.lock # include if you are using yarn - don't use both npm and yarn
@@ -90,7 +89,6 @@ example/development2
 example/development
 # Build file for local testing
 cometchat-pro-react-native-ui-kit-1.0.0.tgz
-package-lock.json
 Pods
 .idea
 .gradle
