@@ -1,6 +1,6 @@
 
 import React, { useEffect, useRef, useState } from 'react';
-import { PermissionsAndroid, Platform, SafeAreaView, StatusBar, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, PermissionsAndroid, Platform, SafeAreaView, StatusBar, StyleSheet, View } from 'react-native';
 import { CometChat } from "@cometchat/chat-sdk-react-native";
 import { AppConstants } from './AppConstants';
 import { CometChatContextProvider, CometChatLocalize } from '@cometchat/chat-uikit-react-native';
@@ -26,7 +26,8 @@ const App = () => {
     }
   }
 
-  const [callRecevied, setCallReceived] = useState(false);
+  const [callReceived, setCallReceived] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
   const incomingCall = useRef(null);
 
   useEffect(() => {
@@ -42,6 +43,7 @@ const App = () => {
         if (CometChat.setSource) {
           CometChat.setSource('ui-kit', Platform.OS, 'react-native');
         }
+        setIsInitialized(true);
       })
       .catch(() => {
         return null;
@@ -81,32 +83,37 @@ const App = () => {
 
   return (
     <View style={styles.container}>
-      <SafeAreaView style={{ flex: 1 }}>
-        <StatusBar backgroundColor={"white"} barStyle={"dark-content"} />
-        {
-          callRecevied &&
-          <CometChatIncomingCall
-            call={incomingCall.current}
-            onDecline={(call) => {
-              setCallReceived(false)
-            }}
-            incomingCallStyle={{
-              backgroundColor: 'white',
-              titleColor: 'black',
-              subtitleColor: 'gray',
-              titleFont: {
-                fontSize: 20,
-                fontWeight: 'bold'
-              }
-            }}
-          />
-        }
-        <UserContextProvider>
-          <CometChatContextProvider theme={new CometChatTheme({})}>
-            <StackNavigator />
-          </CometChatContextProvider>
-        </UserContextProvider>
-      </SafeAreaView>
+      {isInitialized ? (
+        <SafeAreaView style={{ flex: 1 }}>
+          <StatusBar backgroundColor={"white"} barStyle={"dark-content"} />
+          {callReceived && (
+            <CometChatIncomingCall
+              call={incomingCall.current}
+              onDecline={(call) => {
+                setCallReceived(false);
+              }}
+              incomingCallStyle={{
+                backgroundColor: "white",
+                titleColor: "black",
+                subtitleColor: "gray",
+                titleFont: {
+                  fontSize: 20,
+                  fontWeight: "bold",
+                },
+              }}
+            />
+          )}
+          <UserContextProvider>
+            <CometChatContextProvider theme={new CometChatTheme({})}>
+              <StackNavigator />
+            </CometChatContextProvider>
+          </UserContextProvider>
+        </SafeAreaView>
+      ) : (
+        <View style={[styles.container, {justifyContent: "center"}]}>
+          <ActivityIndicator />
+        </View>
+      )}
     </View>
   );
 };
