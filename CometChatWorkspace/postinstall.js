@@ -3,7 +3,7 @@ const request = require('request');
 const extract = require('extract-zip')
 const rimraf = require("rimraf");
 
-const fileName = "cometchat-uikit-react-native";
+const fileName = "cometchat-chat-uikit-react-native";
 const filePath = __dirname + "/src/" + fileName;
 
 const zipFileName = 'cometchat-uikit-react-native-3';
@@ -58,22 +58,23 @@ download(downloadUrl, zipName, (props) => {
                 if (error) {
                     return console.error('move file error!', error);
                 }
-                const oldFilePath = __dirname + "/src/cometchat-uikit-react-native";
-                const newFilePath = __dirname + "/src/cometchat-chat-uikit-react-native";
-
-                fs.rename(oldFilePath, newFilePath, function (err) {
-                    if (err) {
-                        console.log('ERROR: ' + err);
-                        return;
-                    }
-                    console.log("Renamed file successfully!");
-                });
                 console.log('move file success!')
             });
 
             const zipFile = __dirname + "/" + zipName;
             if (checkIfFolderExists(zipFile)) {
                 deleteFileFolder(zipFile);
+            }
+
+            let unwantedfolder = filePath + "/CometChatWorkspace/example";
+            if (checkIfFolderExists(unwantedfolder)) {
+                deleteFileFolder(unwantedfolder);
+            } else {
+                setTimeout(() => {
+                    if (checkIfFolderExists(unwantedfolder)) {
+                        deleteFileFolder(unwantedfolder);
+                    }   
+                }, 1000)
             }
         });
 
