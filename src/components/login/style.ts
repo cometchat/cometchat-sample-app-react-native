@@ -22,10 +22,13 @@ export const Style = StyleSheet.create({
         backgroundColor: 'black',
         marginBottom: 8,
         padding: 16,
-        width: "48%"
+        width: "48%",
+        justifyContent: "flex-start"
+
     },
     ButtonText: {
-        color: 'white'
+        color: 'white',
+        marginLeft: 10
     },
     CustomLoginButton: {
         backgroundColor: 'rgb(50,150,255)',

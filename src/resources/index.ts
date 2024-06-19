@@ -46,8 +46,10 @@ import CallRecording from './Calllogrecording.png';
 import CallLogs from './Calllogs.png';
 import CallParticipants from './callparticipants.png';
 import Scheduler from './schedule.png';
+import Cyclops from './cyclops.png'
 
 export {
+  Cyclops,
   Details,
   BanUser,
   Transfer,
