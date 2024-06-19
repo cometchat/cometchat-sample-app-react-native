@@ -55,13 +55,12 @@ export default StyleSheet.create({
     paddingTop: 10 * heightRatio,
   },
   userWrapperStyle: {
-    width: 150 * widthRatio,
+    width: 170 * widthRatio,
     marginLeft: 10 * widthRatio,
     marginRight: 10 * widthRatio,
     marginTop: 10 * heightRatio,
     marginBottom: 10 * heightRatio,
     flexDirection: 'row',
-    justifyContent: 'space-around',
     alignItems: 'center',
     backgroundColor: '#333',
     borderRadius: 10,
@@ -75,6 +74,7 @@ export default StyleSheet.create({
     width: 34 * widthRatio,
     height: 34 * heightRatio,
     justifyContent: 'center',
+    marginRight: 10
   },
   uidWrapperStyle: {
     alignItems: 'center',
