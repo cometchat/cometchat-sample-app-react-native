@@ -57,10 +57,6 @@ This is a reference application showcasing the integration of [CometChat's React
      ```
      git clone https://github.com/cometchat/cometchat-sample-app-react-native.git
      ```
-   - Using SSH
-     ```
-     git clone git@github.com:cometchat/cometchat-sample-app-react-native.git
-     ```
 2. Navigate to the cloned directory:
    ```
    cd cometchat-sample-app-react-native
@@ -75,8 +71,10 @@ This is a reference application showcasing the integration of [CometChat's React
      pod install
    ```
 5. Enter your CometChat _`App ID`_, _`Region`_, and _`Auth Key`_ in the [AppConstants.ts](https://github.com/cometchat/cometchat-sample-app-react-native/blob/v4/AppConstants.ts) file:
-   https://github.com/cometchat/cometchat-sample-app-react-native/blob/f7d4945414da14405f5dece975c8cf43926b01c7/AppConstants.ts#L1-L5
-6. Run the app on a device or emulator from the repo root.
+   https://github.com/cometchat/cometchat-sample-app-react-native/blob/f2910c28c3d3d49031e37a58c536efca1f77cb27/AppConstants.ts#L1-L5
+6.  If your app is created before August 12th, 2024 then change the sample data URL to `https://assets.cometchat.io/sampleapp/v1/sampledata.json` in the [src/components/login/Login.tsx](https://github.com/cometchat/cometchat-sample-app-react-native/blob/v4/src/components/login/Login.tsx) file: https://github.com/cometchat/cometchat-sample-app-react-native/blob/f2910c28c3d3d49031e37a58c536efca1f77cb27/src/components/login/Login.tsx#L20-L22
+
+7. Run the app on a device or emulator from the repo root.
    ```sh
    npm start
    npm run android

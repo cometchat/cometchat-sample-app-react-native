@@ -20,7 +20,6 @@ export const Login = ({ navigation }) => {
     React.useEffect(() => {
         fetch("https://assets.cometchat.io/sampleapp/sampledata.json")
           .then((response) => {
-            console.log(response.status);
             if (response.status === 200) return response.json();
             else {
               setUsersList(users);
