@@ -29,7 +29,7 @@ const FormBubble = (props) => {
                     receiver: {
                         entity: {
                             guid: "group_1696408979857",
-                            name: "chutiyaGang",
+                            name: "Test Group",
                             type: "public",
                             owner: "vivek",
                             createdAt: 1696408980,
