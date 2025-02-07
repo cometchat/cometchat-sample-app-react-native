@@ -1,6 +1,6 @@
 {
   "name": "cometchat-chat-sample-app-react-native",
-  "version": "4.3.6",
+  "version": "4.3.8",
   "license": "SEE LICENSE IN LICENSE.md",
   "private": true,
   "scripts": {
@@ -11,9 +11,9 @@
     "test": "jest"
   },
   "dependencies": {
-    "@cometchat/calls-sdk-react-native": "^4.0.7",
-    "@cometchat/chat-sdk-react-native": "^4.0.9",
-    "@cometchat/chat-uikit-react-native": "^4.3.20",
+    "@cometchat/calls-sdk-react-native": "^4.1.1",
+    "@cometchat/chat-sdk-react-native": "^4.0.12",
+    "@cometchat/chat-uikit-react-native": "^4.3.24",
     "@react-native-async-storage/async-storage": "^1.23.1",
     "@react-native-clipboard/clipboard": "^1.14.0",
     "@react-native-community/datetimepicker": "^7.6.4",
@@ -46,6 +46,9 @@
     "prettier": "2.8.8",
     "react-test-renderer": "18.2.0",
     "typescript": "5.0.4"
+  },
+  "overrides": {
+    "tar": "^6.2.1"
   },
   "engines": {
     "node": ">=18"

@@ -22,6 +22,7 @@ const App = () => {
         PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
         PermissionsAndroid.PERMISSIONS.CAMERA,
         PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+        PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
       ]);
     }
   }
@@ -90,6 +91,9 @@ const App = () => {
             <CometChatIncomingCall
               call={incomingCall.current}
               onDecline={(call) => {
+                setCallReceived(false);
+              }}
+              onError={(error) => {
                 setCallReceived(false);
               }}
               incomingCallStyle={{
